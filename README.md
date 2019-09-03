@@ -1,4 +1,4 @@
-# \#t11 - Team America
+# \# t11 - Team America
 
 | Last | First | eID | GitHub Username | Email |
 |------|-------|-----|-----------------|-------|
