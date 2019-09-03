@@ -1,7 +1,7 @@
 # \# t11 - Team America
 
 ![Team Photo (Using PhotoShop)](/team/images/TeamPhotoPS.jpg)
-*Team photo: name, name, name, Sean Boyd*
+*Team photo: Calvin Davis, Aaron Huskerson, Chandler Day, Sean Boyd*
 
 | Last | First | eID | GitHub Username | Email |
 |------|-------|-----|-----------------|-------|
