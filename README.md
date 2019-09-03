@@ -1,5 +1,8 @@
 # \# t11 - Team America
 
+![Team Photo (Using PhotoShop)](/team/images/TeamPhotoPS.jpg)
+*Team photo: Calvin Davis, Aaron Huskerson, Chandler Day, Sean Boyd*
+
 | Last | First | eID | GitHub Username | Email |
 |------|-------|-----|-----------------|-------|
 | Davis | Calvin | cdavis10 | MyNameIsCalvinDavis | cdavis10@rams.colostate.edu |
