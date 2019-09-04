@@ -1,0 +1,276 @@
+/* Width of marginal components */
+.application-width{
+  margin: auto;
+  max-width: 1200px;
+  padding: 0 15px 0 15px;
+}
+
+/* HEADER STYLES */
+/* CSU Unit Identifier Font */
+.add-header-height{
+  background-color: #1E4D2B;
+  height: 90px;
+}
+
+#responsiveHeaderContainer{
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+.larger-CSUtext-upper{
+  font-family: 'prox-light', sans-serif;
+  letter-spacing: .11em;
+  line-height: 1.1em;
+  font-size: 24px;
+  text-transform: uppercase;
+  color: white;
+}
+
+/* Department Identifier Logo */
+#responsiveLogoSubsystem::before{
+  border-left-color: rgb(255, 255, 255);
+  border-left-style: solid;
+  border-left-width: 2px;
+  bottom: 0;
+  box-sizing: border-box;
+  content: "";
+  display: block;
+  left: 0;
+  margin-left: 15px;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+#responsiveLogoSubsystem{
+  align-items: center;
+  box-sizing: border-box;
+  display: flex;
+  font-family: sans-serif;
+  height: 42.0469px;
+  padding-left: 32px;
+  position: relative;
+  text-size-adjust: 100%; /* ms & moz */
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+#csHeaderLink{
+  display: block;
+  color: #FFFFFF;
+  text-decoration: none; /* Don't Underline COMPUTER SCIENCE */
+  z-index: 1;
+}
+#csHeaderLink h1{
+  margin: .1em 0 0;
+  padding: 0;
+}
+
+/* Responseive Header Images */
+/* Only show one of the three logos depending on what the size of the screen is. */
+@media only screen{
+  #csuLargeLogo{
+    display: inline-block;
+  }
+  #csuMedLogo,
+  #csuSmallLogo{
+    display: none;
+  }
+}
+@media only screen and (max-width: 768px){
+  #csuMedLogo{
+    display: inline-block;
+  }
+  #csuLargeLogo,
+  #csuSmallLogo{
+    display: none;
+  }
+}
+@media only screen and (max-width: 576px){
+  #csuSmallLogo{
+    display: inline-block;
+  }
+  #csuMedLogo,
+  #csuLargeLogo{
+    display: none;
+  }
+}
+
+/* FOOTER STYLES*/
+/* Department Footer */
+.add-company-footer{
+  padding: 35px 15px 10px 15px;
+  background-color: #255f35;
+}
+
+.company-widget{
+  font-family: 'prox-light', sans-serif;
+  letter-spacing: .18em;
+  line-height: 1.5em;
+  font-size: 14px;
+  text-transform: uppercase;
+  color: white;
+  font-weight: bold;
+}
+
+.company-sub-widget {
+  font-family: 'prox-light', sans-serif;
+  line-height: 1em;
+  font-size: 13px;
+  color: #dddddd;
+}
+
+ul.widget-list{
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+
+li.widget-list{
+  line-height: 1.5;
+  margin: 5px 0;
+}
+
+a.widget-link:hover{
+  color: white;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+a.widget-link{
+  font-family: 'prox-light', sans-serif;
+  font-weight: 400;
+  font-size: 13px;
+  color: #dddddd;
+}
+
+.add-footer{
+  background-color: #1E4D2B;
+  bottom: 0;
+}
+
+.footer-copyright{
+  display: flex;
+  display: -webkit-flex; /* Safari */
+  -webkit-flex-flow: row-reverse wrap; /* Safari 6.1+ */
+  flex-flow: row wrap;
+  justify-content: space-between;
+  width: 100%;
+  opacity: .90;
+}
+
+.footer-copyright ul{
+  list-style-type: none;
+  padding-left: 0;
+  line-height: 160%;
+}
+
+.footer-copyright li{
+  float: left;
+  margin-left: 0;
+  margin-right: 20px;
+}
+
+.footer-copyright a{
+  color: #FFFFFF;
+}
+
+.footer-copyright a:hover{
+  text-decoration: underline;
+  color: #FFFFFF;
+}
+
+.copyright-text{
+  font-family: 'prox-light', sans-serif;
+  line-height: 1em;
+  letter-spacing: .1em;
+  font-size: 11px;
+  color: #dddddd;
+  padding-top: 1.8em;
+}
+
+.footer-logo-wrapper{
+  margin-left: auto;
+  margin-right: auto;
+  order: 2;
+}
+
+.csuFooter-Logo {
+  width: 310px;
+  height: auto;
+}
+
+/* Navbar Styles */
+.nav_item {
+    color: var(--link-green-blue);
+    font-weight: 600;
+    font-family: sans-serif;
+    letter-spacing: .11em;
+    line-height: 1.1em;
+    font-size: 13px;
+    text-transform:uppercase;
+    padding: 0;
+    margin-right:1em;
+    margin-left:1em;
+}
+
+.nav_item:hover {
+    color: var(--link-hover-gray);
+    border-bottom: 1px solid var(--link-hover-gray);
+    text-decoration: none;
+}
+
+.nav_item:focus {
+    text-decoration: none;
+}
+
+.nav_title {
+    color: var(--link-green-blue);
+    font-weight: 700;
+    font-family: sans-serif;
+    letter-spacing: .11em;
+    line-height: 1.1em;
+    font-size: 16px;
+    text-transform:uppercase;
+}
+
+.nav_title:hover {
+    color: var(--link-hover-gray);
+}
+
+.nav_bar {
+    align-items:center;
+    margin: 1em 0;
+    padding: 0;
+
+}
+
+.dropdown_icon, .dropdown_icon:hover, .dropdown_icon:active {
+    margin: auto;
+    color: var(--link-hover-gray);
+    background-color: white;
+    border: none;
+    -webkit-transition-duration: 0.2s; /* Safari */
+    transition-duration: 0.2s;
+    cursor: pointer;
+}
+
+.dropdown_icon:focus{
+    box-shadow: none;
+}
+
+.dropdown_item{
+    font-weight: 600;
+    letter-spacing: .11em;
+    line-height: 1.5em;
+    font-size: 13px;
+    font-family: sans-serif;
+    text-transform:uppercase;
+    color: var(--link-hover-gray);
+    padding-bottom: .2em;
+}
+
+.dropdown_item:hover{
+    color: var(--link-hover-gray);
+    text-decoration: underline;
+}

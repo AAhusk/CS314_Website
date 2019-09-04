@@ -1,0 +1,50 @@
+{
+  "scripts": {
+    "bundle": "cross-env webpack --config ./webpack.prod.config.js --progress --colors && cp index.html favicon.ico dist/public",
+    "test": "jest",
+    "dev": "cross-env webpack-dev-server --config ./webpack.dev.config.js"
+  },
+  "dependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-polyfill": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-react": "^6.24.1",
+    "bootstrap": "^4.2.1",
+    "cross-env": "^5.1.1",
+    "css-loader": "^2.1.0",
+    "file-loader": "^3.0.1",
+    "leaflet": "^1.4.0",
+    "react": "^16.7.0",
+    "react-dom": "^16.7.0",
+    "react-leaflet": "^2.2.0",
+    "reactstrap": "^7.0.2",
+    "style-loader": "^0.23.1",
+    "webpack": "^4.28.4",
+    "webpack-cli": "^3.2.1"
+  },
+  "devDependencies": {
+    "babel-jest": "^22.2.2",
+    "enzyme": "^3.8.0",
+    "enzyme-adapter-react-16": "^1.7.1",
+    "jest": "^23.6.0",
+    "jest-fetch-mock": "^2.1.0",
+    "webpack-dev-server": "^3.1.14"
+  },
+  "jest": {
+    "collectCoverage": true,
+    "collectCoverageFrom": [
+      "src/**/*.{js|jsx}"
+    ],
+    "testURL": "http://localhost/",
+    "coverageDirectory": "coverage",
+    "moduleNameMapper": {
+      "\\.(png|svg|gif|jpg|jpeg)$": "<rootDir>/test/require_stub.js",
+      "\\.(css)$": "<rootDir>/test/require_stub.js"
+    },
+    "automock": false,
+    "setupFiles": [
+      "<rootDir>/test/setupJest.js"
+    ]
+  }
+}

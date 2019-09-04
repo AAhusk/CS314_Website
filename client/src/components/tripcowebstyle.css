@@ -1,0 +1,172 @@
+/* Text stylings according to the CSU branding guide */
+/* (http://brand.colostate.edu/d/sLlipb6y2ZT4/colorado-state-university-style-guide#/style-guide/web-guidelines) */
+
+/* csu-branding represents the global container for main content.
+   That is, this is the class of the the main container of the main application content.
+   Note that all other global tag definitions (e.g., a, p, h1) may reference variables defined
+   in this CSS class, since they all are expected to be contained within the main container. */
+/* Other top-level items may be otherwise defined by bootstrap */
+.csu-branding {
+  /* Variable declarations */
+  --text-gray: #4e4e50;
+  --link-green-blue: #105456;
+  --link-hover-gray: #716F71;
+
+  /* Stylings, using variables */
+  font-family: 'prox-regular', sans-serif;
+  color: #4e4e50;
+}
+
+/* Bootstrap-esque classes for CSU colors.
+   These are the only colors that you should use. The primary color pallete
+   contains green, gold, and white. The secondary contains 80% black and orange
+   (used for buttons here). The tertiary contains alfalfa, canyon, dark slate,
+   reservoir, and sunshine. The tertiary pallette should not be used for any
+   primary page features. Use the primary and secondary instead.
+ */
+.bg-csu-green {
+    background-color: #1E4D2B;
+}
+
+.bg-csu-gold {
+    background-color: #C8C372;
+}
+
+.bg-csu-white {
+    background-color: #FFFFFF;
+}
+
+.bg-csu-black {
+    background-color: #59595B;
+}
+
+.bg-csu-aggie-orange {
+    background-color: #D9782D;
+}
+
+.bg-csu-alfalfa {
+    background-color: #C9D845;
+}
+
+.bg-csu-canyon {
+    background-color: #CC5430;
+}
+
+.bg-csu-dark-slate {
+    background-color: #105456;
+}
+
+.bg-csu-reservoir {
+    background-color: #12A4B6;
+}
+
+.bg-csu-sunshine {
+    background-color: #ECC530;
+}
+
+/* Bootstrap-esque class for buttons.
+   All buttons should use the btn-csu class, to ensure that they toggle between
+   Aggie Orange and 80% black.
+ */
+.btn-csu {
+    background-color: #595958;
+    color: white;
+}
+
+.btn-csu:not(.disabled):hover {
+    background-color: #D9782D;
+    color: white;
+}
+
+.btn-csu:not(:disabled):not(.disabled):active, .btn-csu:not(:disabled):not(.disabled).active {
+    background-color: #D9782D;
+}
+
+/* Proxima font weights. */
+.font-weight-thin {
+    font-family: prox-thin, sans-serif;
+    font-weight: normal;
+}
+
+.font-weight-light {
+    font-family: prox-light, sans-serif;
+    font-weight: normal;
+}
+
+.font-weight-normal {
+    font-family: prox-regular, sans-serif;
+    font-weight: normal;
+}
+
+.font-weight-semibold {
+    font-family: prox-semibold, sans-serif;
+    font-weight: normal;
+}
+
+.font-weight-bold {
+    font-family: prox-regular, sans-serif;
+    font-weight: normal;
+}
+
+.font-weight-extrabold {
+    font-family: prox-extra-bold, sans-serif;
+    font-weight: normal;
+}
+
+.font-weight-black {
+    font-family: prox-black, sans-serif;
+    font-weight: normal;
+}
+
+/* Global general tag stylings, originally from CSOO1.
+   These will override bootstrap defaults. */
+a:link, a:visited, a:hover, a:active {
+  font-weight: 600;
+  color: var(--link-green-blue);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1em;
+}
+
+table, th, td {
+  border: 1px solid #e0e0e0;
+  padding: 4px;
+}
+
+th {
+  background-color: #f7f7f7;
+  color: black;
+}
+
+img {
+  max-width: 100%;
+}
+
+/* These are other CSU style definitions that are not currently leveraged,
+   but may be useful in the future. */
+.csu-text-small{
+  font-size: 13px;
+}
+
+.csu-text-body{
+  font-size: 1rem;
+}
+
+.csu-text-header{
+  font-weight: 700;
+  letter-spacing: .11em;
+  line-height: 1.1em;
+  font-size: 16px;
+  text-transform: uppercase;
+}
+
+.csu-text-header-thin{
+  font-weight: 400;
+  letter-spacing: .11em;
+  line-height: 1.1em;
+  font-size: 20px;
+  text-transform: uppercase;
+}
