@@ -33,7 +33,7 @@ export default class About extends Component{
                     </Card>
 
                     <Card>
-                        <CardImg top width="25%" src={CalImg}  alt="Calvin Davis img" />
+                        <CardImg top width="25%" src={ChanImg}  alt="Chandler Day img" />
                         <CardBody>
                             <CardTitle>Chandler Day</CardTitle>
                             <CardText>I am a Third Year Computer Science major with a minor in Mathematics. I intend on graduating in May of 2020. I enjoy science fiction and fantasy, listening to music, and playing video games.</CardText>
