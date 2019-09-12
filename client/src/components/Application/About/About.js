@@ -2,8 +2,7 @@ import React, {Component} from 'react'
 import { Card, CardImg, CardText, CardBody, CardTitle, Container, Row} from 'reactstrap';
 
 import CalImg from './images/CalvinDavis.jpg'; // I had to scale it down to 240x240 manually
-
-
+import AaronImg from './images/AaronHuskersonPhoto.jpg';
 
 export default class About extends Component{
     constructor(props) {
@@ -17,7 +16,15 @@ export default class About extends Component{
             <Container>
                 <Row>
                     <Card>
-                        <CardImg top width="25%" src={CalImg} alt="Calvin Davis img" />
+                        <CardImg top width="25%" src={AaronImg} alt="Aaron Huskerson img" />
+                        <CardBody>
+                            <CardTitle>Aaron Huskerson</CardTitle>
+                            <CardText>I'm a junior majoring in Computer Science, and getting a minor in Music. I like to play piano, guitar, smash bros, and explore natural areas. </CardText>
+                        </CardBody>
+                    </Card>
+
+                    <Card>
+                        <CardImg top width="25%" src={CalImg}  alt="Calvin Davis img" />
                         <CardBody>
                             <CardTitle>Calvin Davis</CardTitle>
                             <CardText>Third Year CS student ready to rock and roll.</CardText>
@@ -33,17 +40,9 @@ export default class About extends Component{
                     </Card>
 
                     <Card>
-                        <CardImg top width="25%" src={CalImg}  alt="Calvin Davis img" />
+                        <CardImg top width="25%" src={AaronImg}  alt="Aaron Huskerson img" />
                         <CardBody>
-                            <CardTitle>Calvin Davis</CardTitle>
-                            <CardText>Third Year CS student.</CardText>
-                        </CardBody>
-                    </Card>
-
-                    <Card>
-                        <CardImg top width="25%" src={CalImg}  alt="Calvin Davis img" />
-                        <CardBody>
-                            <CardTitle>Calvin Davis</CardTitle>
+                            <CardTitle>Aaron Huskerson</CardTitle>
                             <CardText>Third Year CS student.</CardText>
                         </CardBody>
                     </Card>
