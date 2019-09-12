@@ -27,7 +27,7 @@ export default class About extends Component{
                         <CardImg top width="25%" src={CalImg}  alt="Calvin Davis img" />
                         <CardBody>
                             <CardTitle>Calvin Davis</CardTitle>
-                            <CardText>Third Year CS student ready to rock and roll.</CardText>
+                            <CardText>Third Year CS student, Russian minor, AFROTC.</CardText>
                         </CardBody>
                     </Card>
 
