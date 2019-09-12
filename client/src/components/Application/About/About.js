@@ -1,9 +1,10 @@
 import React, {Component} from 'react'
-import { Card, CardImg, CardText, CardBody, CardTitle, Container, Row} from 'reactstrap';
+import {Card, CardImg, CardText, CardBody, CardTitle, Container, Row, Col} from 'reactstrap';
 
 import CalImg from './images/CalvinDavis.jpg'; // I had to scale it down to 240x240 manually
 import AaronImg from './images/AaronHuskersonPhoto.jpg';
 import ChanImg from './images/ChandlerDay.jpg';
+import SeanImg from './images/SeanBoyd.jpg'
 
 export default class About extends Component{
     constructor(props) {
@@ -15,7 +16,7 @@ export default class About extends Component{
             //<h1>About Page</h1>
 
             <Container>
-                <Row>
+                <Row xs={12} sm={6} md={4} lg={3}>
                     <Card>
                         <CardImg top width="25%" src={AaronImg} alt="Aaron Huskerson img" />
                         <CardBody>
@@ -41,10 +42,14 @@ export default class About extends Component{
                     </Card>
 
                     <Card>
-                        <CardImg top width="25%" src={AaronImg}  alt="Aaron Huskerson img" />
+                        <CardImg top width="25%" src={SeanImg}  alt="Sean Boyd Image" />
                         <CardBody>
-                            <CardTitle>Aaron Huskerson</CardTitle>
-                            <CardText>Third Year CS student.</CardText>
+                            <CardTitle>Sean Boyd</CardTitle>
+                            <CardText> Sean Boyd is pursuing a degree in computer engineering at Colorado State
+                                       University. On the side, Sean is devloping a mobile app as an intern for Gerastay,
+                                       a startup company. Sean enjoys snowboarding, online gaming, and doing hands on
+                                       projects in his free time.
+                            </CardText>
                         </CardBody>
                     </Card>
                 </Row>
