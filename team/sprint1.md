@@ -16,7 +16,7 @@
 
 * All commits include a task/issue number.
 * Someone else approves and merges commits, you may not merge your own changes.
-* No commits to master
+* No commits to master.
 
 ## Plan
 
@@ -30,8 +30,8 @@ Epics planned for this release.
 
 #### Completed epics in Sprint Backlog 
 * *About Page*:  
-    * Added "About" Page button in top left of the website
-    * Each team member added a photo and bio for the About page
+    * Added "About" Page button in top left of the website.
+    * Each team member added a photo and bio for the About page.
     * Pushed these changes onto the "Sean-CreateAboutPage" branch.
 
 #### Incomplete epics in Sprint Backlog 
@@ -56,7 +56,11 @@ Epics planned for this release.
 * Creating time to meet up. 
 
 #### Potential improvements
-* Communicating more effectively in Slack
+* Communicating more effectively in Slack.
 * Making sure we are all on the same page.
 
 #### What we will change next time
+* Having meeting set a day or more in advance.
+* Set up one weekly reoccuring meeting time.
+* Inlude tasks to our own workspace instead of Dave's workspace on zenhub.
+
