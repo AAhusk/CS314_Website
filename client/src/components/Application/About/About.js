@@ -3,6 +3,7 @@ import { Card, CardImg, CardText, CardBody, CardTitle, Container, Row} from 'rea
 
 import CalImg from './images/CalvinDavis.jpg'; // I had to scale it down to 240x240 manually
 import AaronImg from './images/AaronHuskersonPhoto.jpg';
+import ChanImg from './images/ChandlerDay.jpg';
 
 export default class About extends Component{
     constructor(props) {
@@ -34,8 +35,8 @@ export default class About extends Component{
                     <Card>
                         <CardImg top width="25%" src={CalImg}  alt="Calvin Davis img" />
                         <CardBody>
-                            <CardTitle>Calvin Davis</CardTitle>
-                            <CardText>Third Year CS student.</CardText>
+                            <CardTitle>Chandler Day</CardTitle>
+                            <CardText>I am a Third Year Computer Science major with a minor in Mathematics. I intend on graduating in May of 2020. I enjoy science fiction and fantasy, listening to music, and playing video games.</CardText>
                         </CardBody>
                     </Card>
 
