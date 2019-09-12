@@ -1,9 +1,9 @@
-# Sprint # - *your team number* - *your team name*
+# Sprint 1 - t11 - Team America
 
 ## Goal
 
 ### Distance Calculator!
-### Sprint Leader: *firstname lastname*
+### Sprint Leader: *Calvin Davis*
 
 ## Definition of Done
 
