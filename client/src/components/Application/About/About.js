@@ -57,8 +57,7 @@ export default class About extends Component{
                                 <CardText> Sean Boyd is pursuing a degree in computer engineering at Colorado State
                                            University. On the side, Sean is devloping a mobile app as an intern for Gerastay,
                                            a startup company. Sean enjoys snowboarding, online gaming, and doing hands on
-                                           projects in his free time.
-                                </CardText>
+                                           projects in his free time. </CardText>
                             </CardBody>
                         </Card>
                     </Col>
