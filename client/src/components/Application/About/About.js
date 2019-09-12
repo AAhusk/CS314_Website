@@ -11,6 +11,8 @@ export default class About extends Component{
         super(props);
     }
 
+    //
+
     render() {
         return (
             //<h1>About Page</h1>
