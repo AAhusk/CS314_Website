@@ -51,7 +51,12 @@ Epics planned for this release.
 ## Retrospective
 
 #### What went well
+* Consistent and frequent communication.
+* Letting each other know what problems we're encountering.
+* Creating time to meet up. 
 
 #### Potential improvements
+* Communicating more effectively in Slack
+* Making sure we are all on the same page.
 
 #### What we will change next time
