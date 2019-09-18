@@ -11,6 +11,7 @@
 * Increment release `v2.0` created on GitHub with appropriate version number and name.
 * Increment deployed for testing and demonstration on SPRINT2 assignment.
 * Sprint Review and Restrospectives completed (team/sprint2.md).
+* Team is satisfied with output and the main goal described above is complete.
 
 
 ## Policies
