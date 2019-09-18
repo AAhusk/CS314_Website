@@ -41,11 +41,18 @@
 
 This sprint will complete the following Epics.
 
-* *#0 epic title: description*
-*
+* #1 Where am I: show the user their exact location on the map if available.
+* #2 Vincenty: Write the code implementation of the Vincenty formula for finding the distance between two locations on a sphere.
+* #3 Display Map and itinerary: implement the ability to load a trip itinerary obtained from another tool, in the standard format of TIP JSON, and show this trip on the map with an update itinerary. 
+* #4 Geographic coordinate validation: validate the geographic coordinates, and if they are in an invalid format, report this to the user in a user-friendly way.
+* #5 Short trip: rearranges a given trip to minimize distance and travel time.
+* #6 Geographic coordinate formats: the calculator will support many different coordinate formats, so that the coordinates can be copied from different sources.
 
 Key planning decisions for this sprint include ...
-
+1. Putting 2 people on each epic.
+2. Rotating which 2 people are working together.
+3. Making a time frame for each epic at around 5 days for the pair working on it.
+4. Pushing to master at least after each epic, incrementally confirming that epics/tasks are working as expected.
 
 ## Metrics
 
