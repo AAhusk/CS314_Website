@@ -3,7 +3,7 @@
 ## Goal
 
 ### A map and itinerary!
-### Sprint Leader: *firstname lastname*
+### Sprint Leader: *Sean Boyd*
 
 ## Definition of Done
 
@@ -58,9 +58,9 @@ Key planning decisions for this sprint include ...
 
 | Statistic | # Planned | # Completed |
 | --- | ---: | ---: |
-| Epics | *value* | *value* |
-| Tasks |  *value*   | *value* | 
-| Story Points |  *value*  | *value* | 
+| Epics | *7* | *value* |
+| Tasks |  *7*   | *value* | 
+| Story Points |  *18*  | *value* | 
 
 
 ## Scrums
