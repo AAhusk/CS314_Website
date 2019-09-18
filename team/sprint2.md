@@ -71,6 +71,11 @@ Key planning decisions for this sprint include ...
 | *date* | *#task, ...* | *#task, ...* | *none* | 
 
 
+## Diagrams
+
+(Insert our picture diagrams and their descriptions here)
+
+
 ## Review (focus on solution and technology)
 
 In this sprint, ...
