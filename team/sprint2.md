@@ -3,7 +3,7 @@
 ## Goal
 
 ### A map and itinerary!
-### Sprint Leader: *firstname lastname*
+### Sprint Leader: *Sean Boyd*
 
 ## Definition of Done
 
