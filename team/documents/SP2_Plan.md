@@ -18,7 +18,7 @@ To start your planning, draw a couple of diagrams to guide your discussions and 
 
 ### Create your team/sprint2.md file
 
-- [ ] Identify the Sprint Leader that will own the file for this sprint.
+- [x] Identify the Sprint Leader that will own the file for this sprint.
 - [ ] Copy the sprint2.md file from the tripco repo.  Note the changes in definition of done and policies that occur each sprint.
 - [ ] Complete / revise the following sections with team input:
     - [ ] goal
