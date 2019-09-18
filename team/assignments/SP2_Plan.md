@@ -8,13 +8,13 @@ To start your planning, draw a couple of diagrams to guide your discussions and 
 
 ### Prepare your Sprint Backlog using Zenhub.
 
-- [ ] Create the Sprint 2 Milestone in your team repo if you haven't already done so, with a start date of Sep 16 and end date of Oct 03.
-- [ ] Groom your sprint backlog, closing finished tasks and Epics if you haven't already. 
-- [ ] Assign the Sprint 2 milestone to any unfinished Epics and Tasks from Sprint 1.  Revise the tasks and add new tasks to reflect your understanding of what needs to be accomplished.
-- [ ] Add Epics from the TripCo product backlog you intend to complete in this sprint to your sprint backlog in the team repo, with the appropriate milestone.  Do not just copy all of the Epics from the tripco repo and assume you will complete them.  Never copy tasks from the TripCo icebox. 
-- [ ] Add Tasks associated with the selected Epics to your backlog in the team repo, with appropriate labels and milestone.
-- [ ] Add an estimate to each Task using Planning Poker.  Do not put estimates on Epics.
-- [ ] Close the Sprint 1 milestone and make sure your burndown chart shows Sprint 2.  All of your epics and tasks should be listed below the burndown chart if you set their milestone correctly.  This is a one page summary of what you are working on this sprint which we use for grading. 
+- [x] Create the Sprint 2 Milestone in your team repo if you haven't already done so, with a start date of Sep 16 and end date of Oct 03.
+- [x] Groom your sprint backlog, closing finished tasks and Epics if you haven't already. 
+- [x] Assign the Sprint 2 milestone to any unfinished Epics and Tasks from Sprint 1.  Revise the tasks and add new tasks to reflect your understanding of what needs to be accomplished.
+- [x] Add Epics from the TripCo product backlog you intend to complete in this sprint to your sprint backlog in the team repo, with the appropriate milestone.  Do not just copy all of the Epics from the tripco repo and assume you will complete them.  Never copy tasks from the TripCo icebox. 
+- [x] Add Tasks associated with the selected Epics to your backlog in the team repo, with appropriate labels and milestone.
+- [x] Add an estimate to each Task using Planning Poker.  Do not put estimates on Epics.
+- [x] Close the Sprint 1 milestone and make sure your burndown chart shows Sprint 2.  All of your epics and tasks should be listed below the burndown chart if you set their milestone correctly.  This is a one page summary of what you are working on this sprint which we use for grading. 
 
 ### Create your team/sprint2.md file
 
