@@ -1,7 +1,7 @@
 # Sprint 2 - t11 - Team America
 
 ## Goal
-
+The goal is to implement the initial functionality of the calculator; the user will be able to enter in 2 sets of coordinates, and see the distance between them following the curve of the earth. Additionally, we want to update the map's functionality; the user will be able to see their current location on the map, and they will be able to load a trip(created from another tool) that will display on our map. Finally, we would like to implement the ability to rearrange a trip so that it is optimized to be as short as possible.
 ### A map and itinerary!
 ### Sprint Leader: *Sean Boyd*
 
