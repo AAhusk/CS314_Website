@@ -61,7 +61,7 @@ Key planning decisions for this sprint include ...
 | Statistic | # Planned | # Completed |
 | --- | ---: | ---: |
 | Epics | *7* | *value* |
-| Tasks |  *7*   | *value* | 
+| Tasks |  *11*   | *value* | 
 | Story Points |  *18*  | *value* | 
 
 
@@ -75,7 +75,7 @@ Key planning decisions for this sprint include ...
 ## Diagrams
 
 (Insert our picture diagrams and their descriptions here)
-
+![Diagram 1](Sprint2ComponentsDiagram.jpg)
 
 ## Review (focus on solution and technology)
 
