@@ -77,8 +77,11 @@ Key planning decisions for this sprint include ...
 (Diagram 1 shows the different elements of the webpage, and their respective components in the client)
 ![Diagram 1](https://github.com/csucs314f19/t11/blob/Sprint2-Plan/team/images/Sprint2Components2.0.jpg)
 
+(Diagram 2 shows the client hierachy of what props are passed to child components)
+![Diagram 2](https://github.com/csucs314f19/t11/blob/Sprint2-Plan/team/images/clientHierarchy.jpg)
 
-(Diagram 3 shows the hierarchy of the interactions between each restful API service)
+
+(Diagram 3 shows the server hierarchy of the interactions between each restful API service)
 ![Diagram 3](https://github.com/csucs314f19/t11/blob/Sprint2-Plan/team/images/serverHierarchy.jpg)
 
 
