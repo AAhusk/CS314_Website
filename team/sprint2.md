@@ -1,16 +1,18 @@
 # Sprint 2 - t11 - Team America
 
 ## Goal
-
+The goal is to implement the initial functionality of the calculator; the user will be able to enter in 2 sets of coordinates, and see the distance between them following the curve of the earth. Additionally, we want to update the map's functionality; the user will be able to see their current location on the map, and they will be able to load a trip(created from another tool) that will display on our map. Finally, we would like to implement the ability to rearrange a trip so that it is optimized to be as short as possible.
 ### A map and itinerary!
 ### Sprint Leader: *Sean Boyd*
 
 ## Definition of Done
 
+* Every Epic is completed, along with associated tasks.
 * Version in pom.xml should be `<version>2.0.0</version>` for your final build for deployment.
 * Increment release `v2.0` created on GitHub with appropriate version number and name.
 * Increment deployed for testing and demonstration on SPRINT2 assignment.
 * Sprint Review and Restrospectives completed (team/sprint2.md).
+* Team is satisfied with output and the main goal described above is complete.
 
 
 ## Policies
@@ -58,9 +60,9 @@ Key planning decisions for this sprint include ...
 
 | Statistic | # Planned | # Completed |
 | --- | ---: | ---: |
-| Epics | *value* | *value* |
-| Tasks |  *value*   | *value* | 
-| Story Points |  *value*  | *value* | 
+| Epics | *7* | *value* |
+| Tasks |  *11*   | *value* | 
+| Story Points |  *18*  | *value* | 
 
 
 ## Scrums
@@ -68,6 +70,19 @@ Key planning decisions for this sprint include ...
 | Date | Tasks closed  | Tasks in progress | Impediments |
 | :--- | :--- | :--- | :--- |
 | *date* | *#task, ...* | *#task, ...* | *none* | 
+
+
+## Diagrams
+
+(Diagram 1 shows the different elements of the webpage, and their respective components in the client)
+![Diagram 1](https://github.com/csucs314f19/t11/blob/Sprint2-Plan/team/images/Sprint2Components2.0.jpg)
+
+(Diagram 2 shows the client hierachy of what props are passed to child components)
+![Diagram 2](https://github.com/csucs314f19/t11/blob/Sprint2-Plan/team/images/clientHierarchy.jpg)
+
+
+(Diagram 3 shows the server hierarchy of the interactions between each restful API service)
+![Diagram 3](https://github.com/csucs314f19/t11/blob/Sprint2-Plan/team/images/serverHierarchy.jpg)
 
 
 ## Review (focus on solution and technology)

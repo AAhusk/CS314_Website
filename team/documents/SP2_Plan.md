@@ -1,10 +1,10 @@
 ### Plan for the Sprint
 
 To start your planning, draw a couple of diagrams to guide your discussions and implementation. This is your basic design which you should update this each sprint.
-- [ ] Review the TIP spec to identify changes on your client and server.  Note any deficiencies in your implementation of the previous version. 
-- [ ] Draw the client component/screen layout.  Identify all the necessary user interface elements and how they will interact/operate
+- [x] Review the TIP spec to identify changes on your client and server.  Note any deficiencies in your implementation of the previous version. 
+- [x] Draw the client component/screen layout.  Identify all the necessary user interface elements and how they will interact/operate
 - [ ] Draw the client component hierarchy, identify where the state is located, what props are passed to child components and where state is lifted.  Be as specific as possible.
-- [ ] Draw the server class diagram/hierarchy and interactions/sequence for each Restful API service.
+- [x] Draw the server class diagram/hierarchy and interactions/sequence for each Restful API service.
 
 ### Prepare your Sprint Backlog using Zenhub.
 
@@ -18,12 +18,12 @@ To start your planning, draw a couple of diagrams to guide your discussions and 
 
 ### Create your team/sprint2.md file
 
-- [ ] Identify the Sprint Leader that will own the file for this sprint.
-- [ ] Copy the sprint2.md file from the tripco repo.  Note the changes in definition of done and policies that occur each sprint.
+- [x] Identify the Sprint Leader that will own the file for this sprint.
+- [x] Copy the sprint2.md file from the tripco repo.  Note the changes in definition of done and policies that occur each sprint.
 - [ ] Complete / revise the following sections with team input:
     - [ ] goal
     - [ ] definition of done
     - [ ] policies
     - [ ] the plan should include the diagrams you did in preparation and any other notes that came out of your planning meeting that is not covered by the tasks
     - [ ] metrics should include the values in your current plan in the Planned column and comments to address your ability to complete the planned tasks/story points based on your previous sprint results.
-- [ ] Leave the review, retrospective, and the actual column in the metrics empty for now.  You will update these at the end of the sprint.
+- [x] Leave the review, retrospective, and the actual column in the metrics empty for now.  You will update these at the end of the sprint.
