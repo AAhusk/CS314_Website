@@ -74,8 +74,10 @@ Key planning decisions for this sprint include ...
 
 ## Diagrams
 
-(Insert our picture diagrams and their descriptions here)
 ![Diagram 1](https://github.com/csucs314f19/t11/blob/Sprint2-Plan/team/images/Sprint2ComponentsDiagram.jpg)
+(Diagram 1 shows the different elements of the webpage, and their respective components in the client)
+![Diagram 3](https://github.com/csucs314f19/t11/blob/Sprint2-Plan/team/images/serverHierarchy.jpg)
+(Diagram 3 shows the hierarchy of the interactions between each restful API service)
 
 ## Review (focus on solution and technology)
 
