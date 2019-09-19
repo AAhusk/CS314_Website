@@ -7,6 +7,7 @@ The goal is to implement the initial functionality of the calculator; the user w
 
 ## Definition of Done
 
+* Every Epic is completed, along with associated tasks.
 * Version in pom.xml should be `<version>2.0.0</version>` for your final build for deployment.
 * Increment release `v2.0` created on GitHub with appropriate version number and name.
 * Increment deployed for testing and demonstration on SPRINT2 assignment.
