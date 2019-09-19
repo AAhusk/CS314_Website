@@ -75,7 +75,7 @@ Key planning decisions for this sprint include ...
 ## Diagrams
 
 (Insert our picture diagrams and their descriptions here)
-![Diagram 1](Sprint2ComponentsDiagram.jpg)
+![Diagram 1](https://github.com/csucs314f19/t11/blob/Sprint2-Plan/team/images/Sprint2ComponentsDiagram.jpg)
 
 ## Review (focus on solution and technology)
 
