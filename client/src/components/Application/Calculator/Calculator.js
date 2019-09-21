@@ -10,6 +10,7 @@ export default class Calculator extends Component {
     super(props);
 
     this.updateLocationOnChange = this.updateLocationOnChange.bind(this);
+    this.updateLocationOriginState = this.updateLocationOriginState.bind(this);
     this.calculateDistance = this.calculateDistance.bind(this);
     this.createInputField = this.createInputField.bind(this);
 
@@ -104,6 +105,7 @@ export default class Calculator extends Component {
   // onLocationChange takes the inputted position data and setState()'s the new position data
   getLocation() {
 
+    //this.updateLocationOriginState(L.latLng(40.576179, -105.080773))
 
     if (navigator.geolocation) {
       //console.log("Good data?");

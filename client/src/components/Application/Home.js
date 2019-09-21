@@ -40,7 +40,7 @@ export default class Home extends Component {
     return (
         // <Map center={this.currentLocation()} zoom={10}
         // <Marker position={this.currentLocation()} zoom={10}
-      <Map center={this.csuOvalGeographicCoordinates()} zoom={10}
+      <Map center={this.csuOvalGeographicCoordinates()} zoom={15}
            style={{height: 500, maxwidth: 700}}>
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                    attribution="&copy; <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"

@@ -20,6 +20,7 @@ export default class Application extends Component {
     this.updatePlanOption = this.updatePlanOption.bind(this);
     this.updateClientSetting = this.updateClientSetting.bind(this);
     this.createApplicationPage = this.createApplicationPage.bind(this);
+    this.onLocationOriginChange = this.onLocationOriginChange.bind(this);
 
     this.state = {
       serverConfig: null,
@@ -53,8 +54,10 @@ export default class Application extends Component {
   onLocationOriginChange(position) {
     //console.log("C");
     this.setState({
-      locationOriginLat: position.coords.latitude,
+      locationOriginLat: position.coords.latitude,  // Used for navigation object
       locationOriginLong: position.coords.longitude
+      //locationOriginLat: position.lat,                // Used for L.latlng object, mostly for debugging
+      //locationOriginLong: position.lng
     })
   }
 
@@ -99,10 +102,13 @@ export default class Application extends Component {
 
       case 'calc':
         return <Calculator
-        currentLoc = {this.state.loc}
-            options={this.state.planOptions}
-                           settings={this.state.clientSettings}
-                           createErrorBanner={this.createErrorBanner}/>;
+                             currentLoc = {this.state.loc}
+                             options={this.state.planOptions}
+                             settings={this.state.clientSettings}
+                             createErrorBanner={this.createErrorBanner}
+                             onLocationOriginChange = {this.onLocationOriginChange}
+        />;
+
       case 'options':
         return <Options options={this.state.planOptions}
                         config={this.state.serverConfig}
@@ -117,7 +123,6 @@ export default class Application extends Component {
                 locationOriginLong = {this.state.locationOriginLong}
                 locationDestinationLat = {this.state.locationDestinationLat}
                 locationDestinationLong = {this.state.locationDestinationLong}
-                onLocationOriginChange = {this.onLocationOriginChange}
         />;
     }
   }
