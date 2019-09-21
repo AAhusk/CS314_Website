@@ -54,9 +54,11 @@ export default class Application extends Component {
   onLocationOriginChange(position) {
     //console.log("C");
     this.setState({
-      locationOriginLat: position.coords.latitude,  // Used for navigation object
-      locationOriginLong: position.coords.longitude
-      //locationOriginLat: position.lat,                // Used for L.latlng object, mostly for debugging
+      locationOriginLat: position.latitude,           // The format used by Calc.js's 'origin' state
+      locationOriginLong: position.longitude
+      //locationOriginLat: position.coords.latitude,  // The format used by navigation.geolocation
+      //locationOriginLong: position.coords.longitude
+      //locationOriginLat: position.lat,              // Used for L.latlng object, mostly for debugging
       //locationOriginLong: position.lng
     })
   }
