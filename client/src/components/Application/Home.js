@@ -38,12 +38,15 @@ export default class Home extends Component {
     // 1: bounds={this.coloradoGeographicBoundaries()}
     // 2: center={this.csuOvalGeographicCoordinates()} zoom={10}
     return (
+        // <Map center={this.currentLocation()} zoom={10}
+        // <Marker position={this.currentLocation()} zoom={10}
       <Map center={this.csuOvalGeographicCoordinates()} zoom={10}
            style={{height: 500, maxwidth: 700}}>
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                    attribution="&copy; <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
         />
-        <Marker position={this.csuOvalGeographicCoordinates()}
+
+        <Marker position={this.currentLocation()}
                 icon={this.markerIcon()}>
           <Popup className="font-weight-extrabold">Colorado State University</Popup>
         </Marker>
@@ -58,9 +61,14 @@ export default class Home extends Component {
     );
   }
 
+  currentLocation() {
+    return L.latLng(this.props.locationOriginLat, this.props.locationOriginLong);
+  }
+
   coloradoGeographicBoundaries() {
     // northwest and southeast corners of the state of Colorado
     return L.latLngBounds(L.latLng(41, -109), L.latLng(37, -102));
+
   }
 
   csuOvalGeographicCoordinates() {

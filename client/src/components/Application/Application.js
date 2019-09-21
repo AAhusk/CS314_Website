@@ -30,7 +30,11 @@ export default class Application extends Component {
       clientSettings: {
         serverPort: getOriginalServerPort()
       },
-      errorMessage: null
+      errorMessage: null,
+      locationOriginLat: 1,
+      locationOriginLong: 1,
+      locationDestinationLat: 1,
+      locationDestinationLong: 1
     };
 
     this.updateServerConfig();
@@ -44,6 +48,14 @@ export default class Application extends Component {
         { this.state.errorMessage }{ this.createApplicationPage(pageToRender) }
       </div>
     );
+  }
+
+  onLocationOriginChange(position) {
+    //console.log("C");
+    this.setState({
+      locationOriginLat: position.coords.latitude,
+      locationOriginLong: position.coords.longitude
+    })
   }
 
   updateClientSetting(field, value) {
@@ -86,7 +98,9 @@ export default class Application extends Component {
                       createErrorBanner={this.createErrorBanner}/>;
 
       case 'calc':
-        return <Calculator options={this.state.planOptions}
+        return <Calculator
+        currentLoc = {this.state.loc}
+            options={this.state.planOptions}
                            settings={this.state.clientSettings}
                            createErrorBanner={this.createErrorBanner}/>;
       case 'options':
@@ -98,7 +112,13 @@ export default class Application extends Component {
                          serverConfig={this.state.serverConfig}
                          updateSetting={this.updateClientSetting}/>;
       default:
-        return <Home/>;
+        return <Home
+                locationOriginLat = {this.state.locationOriginLat}
+                locationOriginLong = {this.state.locationOriginLong}
+                locationDestinationLat = {this.state.locationDestinationLat}
+                locationDestinationLong = {this.state.locationDestinationLong}
+                onLocationOriginChange = {this.onLocationOriginChange}
+        />;
     }
   }
 

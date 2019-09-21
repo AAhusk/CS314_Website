@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Container, Row, Col } from 'reactstrap'
+import { Container, Row, Col, Alert } from 'reactstrap'
 import { Button } from 'reactstrap'
 import { Form, Label, Input } from 'reactstrap'
 import { sendServerRequestWithBody } from '../../../api/restfulAPI'
@@ -25,31 +25,36 @@ export default class Calculator extends Component {
     return (
       <Container>
         { this.state.errorMessage }
-        <Row>
           <Col>
             {this.createHeader()}
+            <Row>
+              <Col xs={12} sm={6} md={4} lg={3}>
+                {this.createForm('origin')}
+              </Col>
+              <Col xs={12} sm={6} md={4} lg={3}>
+                {this.createForm('destination')}
+              </Col>
+              <Col xs={12} sm={6} md={4} lg={3}>
+                {this.createDistance()}
+              </Col>
+            </Row>
           </Col>
-        </Row>
-        <Row>
-          <Col xs={12} sm={6} md={4} lg={3}>
-            {this.createForm('origin')}
-          </Col>
-          <Col xs={12} sm={6} md={4} lg={3}>
-            {this.createForm('destination')}
-          </Col>
-          <Col xs={12} sm={6} md={4} lg={3}>
-            {this.createDistance()}
-          </Col>
-        </Row>
+
+
       </Container>
     );
   }
 
   createHeader() {
     return (
-        <Pane header={'Calculator'}
-              bodyJSX={<div>Determine the distance between the origin and destination.
-                Change the units on the <b>Options</b> page.</div>}/>
+        <Container>
+
+            <Pane header={'Calculator'}
+                  bodyJSX={<div>Determine the distance between the origin and destination.
+                      Change the units on the <b>Options</b> page.<br/>
+                      <Button color="primary" onClick={() => this.getLocation()}>Use my location</Button>
+                  </div>}/>
+        </Container>
     );
   }
 
@@ -90,6 +95,33 @@ export default class Calculator extends Component {
             </div>}
       />
     );
+  }
+
+
+  // Create a button that calls getLocation
+  // getLocation passes the data callback to updateLocationState
+  // updateLocationState passes the position object from getLocation to a superclass function, onLocationChange
+  // onLocationChange takes the inputted position data and setState()'s the new position data
+  getLocation() {
+
+
+    if (navigator.geolocation) {
+      //console.log("Good data?");
+      navigator.geolocation.getCurrentPosition(this.updateLocationOriginState);
+      //console.log("Passed");
+    } else {
+      //console.log("Bad data?");
+      return(
+
+          <Alert color="danger" > Geolocation not supported. </Alert>
+      )
+    }
+  }
+
+  updateLocationOriginState(position) {
+    //console.log("A");
+    this.props.onLocationOriginChange(position);
+    //console.log("B");
   }
 
   calculateDistance() {
