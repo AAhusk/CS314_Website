@@ -35,7 +35,7 @@ public class TIPDistance extends TIPHeader {
     this.origin = origin;
     this.destination = destination;
     this.earthRadius = earthRadius;
-    this.distance = 0;
+    this.distance = 100;
   }
 
 
@@ -46,7 +46,7 @@ public class TIPDistance extends TIPHeader {
 
   @Override
   public void buildResponse() {
-    this.distance = 0;
+    this.distance = 100;
     log.trace("buildResponse -> {}", this);
   }
 
