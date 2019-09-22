@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import {Container, Row, Col, Alert, Card, CardHeader, CardBody, CardText} from 'reactstrap'
 import {Button} from 'reactstrap'
-import {Form, Label, Input} from 'reactstrap'
+import {Form, Input} from 'reactstrap'
 import {sendServerRequestWithBody} from '../../../api/restfulAPI'
 import Pane from '../Pane';
 
@@ -103,8 +103,6 @@ export default class Calculator extends Component {
     return (
         <Pane header={stateVar.charAt(0).toUpperCase() + stateVar.slice(1)}
               bodyJSX={
-                // {this.createInputField(stateVar, 'latitude')}
-                // {this.createInputField(stateVar, 'longitude')}
                 <Form>
                   {this.createInputField(stateVar, 'latitude')}
                   {this.createInputField(stateVar, 'longitude')}
@@ -125,7 +123,7 @@ export default class Calculator extends Component {
     );
   }
 
-  geolocation() {
+  geolocation() { // Add a try/catch here
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(this.geolocationCallback);
     }
@@ -137,12 +135,15 @@ export default class Calculator extends Component {
   }
 
   geolocationCallback(position) {
-    this.updateLocationOnChange('origin', 'latitude', position.coords.latitude);
-    this.updateLocationOnChange('origin', 'longitude', position.coords.longitude);
+      this.updateLocationOnChange('origin', 'latitude', position.coords.latitude);
+      this.updateLocationOnChange('origin', 'longitude', position.coords.longitude);
+      let loc = this.state.origin;
+      this.props.onLocationOriginChange(loc);
+  }
 
+  formatCoordinates(s1, s2) {
+    // Coordinate-parser library parses one string at a time, not two
 
-    let loc = this.state.origin;
-    this.props.onLocationOriginChange(loc);
 
   }
 
