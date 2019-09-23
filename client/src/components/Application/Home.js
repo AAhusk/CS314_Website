@@ -67,6 +67,8 @@ export default class Home extends Component {
     return L.latLng(40.576179, -105.080773);
   }
 
+  // See library react-geolocated for getting lat long data
+
   markerIcon() {
     // react-leaflet does not currently handle default marker icons correctly,
     // so we must create our own

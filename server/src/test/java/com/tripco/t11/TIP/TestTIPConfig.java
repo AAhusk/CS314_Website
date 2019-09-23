@@ -41,4 +41,10 @@ public class TestTIPConfig {
     List<String> attr = conf.getPlaceAttributes();
     assertEquals("config attribute size", 3, attr.size());
   }
+
+    @Test
+    public void testOptimizations() {
+        List<String> opts = conf.getOptimizations();
+        assertEquals("config attribute size", 2, opts.size());
+    }
 }
