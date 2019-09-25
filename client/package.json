@@ -21,7 +21,8 @@
     "reactstrap": "^7.0.2",
     "style-loader": "^0.23.1",
     "webpack": "^4.28.4",
-    "webpack-cli": "^3.2.1"
+    "webpack-cli": "^3.2.1",
+    "coordinate-parser": "^1.0.2"
   },
   "devDependencies": {
     "babel-jest": "^22.2.2",

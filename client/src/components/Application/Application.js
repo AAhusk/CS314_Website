@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Card, CardBody, CardHeader, Container} from 'reactstrap';
+import {Container} from 'reactstrap';
 
 import Home from './Home';
 import About from './About/About';
@@ -52,7 +52,6 @@ export default class Application extends Component {
   }
 
   onLocationOriginChange(position) {
-    //console.log("C");
     this.setState({
       locationOriginLat: position.latitude,           // The format used by Calc.js's 'origin' state
       locationOriginLong: position.longitude

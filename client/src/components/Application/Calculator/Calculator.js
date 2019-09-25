@@ -1,22 +1,25 @@
 import React, {Component} from 'react'
 import {Container, Row, Col, Alert, Card, CardHeader, CardBody, CardText} from 'reactstrap'
 import {Button} from 'reactstrap'
-import {Form, Label, Input} from 'reactstrap'
+import {Form, Input} from 'reactstrap'
 import {sendServerRequestWithBody} from '../../../api/restfulAPI'
 import Pane from '../Pane';
+import ErrorBanner from "../ErrorBanner";
 
 export default class Calculator extends Component {
   constructor(props) {
     super(props);
 
-    this.updateLocationOnChange = this.updateLocationOnChange.bind(this);
+    this.updateLocationState = this.updateLocationState.bind(this);
     this.geolocationCallback = this.geolocationCallback.bind(this);
     this.calculateDistance = this.calculateDistance.bind(this);
     this.createInputField = this.createInputField.bind(this);
 
     this.state = {
-      origin: {latitude: '', longitude: ''},
-      destination: {latitude: '', longitude: ''},
+      origin: {latitude: 0, longitude: 0},
+      destination: {latitude: 0, longitude: 0},
+      rawStringO: {latitude: '', longitude: ''},
+      rawStringD: {latitude: '', longitude: ''},
       distance: 0,
       errorMessage: null
     };
@@ -34,10 +37,10 @@ export default class Calculator extends Component {
               <Button color="primary" onClick={() => this.geolocation()}>Use my location</Button>
               <Row>
                 <Col xs={12} sm={6} md={4} lg={3}>
-                  {this.createForm('origin')}
+                  {this.createForm('rawStringO')}
                 </Col>
                 <Col xs={12} sm={6} md={4} lg={3}>
-                  {this.createForm('destination')}
+                  {this.createForm('rawStringD')}
                 </Col>
                 <Col xs={12} sm={6} md={4} lg={3}>
                   {this.createDistance()}
@@ -85,14 +88,16 @@ export default class Calculator extends Component {
 */
   createInputField(stateVar, coordinate) {
     let updateStateVarOnChange = (event) => {
-      this.updateLocationOnChange(stateVar, event.target.name, event.target.value)
+      this.updateLocationState(stateVar, event.target.name, event.target.value);
+      this.formatCoordinates(this.state[stateVar], stateVar);
     };
+
 
     let capitalizedCoordinate = coordinate.charAt(0).toUpperCase() + coordinate.slice(1);
     return (
         <Input name={coordinate} placeholder={capitalizedCoordinate}
                id={`${stateVar}${capitalizedCoordinate}`}
-               value={this.state[stateVar][coordinate]}
+
                onChange={updateStateVarOnChange}
                style={{width: "100%"}}/>
     );
@@ -101,10 +106,8 @@ export default class Calculator extends Component {
 
   createForm(stateVar) {
     return (
-        <Pane header={stateVar.charAt(0).toUpperCase() + stateVar.slice(1)}
+        <Pane header={(stateVar.charAt(9) === 'O') ? 'Origin' : 'Destination'}
               bodyJSX={
-                // {this.createInputField(stateVar, 'latitude')}
-                // {this.createInputField(stateVar, 'longitude')}
                 <Form>
                   {this.createInputField(stateVar, 'latitude')}
                   {this.createInputField(stateVar, 'longitude')}
@@ -125,7 +128,7 @@ export default class Calculator extends Component {
     );
   }
 
-  geolocation() {
+  geolocation() { // Add a try/catch here
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(this.geolocationCallback);
     }
@@ -137,13 +140,34 @@ export default class Calculator extends Component {
   }
 
   geolocationCallback(position) {
-    this.updateLocationOnChange('origin', 'latitude', position.coords.latitude);
-    this.updateLocationOnChange('origin', 'longitude', position.coords.longitude);
+      this.updateLocationState('origin', 'latitude', position.coords.latitude);
+      this.updateLocationState('origin', 'longitude', position.coords.longitude);
+      let loc = this.state.origin;
+      this.props.onLocationOriginChange(loc);
+  }
 
+  formatCoordinates(rawString, stateVar) { // Input would look like {latitude: '40.123N', longitude: '-74.123W}, "rawStringO"
+    this.setState({errorMessage: null});
 
-    let loc = this.state.origin;
-    this.props.onLocationOriginChange(loc);
+    const Coordinates = require('coordinate-parser');
+    try {
+      let coords = new Coordinates(rawString.latitude + "," + rawString.longitude);
+      let finalState = '';
 
+      if (stateVar.charAt(9) === 'O') {finalState = 'origin';}
+      else {finalState = 'destination';}
+
+      let dict = {
+        latitude: coords.getLatitude(),
+        longitude: coords.getLongitude()
+      }
+      this.setState( {[finalState]: dict});
+    }
+    catch(err) {
+      if (!err.message.includes("null")) {
+        this.setState({errorMessage: <ErrorBanner statusText="Error with input" message={err.message}/>})
+      }
+    }
   }
 
   calculateDistance() {
@@ -174,9 +198,10 @@ export default class Calculator extends Component {
         });
   }
 
-  updateLocationOnChange(stateVar, field, value) {
+  updateLocationState(stateVar, field, value) {
     let location = Object.assign({}, this.state[stateVar]);
     location[field] = value;
     this.setState({[stateVar]: location});
+
   }
 }
