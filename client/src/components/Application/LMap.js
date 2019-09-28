@@ -1,33 +1,25 @@
 import React, {Component} from 'react';
-import {Container, Row, Col} from 'reactstrap';
+import {Container} from 'reactstrap';
 import icon from 'leaflet/dist/images/marker-icon.png';
 import iconShadow from 'leaflet/dist/images/marker-shadow.png';
 import 'leaflet/dist/leaflet.css';
 import { Map, Marker, Popup, TileLayer} from 'react-leaflet';
 import Pane from './Pane'
-import LMap from "./LMap";
 
 /*
  * Renders the home page.
  */
-export default class Home extends Component {
-
+export default class LMap extends Component {
   constructor(props) {
     super(props);
-  }
 
+    // this.createInputField = this.createInputField.bind(this);
+    this.currentLocation = this.currentLocation.bind(this);
+  }
   render() {
     return (
       <Container>
-        <Row>
-          <Col xs={12} sm={12} md={7} lg={8} xl={9}>
-            <LMap locationOriginLat={this.props.locationOriginLat}
-                  locationOriginLong={this.props.locationOriginLong}/>
-          </Col>
-          <Col xs={12} sm={12} md={5} lg={4} xl={3}>
-            {this.renderIntro()}
-          </Col>
-        </Row>
+        {this.renderMap()}
       </Container>
     );
   }
@@ -80,8 +72,6 @@ export default class Home extends Component {
   csuOvalGeographicCoordinates() {
     return L.latLng(40.576179, -105.080773);
   }
-
-  // See library react-geolocated for getting lat long data
 
   markerIcon() {
     // react-leaflet does not currently handle default marker icons correctly,
