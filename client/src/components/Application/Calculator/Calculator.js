@@ -142,11 +142,12 @@ export default class Calculator extends Component {
 
       this.setState( {[finalState]: dict});
 
-      // dict = {
-      //   coords: { latitude: lat, longitude: long}
-      // }
-      //
-      // this.props.onLocationOriginChange(dict);
+      dict = {
+        latitude: lat,
+        longitude: long
+      };
+
+      this.props.onLocationOriginChange(dict);
     }
     catch(err) {
       if(!(err.message.includes("Uneven") || err.message.includes("null"))) {
