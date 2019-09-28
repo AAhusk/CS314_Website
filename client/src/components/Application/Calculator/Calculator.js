@@ -18,7 +18,7 @@ export default class Calculator extends Component {
     this.formatCoordinates = this.formatCoordinates.bind(this);
 
     this.state = {
-      origin: {latitude: 0, longitude: 0},
+      origin: {latitude: this.props.locationOriginLat, longitude: this.props.locationOriginLong},
       destination: {latitude: 0, longitude: 0},
       rawStringO: {latitude: 0, longitude: 0},
       rawStringD: {latitude: 0, longitude: 0},
