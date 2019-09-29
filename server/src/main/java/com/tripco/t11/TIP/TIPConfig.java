@@ -35,7 +35,8 @@ public class TIPConfig extends TIPHeader {
 
   @Override
   public void buildResponse() {
-    this.serverName = getServerName();
+    //this.serverName = getServerName();
+    this.serverName = "t11 Team America";
     this.placeAttributes = Arrays.asList("latitude", "longitude", "name");
     this.optimizations = Arrays.asList("none", "short");
     log.trace("buildResponse -> {}", this);
