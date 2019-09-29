@@ -111,7 +111,8 @@ export default class Application extends Component {
                              settings={this.state.clientSettings}
                              createErrorBanner={this.createErrorBanner}
                              onLocationChange = {this.onLocationChange}
-                             locationOrigin = { this.state.origin }
+                             locationOrigin = {this.state.origin}
+                             locationDestination={this.state.destination}
         />;
 
       case 'options':

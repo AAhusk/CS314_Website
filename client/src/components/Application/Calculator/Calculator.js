@@ -39,7 +39,8 @@ export default class Calculator extends Component {
               <Button color="primary" onClick={() => this.geolocation()}>Use my location</Button>
               <Row>
                 <Col xs={12} sm={12} md={9} lg={9}>
-                <LMap locationOrigin={this.state.origin}/>
+                <LMap locationOrigin={this.state.origin}
+                      locationDestination={this.state.destination}/>
                 </Col >
                 <Col xs={12} sm={12} md={3} lg={3}>
                     {this.createForm('rawStringO')}
