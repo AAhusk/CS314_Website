@@ -46,7 +46,8 @@ public class TIPDistance extends TIPHeader {
 
   @Override
   public void buildResponse() {
-    this.distance = 100;
+    GreatCircleDistance distBetween = new GreatCircleDistance(origin, destination, earthRadius);
+    distance = distBetween.CalculateDistance();
     log.trace("buildResponse -> {}", this);
   }
 

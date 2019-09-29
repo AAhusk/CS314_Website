@@ -29,7 +29,7 @@ public class TestTIPDistance {
   public void testOriginDestinationSame() {
     TIPDistance trip = new TIPDistance(version, csu, csu, radiusMiles);
     trip.buildResponse();
-    int expect = 100;
+    int expect = 0;
     int actual = trip.getDistance();
     assertEquals("origin and destination are the same", expect, actual);
   }
