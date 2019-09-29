@@ -60,7 +60,7 @@ export default class LMap extends Component {
   }
 
   currentLocation() {
-    return L.latLng(this.props.locationOriginLat, this.props.locationOriginLong);
+    return L.latLng(this.props.locationOrigin.latitude, this.props.locationOrigin.longitude);
   }
 
   coloradoGeographicBoundaries() {

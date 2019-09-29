@@ -20,7 +20,7 @@ export default class Application extends Component {
     this.updatePlanOption = this.updatePlanOption.bind(this);
     this.updateClientSetting = this.updateClientSetting.bind(this);
     this.createApplicationPage = this.createApplicationPage.bind(this);
-    this.onLocationOriginChange = this.onLocationOriginChange.bind(this);
+    this.onLocationChange = this.onLocationChange.bind(this);
 
     this.state = {
       serverConfig: null,
@@ -55,13 +55,13 @@ export default class Application extends Component {
     );
   }
 
-  onLocationOriginChange(position) {
+  onLocationChange(position, stateVar) {
     let update = {
       latitude: position.latitude,
       longitude: position.longitude
     };
     this.setState({
-      origin: update
+      [stateVar]: update
     })
   }
 
@@ -110,8 +110,9 @@ export default class Application extends Component {
                              options={this.state.planOptions}
                              settings={this.state.clientSettings}
                              createErrorBanner={this.createErrorBanner}
-                             onLocationOriginChange = {this.onLocationOriginChange}
-                             locationOrigin = { this.state.origin }
+                             onLocationChange = {this.onLocationChange}
+                             locationOrigin = {this.state.origin}
+                             locationDestination={this.state.destination}
         />;
 
       case 'options':
@@ -124,10 +125,9 @@ export default class Application extends Component {
                          updateSetting={this.updateClientSetting}/>;
       default:
         return <Home
-                locationOriginLat = {this.state.origin.latitude}
-                locationOriginLong = {this.state.origin.longitude}
-                locationDestinationLat = {this.state.destination.latitude}
-                locationDestinationLong = {this.state.destination.longitude}
+                locationOrigin = {this.state.origin}
+                locationDestination = {this.state.destination}
+
         />;
     }
   }

@@ -18,8 +18,9 @@ export default class Home extends Component {
       <Container>
         <Row>
           <Col xs={12} sm={12} md={7} lg={8} xl={9}>
-            <LMap locationOriginLat={this.props.locationOriginLat}
-                  locationOriginLong={this.props.locationOriginLong}/>
+            <LMap locationOrigin={this.props.locationOrigin}
+                  locationDestination={this.props.locationDestination}/>
+
           </Col>
           <Col xs={12} sm={12} md={5} lg={4} xl={3}>
             {this.renderIntro()}
