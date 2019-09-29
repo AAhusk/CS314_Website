@@ -39,8 +39,7 @@ export default class Calculator extends Component {
               <Button color="primary" onClick={() => this.geolocation()}>Use my location</Button>
               <Row>
                 <Col xs={12} sm={12} md={9} lg={9}>
-                <LMap locationOriginLat={this.state.origin.latitude}
-                      locationOriginLong={this.state.origin.longitude}/>
+                <LMap locationOrigin={this.state.origin}/>
                 </Col >
                 <Col xs={12} sm={12} md={3} lg={3}>
                     {this.createForm('rawStringO')}
@@ -112,8 +111,7 @@ export default class Calculator extends Component {
   geolocationCallback(position) {
     this.updateLocationState('origin', 'latitude', position.coords.latitude);
     this.updateLocationState('origin', 'longitude', position.coords.longitude);
-    let loc = this.state.origin;
-    this.props.onLocationOriginChange(loc);
+    this.props.onLocationChange(this.state.origin, 'origin');
   }
 
   formatCoordinates(rawString, stateVar) { // Input would look like {latitude: '40.123N', longitude: '-74.123W}, "rawStringO"
@@ -140,14 +138,16 @@ export default class Calculator extends Component {
         longitude: long
       };
 
-      this.setState( {[finalState]: dict});
+      this.setState( {[finalState]: dict},
+          () => {
+            dict = {
+              latitude: lat,
+              longitude: long
+            };
 
-      dict = {
-        latitude: lat,
-        longitude: long
-      };
+            this.props.onLocationChange(dict, finalState);
+          });
 
-      this.props.onLocationOriginChange(dict);
     }
     catch(err) {
       if(!(err.message.includes("Uneven") || err.message.includes("null"))) {
