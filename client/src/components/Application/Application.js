@@ -32,10 +32,14 @@ export default class Application extends Component {
         serverPort: getOriginalServerPort()
       },
       errorMessage: null,
-      locationOriginLat: 1,
-      locationOriginLong: 1,
-      locationDestinationLat: 1,
-      locationDestinationLong: 1
+      origin: {
+        latitude: 1,
+        longitude: 1
+      },
+      destination: {
+        latitude: 1,
+        longitude: 1
+      }
     };
 
     this.updateServerConfig();
@@ -52,13 +56,12 @@ export default class Application extends Component {
   }
 
   onLocationOriginChange(position) {
+    let update = {
+      latitude: position.latitude,
+      longitude: position.longitude
+    };
     this.setState({
-      locationOriginLat: position.latitude,           // The format used by Calc.js's 'origin' state
-      locationOriginLong: position.longitude
-      //locationOriginLat: position.coords.latitude,  // The format used by navigation.geolocation
-      //locationOriginLong: position.coords.longitude
-      //locationOriginLat: position.lat,              // Used for L.latlng object, mostly for debugging
-      //locationOriginLong: position.lng
+      origin: update
     })
   }
 
@@ -103,11 +106,12 @@ export default class Application extends Component {
 
       case 'calc':
         return <Calculator
-                             currentLoc = {this.state.loc}
+                             currentLocation = {this.state.loc}
                              options={this.state.planOptions}
                              settings={this.state.clientSettings}
                              createErrorBanner={this.createErrorBanner}
                              onLocationOriginChange = {this.onLocationOriginChange}
+                             locationOrigin = { this.state.origin }
         />;
 
       case 'options':
@@ -120,10 +124,10 @@ export default class Application extends Component {
                          updateSetting={this.updateClientSetting}/>;
       default:
         return <Home
-                locationOriginLat = {this.state.locationOriginLat}
-                locationOriginLong = {this.state.locationOriginLong}
-                locationDestinationLat = {this.state.locationDestinationLat}
-                locationDestinationLong = {this.state.locationDestinationLong}
+                locationOriginLat = {this.state.origin.latitude}
+                locationOriginLong = {this.state.origin.longitude}
+                locationDestinationLat = {this.state.destination.latitude}
+                locationDestinationLong = {this.state.destination.longitude}
         />;
     }
   }
