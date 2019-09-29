@@ -18,7 +18,7 @@ export default class Calculator extends Component {
     this.formatCoordinates = this.formatCoordinates.bind(this);
 
     this.state = {
-      origin: {latitude: this.props.locationOriginLat, longitude: this.props.locationOriginLong},
+      origin: this.props.locationOrigin,
       destination: {latitude: 0, longitude: 0},
       rawStringO: {latitude: 0, longitude: 0},
       rawStringD: {latitude: 0, longitude: 0},
@@ -39,8 +39,8 @@ export default class Calculator extends Component {
               <Button color="primary" onClick={() => this.geolocation()}>Use my location</Button>
               <Row>
                 <Col xs={12} sm={12} md={9} lg={9}>
-                  <LMap locationOriginLat={this.state.origin.latitude}
-                        locationOriginLong={this.state.origin.longitude}/>
+                <LMap locationOriginLat={this.state.origin.latitude}
+                      locationOriginLong={this.state.origin.longitude}/>
                 </Col >
                 <Col xs={12} sm={12} md={3} lg={3}>
                     {this.createForm('rawStringO')}
