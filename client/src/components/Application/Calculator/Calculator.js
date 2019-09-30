@@ -14,6 +14,7 @@ export default class Calculator extends Component {
     this.updateLocationState = this.updateLocationState.bind(this);
     this.geolocationCallback = this.geolocationCallback.bind(this);
     this.calculateDistance = this.calculateDistance.bind(this);
+    this.handleCurrentLocationButton = this.handleCurrentLocationButton.bind(this);
     this.createInputField = this.createInputField.bind(this);
     this.formatCoordinates = this.formatCoordinates.bind(this);
 
@@ -36,13 +37,13 @@ export default class Calculator extends Component {
             <CardBody>
               <CardText>Determine the distance between the origin and destination. Change the units on
                 the <b>Options</b> page.</CardText>
-              <Button color="primary" onClick={() => this.geolocation()}>Use my location</Button>
               <Row>
                 <Col xs={12} sm={12} md={9} lg={9}>
                 <LMap locationOrigin={this.state.origin}
                       locationDestination={this.state.destination}/>
                 </Col >
                 <Col xs={12} sm={12} md={3} lg={3}>
+                  <Button color='primary' onClick={this.handleCurrentLocationButton}>Use My Location</Button>
                     {this.createForm('rawStringO')}
                     {this.createForm('rawStringD')}
                     {this.createDistance()}
@@ -64,15 +65,38 @@ export default class Calculator extends Component {
     };
 
     let capitalizedCoordinate = coordinate.charAt(0).toUpperCase() + coordinate.slice(1);
-    return (
-        <Input name={coordinate} placeholder={capitalizedCoordinate}
-               id={`${stateVar}${capitalizedCoordinate}`}
+    if(stateVar.charAt(9) === 'O' && coordinate === 'latitude' && this.state.rawStringO.latitude !== 0) {
+      return (
+          <Input name={coordinate} placeholder={capitalizedCoordinate}
+                 id={`${stateVar}${capitalizedCoordinate}`}
+                 value={this.state.rawStringO.latitude}
+                 onChange={updateStateVarOnChange}
+                 style={{width: "100%"}}/>
+      )
+    } else if(stateVar.charAt(9) === 'O' && coordinate === 'longitude' && this.state.rawStringO.longitude !== 0) {
+      return (
+          <Input name={coordinate} placeholder={capitalizedCoordinate}
+                 id={`${stateVar}${capitalizedCoordinate}`}
+                 value={this.state.rawStringO.longitude}
+                 onChange={updateStateVarOnChange}
+                 style={{width: "100%"}}/>
+      )
+    } else {
+      return (
+          <Input name={coordinate} placeholder={capitalizedCoordinate}
+                 id={`${stateVar}${capitalizedCoordinate}`}
 
-               onChange={updateStateVarOnChange}
-               style={{width: "100%"}}/>
-    );
-
+                 onChange={updateStateVarOnChange}
+                 style={{width: "100%"}}/>
+      )
+    }
   }
+
+  handleCurrentLocationButton() {
+    this.geolocation();
+    this.createForm('Origin');
+  }
+
 
   createForm(stateVar) {
     return (
