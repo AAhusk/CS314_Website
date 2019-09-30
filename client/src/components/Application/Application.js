@@ -25,7 +25,7 @@ export default class Application extends Component {
     this.state = {
       serverConfig: null,
       planOptions: {
-        units: {'miles':3959},
+        units: {'miles':3959, 'kilometers':6371, 'nautical miles':3440},
         activeUnit: 'miles'
       },
       clientSettings: {

@@ -9,10 +9,10 @@ export default class Units extends Component {
 
   render() {
     return(
-      <Card className='text-center'>
-          <CardHeader className='bg-csu-gold text-white font-weight-semibold'>Units</CardHeader>
+      <Card className='text-left'>
+          <CardHeader className='bg-csu-green text-white font-weight-semibold'>Units</CardHeader>
           <CardBody>
-              <ButtonGroup vertical className='w100'>
+              <ButtonGroup horizontal className='w100'>
                 {this.renderUnitButtons(Object.keys(this.props.options.units))}
               </ButtonGroup>
           </CardBody>
