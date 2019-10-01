@@ -19,21 +19,19 @@ export default class FileInput extends Component {
   fileSelectHandler(event){
 
     var file_selected =  event.target.files[0];
-
-    if (file_selected.type == 'application/json'){  
-      var read = new FileReader();
-      read.readAsBinaryString(file_selected);
-      read.onload = () => {
+    var read = new FileReader();
+    read.readAsBinaryString(file_selected);
+    read.onload = () => {
+      
+      try{
         let trip = JSON.parse(read.result);
-        this.setState({
-          backgroundColor: green,
-        });
+        this.setState({ backgroundColor: green });
         this.props.onFileSelect(trip);
       }
-    }
-
-    else{
-      this.setState({backgroundColor: red});
+      
+      catch(err){
+        this.setState({ backgroundColor: red });
+      }
     }
   }
 
