@@ -36,13 +36,13 @@ export default class Calculator extends Component {
             <CardBody>
               <CardText>Determine the distance between the origin and destination. Change the units on
                 the <b>Options</b> page.</CardText>
-              <Button color="primary" onClick={() => this.geolocation()}>Use my location</Button>
               <Row>
                 <Col xs={12} sm={12} md={9} lg={9}>
                 <LMap locationOrigin={this.state.origin}
                       locationDestination={this.state.destination}/>
                 </Col >
                 <Col xs={12} sm={12} md={3} lg={3}>
+                  <Button color='primary' onClick={() => this.geolocation()}>Use My Location</Button>
                     {this.createForm('rawStringO')}
                     {this.createForm('rawStringD')}
                     {this.createDistance()}
@@ -56,7 +56,7 @@ export default class Calculator extends Component {
 
   createInputField(stateVar, coordinate) {
     let updateStateVarOnChange = (event) => {
-      this.updateLocationState(stateVar, event.target.name, event.target.value);
+      this.updateLocationState(stateVar, event.target.name, event.target.value, false);
 
       // Call the formatcoordinates method ONLY after setState has flushed its buffer
       this.setState({distance : this.state.distance},
@@ -64,14 +64,31 @@ export default class Calculator extends Component {
     };
 
     let capitalizedCoordinate = coordinate.charAt(0).toUpperCase() + coordinate.slice(1);
-    return (
-        <Input name={coordinate} placeholder={capitalizedCoordinate}
-               id={`${stateVar}${capitalizedCoordinate}`}
+    if(stateVar.charAt(9) === 'O' && coordinate === 'latitude' && this.state.origin.latitude !== 1) {
+      return (
+          <Input name={coordinate} placeholder={capitalizedCoordinate}
+                 id={`${stateVar}${capitalizedCoordinate}`}
+                 value={this.state.rawStringO.latitude}
+                 onChange={updateStateVarOnChange}
+                 style={{width: "100%"}}/>
+      )
+    } else if(stateVar.charAt(9) === 'O' && coordinate === 'longitude' && this.state.origin.longitude !== 1) {
+      return (
+          <Input name={coordinate} placeholder={capitalizedCoordinate}
+                 id={`${stateVar}${capitalizedCoordinate}`}
+                 value={this.state.rawStringO.longitude}
+                 onChange={updateStateVarOnChange}
+                 style={{width: "100%"}}/>
+      )
+    } else {
+      return (
+          <Input name={coordinate} placeholder={capitalizedCoordinate}
+                 id={`${stateVar}${capitalizedCoordinate}`}
 
-               onChange={updateStateVarOnChange}
-               style={{width: "100%"}}/>
-    );
-
+                 onChange={updateStateVarOnChange}
+                 style={{width: "100%"}}/>
+      )
+    }
   }
 
   createForm(stateVar) {
@@ -92,7 +109,7 @@ export default class Calculator extends Component {
               bodyJSX={
                 <div>
                   <h5>{this.state.distance} {this.props.options.activeUnit}</h5>
-                  <Button onClick={this.calculateDistance}>Calculate</Button>
+                  <Button color='primary' onClick={this.calculateDistance}>Calculate</Button>
                 </div>}
         />
     );
@@ -110,8 +127,8 @@ export default class Calculator extends Component {
   }
 
   geolocationCallback(position) {
-    this.updateLocationState('origin', 'latitude', position.coords.latitude);
-    this.updateLocationState('origin', 'longitude', position.coords.longitude);
+    this.updateLocationState('origin', 'latitude', position.coords.latitude, true);
+    this.updateLocationState('origin', 'longitude', position.coords.longitude, true);
     this.props.onLocationChange(this.state.origin, 'origin');
   }
 
@@ -185,10 +202,21 @@ export default class Calculator extends Component {
         });
   }
 
-  updateLocationState(stateVar, field, value) {
+  updateLocationState(stateVar, field, value, currentLocationButton) {
     let location = Object.assign({}, this.state[stateVar]);
     location[field] = value;
     this.setState({[stateVar]: location});
-
+    if (currentLocationButton === true) {
+      if (field === 'latitude') {
+        this.setState({
+          rawStringO: {latitude: value}
+        });
+      }
+      if (field === 'longitude') {
+        this.setState({
+          rawStringO: {longitude: value}
+        });
+      }
+    }
   }
 }
