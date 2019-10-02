@@ -18,7 +18,7 @@ export default class ItineraryTable extends React.Component {
   render(){
     console.log('ItineraryTable: ', this.props, this.state);
 
-    if (this.props.trip == null){
+    if (this.props.itineraryData == null){
       return(null);
     }
   
@@ -32,20 +32,22 @@ export default class ItineraryTable extends React.Component {
               <th>Distance</th>
             </tr>
           </thead>
+          
+          <tbody>
+            {this.props.itineraryData.map(this.renderTripItinerary)}
+          </tbody>    
         </Table>
       );
     }
   }
 
-  renderTripItinerary(){
+  renderTripItinerary(entry, index){
     return(
-        <thead>
-          <tr>
-            <th>Origin</th>
-            <th>Destination</th>
-            <th>Distance</th>
+          <tr key={index}>
+            <td>{entry.origin.name}</td>
+            <td>{entry.destination.name}</td>
+            <td>{entry.distance}</td>
           </tr>
-        </thead>
     );
   }
 }

@@ -27,7 +27,7 @@ export default class Itinerary extends Component {
             <FileInput onFileSelect={this.onFileSelect}/>     
           </Card>
           <Card>
-            <ItineraryTable trip={this.state.trip}/>           
+            <ItineraryTable itineraryData={this.state.itineraryData}/>           
           </Card>
         </Container>
     );
