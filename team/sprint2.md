@@ -60,7 +60,7 @@ Key planning decisions for this sprint include ...
 
 | Statistic | # Planned | # Completed |
 | --- | ---: | ---: |
-| Epics | *7* | *7* |
+| Epics | *7* | *8* |
 | Tasks |  *11*   | *22* | 
 | Story Points |  *18*  | *45* | 
 
@@ -101,6 +101,7 @@ These Epics were completed.
 * *Where Am I*
 * *Geographic Coordinate Format*
 * *Vincenty*
+* *Distance Calculator
 * *Geographic Coordinate Validation*
 * *Distance Units*
 * *Display Map and Itinerary*
@@ -110,7 +111,6 @@ These Epics were completed.
 These Epics were not completed.
 
 * *Short Trip*
-* *Distance Calculator*
 * *Use Logging Facility*
 
 #### What went well
