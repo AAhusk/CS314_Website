@@ -73,6 +73,7 @@ Key planning decisions for this sprint include ...
 | *9/25* | *#55 #57 #88* | *#68 #76 #77* | *Re-implementing Vincenty after learning we need to use the sphere equation* | 
 | *9/27* | *#55 #68* | *#64 #94* | *Figuring out how to read in data* | 
 | *9/30* | *#64 #94* | *#56 #66* | *none* | 
+| *10/2* | *#64* | *none* | *none* |
 
 
 ## Diagrams
