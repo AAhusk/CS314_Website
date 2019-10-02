@@ -97,15 +97,21 @@ In this sprint, ...
 
 These Epics were completed.
 
-* *## epic title: comments*
-* 
+* *Current Configuration*
+* *Where Am I*
+* *Geographic Coordinate Format*
+* *Vincenty*
+* *Geographic Coordinate Validation*
+* *Distance Units*
+* *Display Map and Itinerary*
 
 #### Incomplete epics in Sprint Backlog 
 
 These Epics were not completed.
 
-* *## epic title: explanation*
-*
+* *Short Trip*
+* *Distance Calculator*
+* *Use Logging Facility*
 
 #### What went well
 
