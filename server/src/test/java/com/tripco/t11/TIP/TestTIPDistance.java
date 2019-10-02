@@ -15,6 +15,8 @@ public class TestTIPDistance {
 
   /* Radius and location values shared by test cases */
   private final float radiusMiles = 3959;
+  private final float radiusKilometers = 6371;
+  private final float radiusNauticalMiles = 3440;
   private Map<String, Object> csu;
   private Map<String, Object> Q1;
   private Map<String, Object> Q2;
@@ -123,5 +125,20 @@ public class TestTIPDistance {
     int actual = trip.getDistance();
     assertEquals("-339.6 Degrees Longitude equals 20.4 Degrees", expect, actual);
   }
-
+  @Test
+  public void testKilometersAsEarthRadius() {
+    TIPDistance trip = new TIPDistance(version, Q1, Q2, radiusKilometers);
+    trip.buildResponse();
+    int expect = 7917;
+    int actual = trip.getDistance();
+    assertEquals("Q1 to Q2 equals 7917 Kilometers", expect, actual);
+  }
+  @Test
+  public void testNauticalMilesAsEarthRadius() {
+    TIPDistance trip = new TIPDistance(version, Q1, Q2, radiusNauticalMiles);
+    trip.buildResponse();
+    int expect = 4275;
+    int actual = trip.getDistance();
+    assertEquals("Q1 to Q2 equals 4275 Nautical Miles", expect, actual);
+  }
 }
