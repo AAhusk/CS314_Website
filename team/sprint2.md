@@ -2,11 +2,11 @@
 
 ## Goal
 The goal is to implement the initial functionality of the calculator; the user will be able to enter in 2 sets of coordinates, and see the distance between them following the curve of the earth. Additionally, we want to update the map's functionality; the user will be able to see their current location on the map, and they will be able to load a trip(created from another tool) that will display on our map. Finally, we would like to implement the ability to rearrange a trip so that it is optimized to be as short as possible.
+
 ### A map and itinerary!
 ### Sprint Leader: *Sean Boyd*
 
 ## Definition of Done
-
 * Every Epic is completed, along with associated tasks.
 * Version in pom.xml should be `<version>2.0.0</version>` for your final build for deployment.
 * Increment release `v2.0` created on GitHub with appropriate version number and name.
@@ -60,9 +60,9 @@ Key planning decisions for this sprint include ...
 
 | Statistic | # Planned | # Completed |
 | --- | ---: | ---: |
-| Epics | *7* | *value* |
-| Tasks |  *11*   | *value* | 
-| Story Points |  *18*  | *value* | 
+| Epics | *7* | *7* |
+| Tasks |  *11*   | *22* | 
+| Story Points |  *18*  | *45* | 
 
 
 ## Scrums
