@@ -36,7 +36,7 @@ export default class FileInput extends Component {
   }
 
   render() {
-    console.log('State', this.state);
+    console.log('FileInput:', this.state);
     return (
       <Card style={{backgroundColor: this.state.backgroundColor}}>
         <input type="file" onChange={(event) => this.fileSelectHandler(event)}/>

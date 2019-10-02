@@ -1,27 +1,33 @@
 import React, {Component} from 'react'
 import {Container, Row, Col, Alert, Card, CardHeader, CardBody, CardText} from 'reactstrap'
 import FileInput from './FileInput'
+import ItineraryTable from './ItineraryTable'
 import LMap from "../LMap";
 
 export default class Itinerary extends Component {
   
   constructor(props) {
     super(props);
+    
+    this.onFileSelect = this.onFileSelect.bind(this);
 
     this.state = {
       trip: null,
+      itineraryData: null,
     }
 
-    this.onFileSelect = this.onFileSelect.bind(this);
   }
 
   render() {
-    console.log('Itinerary', this.state);
+    console.log('Itinerary:', this.state);
     return (
         <Container>
           <Card>
             <CardHeader>Itinerary</CardHeader>   
-            <FileInput onFileSelect={this.onFileSelect}/>
+            <FileInput onFileSelect={this.onFileSelect}/>     
+          </Card>
+          <Card>
+            <ItineraryTable trip={this.state.trip}/>           
           </Card>
         </Container>
     );
@@ -31,6 +37,9 @@ export default class Itinerary extends Component {
     this.setState({trip: trip});
   }
 
-  
+  // {/* // setItineraryData = {this.setItineraryData}/> */}
+  // setItineraryData(itineraryData){
+  //   this.setState({itineraryData: itineraryData});
+  // }
 
 }
