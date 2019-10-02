@@ -33,13 +33,10 @@ export default class Itinerary extends Component {
     );
   }
 
-  onFileSelect(trip){
-    this.setState({trip: trip});
+  onFileSelect(trip, itineraryData){
+    this.setState({
+      trip: trip,
+      itineraryData: itineraryData,
+    });
   }
-
-  // {/* // setItineraryData = {this.setItineraryData}/> */}
-  // setItineraryData(itineraryData){
-  //   this.setState({itineraryData: itineraryData});
-  // }
-
 }
