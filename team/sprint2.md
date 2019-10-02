@@ -70,6 +70,9 @@ Key planning decisions for this sprint include ...
 | Date | Tasks closed  | Tasks in progress | Impediments |
 | :--- | :--- | :--- | :--- |
 | *9/23* | *#63, #62, #78* | *#57, #55* | *none* | 
+| *9/25* | *#55 #57 #88* | *#68 #76 #77* | *none* | 
+| *9/27* | *#55 #68* | *#64 #94* | *Figuring out how to read in data* | 
+| *9/30* | *#64 #94* | *#56 #66* | *none* | 
 
 
 ## Diagrams
