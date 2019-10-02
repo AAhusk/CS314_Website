@@ -115,12 +115,13 @@ These Epics were not completed.
 
 #### What went well
 
-The ...
+We completed 6 epics which is what we were hoping for. We also balanced our work pretty well throughout the three weeks.
 
 
 #### Problems encountered and resolutions
 
-The ...
+One problem was learning how to read input from a file for the trip itinerary epic; Sean let us know his trouble with this so we were aware of the hold-up and could help if he needed it. Being aware of each other's hold-ups helps make sure we stay on progress. 
+Another problem was incorrectly implementing a library for the ellipsoid equation of Vincenty, when we were supposed to do the sphere equation. This was clarified in class, and from there we made the necessary change.
 
 
 ## Retrospective (focus on people, process, tools)
