@@ -101,7 +101,7 @@ These Epics were completed.
 * *Where Am I*
 * *Geographic Coordinate Format*
 * *Vincenty*
-* *Distance Calculator
+* *Distance Calculator*
 * *Geographic Coordinate Validation*
 * *Distance Units*
 * *Display Map and Itinerary*
@@ -115,7 +115,7 @@ These Epics were not completed.
 
 #### What went well
 
-We completed 8 epics which is one more than we were hoping for. We also balanced our work pretty well throughout the three weeks.
+We completed 6 epics which is what we were hoping for. We also balanced our work pretty well throughout the three weeks.
 
 
 #### Problems encountered and resolutions
