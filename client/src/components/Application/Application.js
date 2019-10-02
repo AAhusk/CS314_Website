@@ -3,8 +3,9 @@ import {Container} from 'reactstrap';
 
 import Home from './Home';
 import About from './About/About';
-import Options from './Options/Options';
 import Calculator from './Calculator/Calculator';
+import Itinerary from './Itinerary/Itinerary';
+import Options from './Options/Options';
 import Settings from './Settings/Settings';
 import {getOriginalServerPort, sendServerRequest} from '../../api/restfulAPI';
 import ErrorBanner from './ErrorBanner';
@@ -105,15 +106,17 @@ export default class Application extends Component {
                       createErrorBanner={this.createErrorBanner}/>;
 
       case 'calc':
-        return <Calculator
-                             currentLocation = {this.state.loc}
-                             options={this.state.planOptions}
-                             settings={this.state.clientSettings}
-                             createErrorBanner={this.createErrorBanner}
-                             onLocationChange = {this.onLocationChange}
-                             locationOrigin = {this.state.origin}
-                             locationDestination={this.state.destination}
-        />;
+        return <Calculator  currentLocation = {this.state.loc}
+                            options={this.state.planOptions}
+                            settings={this.state.clientSettings}
+                            createErrorBanner={this.createErrorBanner}
+                            onLocationChange = {this.onLocationChange}
+                            locationOrigin = {this.state.origin}
+                            locationDestination={this.state.destination}/>;
+
+      case 'itinerary':
+        return <Itinerary options={this.state.planOptions}                             
+                          settings={this.state.clientSettings}/>;
 
       case 'options':
         return <Options options={this.state.planOptions}
