@@ -7,6 +7,7 @@ import { Map, Marker, Popup, TileLayer, Polyline} from 'react-leaflet';
 import Pane from './Pane';
 import iconblue from './images/iconblue.png';
 import iconblueD from './images/iconblueD.png';
+import iconred from './images/iconred.png';
 
 export default class LMap extends Component {
   constructor(props) {
@@ -43,8 +44,61 @@ export default class LMap extends Component {
     what i posted in the jsfiddle link above.
      */
 
-    let OriginCoords = [this.props.locationOrigin.latitude, this.props.locationOrigin.longitude];
-    let DestCoords = [this.props.locationDestination.latitude, this.props.locationDestination.longitude];
+    let OriginCoords = null;
+    let DestCoords = null;
+    let originMarker = null;
+    let destinationMarker = null;
+    let ODPolyline = null;
+
+    if (this.props.locationOrigin != null) {
+
+      OriginCoords = [this.props.locationOrigin.latitude, this.props.locationOrigin.longitude];
+      DestCoords = [this.props.locationDestination.latitude, this.props.locationDestination.longitude];
+      ODPolyline = (
+          <Polyline positions={[OriginCoords, DestCoords]}/>
+      );
+      originMarker = (
+          <Marker position={this.currentLocation()}
+                  icon={this.markerIcon(iconblue)}>
+            <Popup className="font-weight-extrabold">
+              Origin:<br/>
+              {this.props.locationOrigin.latitude} Latitude<br/>
+              {this.props.locationOrigin.longitude} Longitude
+            </Popup>
+          </Marker>
+      );
+
+      destinationMarker = (
+          <Marker position={this.currentDestination()}
+                  icon={this.markerIcon(iconblueD)}>
+            <Popup className="font-weight-extrabold">
+              Destination:<br/>
+              {this.props.locationDestination.latitude} Latitude<br/>
+              {this.props.locationDestination.longitude} Longitude
+            </Popup>
+          </Marker>
+      );
+    }
+
+    let pointArr = [];
+    let MarkerArr = [];
+
+    if (this.props.itineraryData != null) {
+      pointArr = this.props.itineraryData;
+
+      for (let i = 0; i < pointArr.length; i++) {
+        MarkerArr.push(
+            <Marker position={L.latLng(pointArr[i].origin.latitude, pointArr[i].origin.longitude)}
+                    icon={this.markerIcon(iconred)}>
+              <Popup className="font-weight-extrabold">
+                Destination:<br/>
+                {pointArr[i].origin.latitude} Latitude<br/>
+                {pointArr[i].origin.longitude} Longitude
+              </Popup>
+            </Marker>
+        )
+      }
+    }
 
     return (
         // <Map center={this.currentLocation()} zoom={10}
@@ -55,29 +109,19 @@ export default class LMap extends Component {
                    attribution="&copy; <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"/>
 
          /* Origin Marker */
-        <Marker position={this.currentLocation()}
-                icon={this.markerIcon(iconblue)}>
-          <Popup className="font-weight-extrabold">
-            Origin:<br/>
-            {this.props.locationOrigin.latitude} Latitude<br/>
-            {this.props.locationOrigin.longitude} Longitude
-          </Popup>
-        </Marker>
+        {originMarker}
+        {destinationMarker}
+        {ODPolyline}
 
-        /* Destination Marker */
-        <Marker position={this.currentDestination()}
-                icon={this.markerIcon(iconblueD)}>
-          <Popup className="font-weight-extrabold">
-            Destination:<br/>
-            {this.props.locationDestination.latitude} Latitude<br/>
-            {this.props.locationDestination.longitude} Longitude
-          </Popup>
-        </Marker>
+        {MarkerArr.map(marker => (
+            marker
+        ))}
 
-        <Polyline positions={[OriginCoords, DestCoords]}/>
       </Map>
     )
   }
+
+
 
   renderIntro() {
     return(
