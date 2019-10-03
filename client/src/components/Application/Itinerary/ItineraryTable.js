@@ -16,7 +16,7 @@ export default class ItineraryTable extends React.Component {
 
 
   render(){
-    console.log('ItineraryTable: ', this.props, this.state);
+    //console.log('ItineraryTable: ', this.props, this.state);
 
     if (this.props.itineraryData == null){
       return(null);

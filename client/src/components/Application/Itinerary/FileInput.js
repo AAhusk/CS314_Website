@@ -1,6 +1,5 @@
 import React, {Component} from 'react'
-import {Container, Row, Col, Alert, Card, CardHeader, CardBody, CardText} from 'reactstrap'
-import LMap from "../LMap";
+import {Card} from 'reactstrap'
 
 const green = '#bef7ba';
 const red = '#f7b0b0';
@@ -50,7 +49,7 @@ export default class FileInput extends Component {
     var itineraryData = [];  
     for(var i=0; i<trip.places.length; i++){
 
-      var destination_index = ((i+1) == trip.places.length)? 0 : i+1;
+      var destination_index = ((i+1) == trip.places.length) ? 0 : i+1;
   
       itineraryData.push({
         origin: {

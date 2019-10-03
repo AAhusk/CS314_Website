@@ -1,8 +1,7 @@
 import React, {Component} from 'react'
-import {Container, Row, Col, Alert, Card, CardHeader, CardBody, CardText} from 'reactstrap'
+import {Container, Card, CardHeader} from 'reactstrap'
 import FileInput from './FileInput'
 import ItineraryTable from './ItineraryTable'
-import LMap from "../LMap";
 
 export default class Itinerary extends Component {
   
@@ -19,7 +18,7 @@ export default class Itinerary extends Component {
   }
 
   render() {
-    console.log('Itinerary:', this.state);
+    //console.log('Itinerary:', this.state);
     return (
         <Container>
           <Card>
