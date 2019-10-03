@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import {Container, Card, CardHeader} from 'reactstrap'
 import FileInput from './FileInput'
 import ItineraryTable from './ItineraryTable'
+import LMap from "../LMap";
 
 export default class Itinerary extends Component {
   
@@ -13,14 +14,16 @@ export default class Itinerary extends Component {
     this.state = {
       trip: null,
       itineraryData: null,
+      points: null
+      // points: { {"latitude": 50, "longitude": 30}, {}, {}, ... }
     }
-
   }
 
   render() {
     //console.log('Itinerary:', this.state);
     return (
         <Container>
+          <LMap itineraryData={this.state.itineraryData}/>
           <Card>
             <CardHeader>Itinerary</CardHeader>   
             <FileInput onFileSelect={this.onFileSelect}/>     

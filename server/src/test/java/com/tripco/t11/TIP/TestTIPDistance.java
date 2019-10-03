@@ -1,6 +1,5 @@
 package com.tripco.t11.TIP;
 
-import org.graalvm.compiler.core.common.type.ArithmeticOpTable.UnaryOp.Neg;
 import org.junit.Before;
 import org.junit.Test;
 
