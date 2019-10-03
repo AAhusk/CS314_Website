@@ -20,7 +20,7 @@ export default class Itinerary extends Component {
   }
 
   render() {
-    console.log('Itinerary:', this.state);
+    //console.log('Itinerary:', this.state);
     return (
         <Container>
           <LMap itineraryData={this.state.itineraryData}/>

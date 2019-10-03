@@ -82,13 +82,17 @@ export default class LMap extends Component {
 
     let pointArr = [];
     let MarkerArr = [];
+    let ItinPolylinepts = [];
+    let ItinPolyline = null;
+
 
     if (this.props.itineraryData != null) {
       pointArr = this.props.itineraryData;
 
       for (let i = 0; i < pointArr.length; i++) {
         MarkerArr.push(
-            <Marker position={L.latLng(pointArr[i].origin.latitude, pointArr[i].origin.longitude)}
+            <Marker key={"Marker"+i}
+                    position={L.latLng(pointArr[i].origin.latitude, pointArr[i].origin.longitude)}
                     icon={this.markerIcon(iconred)}>
               <Popup className="font-weight-extrabold">
                 Destination:<br/>
@@ -96,8 +100,17 @@ export default class LMap extends Component {
                 {pointArr[i].origin.longitude} Longitude
               </Popup>
             </Marker>
-        )
+        );
+
+        ItinPolylinepts.push(
+            [pointArr[i].origin.latitude, pointArr[i].origin.longitude]
+        );
       }
+
+      ItinPolylinepts.push([pointArr[0].origin.latitude, pointArr[0].origin.longitude]);
+      ItinPolyline = (
+          <Polyline positions={ItinPolylinepts}/>
+      );
     }
 
     return (
@@ -116,6 +129,7 @@ export default class LMap extends Component {
         {MarkerArr.map(marker => (
             marker
         ))}
+        {ItinPolyline}
 
       </Map>
     )
