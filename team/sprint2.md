@@ -2,11 +2,11 @@
 
 ## Goal
 The goal is to implement the initial functionality of the calculator; the user will be able to enter in 2 sets of coordinates, and see the distance between them following the curve of the earth. Additionally, we want to update the map's functionality; the user will be able to see their current location on the map, and they will be able to load a trip(created from another tool) that will display on our map. Finally, we would like to implement the ability to rearrange a trip so that it is optimized to be as short as possible.
+
 ### A map and itinerary!
 ### Sprint Leader: *Sean Boyd*
 
 ## Definition of Done
-
 * Every Epic is completed, along with associated tasks.
 * Version in pom.xml should be `<version>2.0.0</version>` for your final build for deployment.
 * Increment release `v2.0` created on GitHub with appropriate version number and name.
@@ -60,16 +60,20 @@ Key planning decisions for this sprint include ...
 
 | Statistic | # Planned | # Completed |
 | --- | ---: | ---: |
-| Epics | *7* | *value* |
-| Tasks |  *11*   | *value* | 
-| Story Points |  *18*  | *value* | 
+| Epics | *7* | *8* |
+| Tasks |  *11*   | *22* | 
+| Story Points |  *18*  | *45* | 
 
 
 ## Scrums
 
 | Date | Tasks closed  | Tasks in progress | Impediments |
 | :--- | :--- | :--- | :--- |
-| *date* | *#task, ...* | *#task, ...* | *none* | 
+| *9/23* | *#63, #62, #78* | *#57, #55* | *none* | 
+| *9/25* | *#55 #57 #88* | *#68 #76 #77* | *Re-implementing Vincenty after learning we need to use the sphere equation* | 
+| *9/27* | *#55 #68* | *#64 #94* | *Figuring out how to read in data* | 
+| *9/30* | *#64 #94* | *#56 #66* | *none* | 
+| *10/2* | *#64* | *none* | *none* |
 
 
 ## Diagrams
@@ -93,24 +97,31 @@ In this sprint, ...
 
 These Epics were completed.
 
-* *## epic title: comments*
-* 
+* *Current Configuration*
+* *Where Am I*
+* *Geographic Coordinate Format*
+* *Vincenty*
+* *Distance Calculator*
+* *Geographic Coordinate Validation*
+* *Distance Units*
+* *Display Map and Itinerary*
 
 #### Incomplete epics in Sprint Backlog 
 
 These Epics were not completed.
 
-* *## epic title: explanation*
-*
+* *Short Trip*
+* *Use Logging Facility*
 
 #### What went well
 
-The ...
+We completed 6 epics which is what we were hoping for. We also balanced our work pretty well throughout the three weeks.
 
 
 #### Problems encountered and resolutions
 
-The ...
+One problem was learning how to read input from a file for the trip itinerary epic; Sean let us know his trouble with this so we were aware of the hold-up and could help if he needed it. Being aware of each other's hold-ups helps make sure we stay on progress. 
+Another problem was incorrectly implementing a library for the ellipsoid equation of Vincenty, when we were supposed to do the sphere equation. This was clarified in class, and from there we made the necessary change.
 
 
 ## Retrospective (focus on people, process, tools)
