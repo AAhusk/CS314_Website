@@ -91,7 +91,11 @@ Key planning decisions for this sprint include ...
 
 ## Review (focus on solution and technology)
 
-In this sprint, ...
+In this sprint, we spent a lot of time trying to figure out the codebase and work together on who would be responsible doing
+what. We hadn't really gotten completely comfortable assigning tasks to each other, working in mini-groups, or 
+using github to it's full extent, but we got there in the end and really started performing. We had a couple
+problems when implementing our algorithms (like implementing the wrong vincenty code) but we worked as a team to get
+through it, and actually helped each other out instead of just doing everything individually.
 
 #### Completed epics in Sprint Backlog 
 
