@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {Container, Row, Col, Alert, Card, CardHeader, CardBody, CardText} from 'reactstrap'
+import {Container, Row, Col, Card, CardHeader, CardBody, CardText} from 'reactstrap'
 import {Button} from 'reactstrap'
 import {Form, Input} from 'reactstrap'
 import {sendServerRequestWithBody} from '../../../api/restfulAPI'
@@ -12,14 +12,13 @@ export default class Calculator extends Component {
     super(props);
 
     this.updateLocationState = this.updateLocationState.bind(this);
-    this.geolocationCallback = this.geolocationCallback.bind(this);
     this.calculateDistance = this.calculateDistance.bind(this);
     this.createInputField = this.createInputField.bind(this);
     this.formatCoordinates = this.formatCoordinates.bind(this);
 
     this.state = {
       origin: this.props.locationOrigin,
-      destination: {latitude: 0, longitude: 0},
+      destination: this.props.locationDestination,
       rawStringO: {latitude: 0, longitude: 0},
       rawStringD: {latitude: 0, longitude: 0},
       distance: 0,
@@ -38,11 +37,12 @@ export default class Calculator extends Component {
                 the <b>Options</b> page.</CardText>
               <Row>
                 <Col xs={12} sm={12} md={9} lg={9}>
-                <LMap locationOrigin={this.state.origin}
+                <LMap currentLocation = {this.props.currentLocation}
+                      locationOrigin={this.state.origin}
                       locationDestination={this.state.destination}/>
                 </Col >
                 <Col xs={12} sm={12} md={3} lg={3}>
-                  <Button color='primary' onClick={() => this.geolocation()}>Use My Location</Button>
+                  <Button color='primary' onClick={() => this.props.geolocation()}>Use My Location</Button>
                     {this.createForm('rawStringO')}
                     {this.createForm('rawStringD')}
                     {this.createDistance()}
@@ -113,23 +113,6 @@ export default class Calculator extends Component {
                 </div>}
         />
     );
-  }
-
-  geolocation() { // Add a try/catch here
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(this.geolocationCallback);
-    }
-    else {
-      return (
-          <Alert color="danger"> Geolocation not supported. </Alert>
-      )
-    }
-  }
-
-  geolocationCallback(position) {
-    this.updateLocationState('origin', 'latitude', position.coords.latitude, true);
-    this.updateLocationState('origin', 'longitude', position.coords.longitude, true);
-    this.props.onLocationChange(this.state.origin, 'origin');
   }
 
   formatCoordinates(rawString, stateVar) { // Input would look like {latitude: '40.123N', longitude: '-74.123W}, "rawStringO"

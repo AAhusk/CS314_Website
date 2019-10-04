@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Container} from 'reactstrap';
+import {Alert, Container} from 'reactstrap';
 
 import Home from './Home';
 import About from './About/About';
@@ -22,6 +22,8 @@ export default class Application extends Component {
     this.updateClientSetting = this.updateClientSetting.bind(this);
     this.createApplicationPage = this.createApplicationPage.bind(this);
     this.onLocationChange = this.onLocationChange.bind(this);
+    this.geolocation = this.geolocation.bind(this);
+    this.geolocationCallback = this.geolocationCallback.bind(this);
 
     this.state = {
       serverConfig: null,
@@ -33,6 +35,7 @@ export default class Application extends Component {
         serverPort: getOriginalServerPort()
       },
       errorMessage: null,
+      currentLocation: null,
       origin: {
         latitude: 1,
         longitude: 1
@@ -65,6 +68,26 @@ export default class Application extends Component {
       [stateVar]: update
     })
   }
+
+  geolocation() { // Add a try/catch here
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(this.geolocationCallback);
+    }
+    else {
+      return (
+          <Alert color="danger"> Geolocation not supported. </Alert>
+      )
+    }
+  }
+
+  geolocationCallback(position) {
+    //this.updateLocationState('origin', 'latitude', position.coords.latitude, true);
+    //this.updateLocationState('origin', 'longitude', position.coords.longitude, true);
+
+    // Update local state
+    this.onLocationChange(position.coords, 'currentLocation');
+  }
+
 
   updateClientSetting(field, value) {
     if(field === 'serverPort')
@@ -106,13 +129,14 @@ export default class Application extends Component {
                       createErrorBanner={this.createErrorBanner}/>;
 
       case 'calc':
-        return <Calculator  currentLocation = {this.state.loc}
+        return <Calculator  currentLocation = {this.state.currentLocation}
                             options={this.state.planOptions}
                             settings={this.state.clientSettings}
                             createErrorBanner={this.createErrorBanner}
                             onLocationChange = {this.onLocationChange}
                             locationOrigin = {this.state.origin}
-                            locationDestination={this.state.destination}/>;
+                            locationDestination={this.state.destination}
+                            geolocation={this.geolocation}/>;
 
       case 'itinerary':
         return <Itinerary options={this.state.planOptions}                             
@@ -130,7 +154,8 @@ export default class Application extends Component {
         return <Home
                 locationOrigin = {this.state.origin}
                 locationDestination = {this.state.destination}
-
+                currentLocation = {this.state.currentLocation}
+                geolocation = {this.geolocation}
         />;
     }
   }

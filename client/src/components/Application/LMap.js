@@ -51,7 +51,6 @@ export default class LMap extends Component {
     let ODPolyline = null;
 
     if (this.props.locationOrigin != null) {
-
       OriginCoords = [this.props.locationOrigin.latitude, this.props.locationOrigin.longitude];
       DestCoords = [this.props.locationDestination.latitude, this.props.locationDestination.longitude];
       ODPolyline = (
@@ -88,7 +87,6 @@ export default class LMap extends Component {
 
     if (this.props.itineraryData != null) {
       pointArr = this.props.itineraryData;
-
       for (let i = 0; i < pointArr.length; i++) {
         MarkerArr.push(
             <Marker key={"Marker"+i}
@@ -101,31 +99,48 @@ export default class LMap extends Component {
               </Popup>
             </Marker>
         );
-
         ItinPolylinepts.push(
             [pointArr[i].origin.latitude, pointArr[i].origin.longitude]
         );
       }
-
       ItinPolylinepts.push([pointArr[0].origin.latitude, pointArr[0].origin.longitude]);
       ItinPolyline = (
           <Polyline positions={ItinPolylinepts}/>
       );
     }
 
+    let currentLocationMarker = null;
+
+    if (this.props.currentLocation != null) {
+      currentLocationMarker = (
+          <Marker key={"CurrentLocationMarker"}
+                  position={L.latLng(this.props.currentLocation.latitude, this.props.currentLocation.longitude)}
+                  icon={this.markerIcon(iconred)}>
+            <Popup className="font-weight-extrabold">
+              Here I am!<br/>
+              {this.props.currentLocation.latitude} Latitude<br/>
+              {this.props.currentLocation.longitude} Longitude
+            </Popup>
+          </Marker>
+      );
+    }
+
     return (
         // <Map center={this.currentLocation()} zoom={10}
         // <Marker position={this.currentLocation()} zoom={10}
-      <Map center={this.csuOvalGeographicCoordinates()} zoom={15}
+      <Map center={this.csuOvalGeographicCoordinates()} zoom={10}
            style={{height: 500, maxwidth: 700}}>
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                    attribution="&copy; <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"/>
 
-         /* Origin Marker */
+        {currentLocationMarker}
+
+         /* Calculator Markers / polyline */
         {originMarker}
         {destinationMarker}
         {ODPolyline}
 
+        /* Itinerary Markers / polyline */
         {MarkerArr.map(marker => (
             marker
         ))}
