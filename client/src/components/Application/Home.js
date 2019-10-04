@@ -4,9 +4,6 @@ import 'leaflet/dist/leaflet.css';
 import Pane from './Pane'
 import LMap from "./LMap";
 
-/*
- * Renders the home page.
- */
 export default class Home extends Component {
 
   constructor(props) {

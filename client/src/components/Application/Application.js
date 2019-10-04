@@ -23,7 +23,7 @@ export default class Application extends Component {
     this.createApplicationPage = this.createApplicationPage.bind(this);
     this.onLocationChange = this.onLocationChange.bind(this);
     this.geolocation = this.geolocation.bind(this);
-    this.geolocationCallback = this.geolocationCallback.bind(this);
+    this.formatCoordinates = this.formatCoordinates.bind(this);
 
     this.state = {
       serverConfig: null,
@@ -71,7 +71,8 @@ export default class Application extends Component {
 
   geolocation() { // Add a try/catch here
     if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(this.geolocationCallback);
+      navigator.geolocation.getCurrentPosition((position) =>
+          this.onLocationChange(position.coords, 'currentLocation'));
     }
     else {
       return (
@@ -80,14 +81,39 @@ export default class Application extends Component {
     }
   }
 
-  geolocationCallback(position) {
-    //this.updateLocationState('origin', 'latitude', position.coords.latitude, true);
-    //this.updateLocationState('origin', 'longitude', position.coords.longitude, true);
+  formatCoordinates(rawString, stateVar, returnFormattedCoords = false) { // Input would look like {latitude: '40.123N', longitude: '-74.123W}, "rawStringO"
+    // If returnFormattedCoords is false, it just updates the state
 
-    // Update local state
-    this.onLocationChange(position.coords, 'currentLocation');
+    this.setState({errorMessage: null});
+    const Coordinates = require('coordinate-parser');
+    try {
+      let coords = new Coordinates(rawString.latitude + "," + rawString.longitude);
+      let finalState = '';
+
+      if (stateVar.charAt(9) === 'O') {finalState = 'origin';}
+      else {finalState = 'destination';}
+
+      let lat = coords.getLatitude();
+      let long = coords.getLongitude();
+
+      while (long < -180) { long += 360; }
+      while (long > 180) { long -= 360; }
+      while (lat < -90) { lat += 180; }
+      while (lat > 90) { lat -= 180; }
+
+      let dict = { latitude: lat, longitude: long };
+      this.setState( {[finalState]: dict});
+
+      if (returnFormattedCoords === true) {
+        return {latitude: lat, longitude: long};
+      }
+    }
+    catch(err) {
+      if(!(err.message.includes("Uneven") || err.message.includes("null"))) {
+        this.setState({errorMessage: <ErrorBanner statusText="Error with input" message={err.message}/>})
+      }
+    }
   }
-
 
   updateClientSetting(field, value) {
     if(field === 'serverPort')
@@ -133,14 +159,16 @@ export default class Application extends Component {
                             options={this.state.planOptions}
                             settings={this.state.clientSettings}
                             createErrorBanner={this.createErrorBanner}
-                            onLocationChange = {this.onLocationChange}
+                            errorMessage={this.state.errorMessage}
                             locationOrigin = {this.state.origin}
                             locationDestination={this.state.destination}
-                            geolocation={this.geolocation}/>;
+                            geolocation={this.geolocation}
+                            formatCoordinates={this.formatCoordinates}/>;
 
       case 'itinerary':
         return <Itinerary options={this.state.planOptions}                             
-                          settings={this.state.clientSettings}/>;
+                          settings={this.state.clientSettings}
+                          formatCoordinates={this.formatCoordinates}/>;
 
       case 'options':
         return <Options options={this.state.planOptions}

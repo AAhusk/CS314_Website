@@ -20,13 +20,13 @@ export default class Itinerary extends Component {
   }
 
   render() {
-    //console.log('Itinerary:', this.state);
     return (
         <Container>
           <LMap itineraryData={this.state.itineraryData}/>
           <Card>
             <CardHeader>Itinerary</CardHeader>   
-            <FileInput onFileSelect={this.onFileSelect}/>     
+            <FileInput  onFileSelect={this.onFileSelect}
+                        formatCoordinates={this.props.formatCoordinates}/>
           </Card>
           <Card>
             <ItineraryTable itineraryData={this.state.itineraryData}/>           
