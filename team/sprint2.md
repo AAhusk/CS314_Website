@@ -130,20 +130,46 @@ Another problem was incorrectly implementing a library for the ellipsoid equatio
 
 ## Retrospective (focus on people, process, tools)
 
-In this sprint, ...
+In this sprint, we could have done a lot more but we kind of put
+stuff off until the last week or so. I think we did this
+because we underestimated the amount of work that actually
+goes into learning an entirely new codebase and system,
+and so spent a lot of time assuming we could just do the work
+later.
 
 #### What we changed this sprint
 
-Our changes for this sprint included ...
+We changed how we approach tasks - for this sprint specifically,
+it was easier for us to take one person per epic, and then have
+that person ask questions to his teammates if they have
+questions. This seemed to work well because it allows all
+of us to sort-of work on all the epics to know what is going
+on between all of the moving parts, but also be able to
+really focus on one at a time, and treat that person as 
+the expert of their epic.
 
 #### What we did well
 
-We ...
+We were really good at communicating how are schedules are,
+what problems we were having, and reaching out to other
+team members if we were stuck on something. All of us
+are starting to understand how things work too, and
+so are able to help each other out more effectively.
 
 #### What we need to work on
 
-We could improve ...
+We could improve on starting the projects sooner rather than later
+in order to iron out any kinks we have with the codebase
+early on, and not push it forward to the last week.
+
+We could also work on the balancing of work-life scheduling,
+because sometimes other classes get in the way of this
+one.
 
 #### What we will change next sprint 
 
-We will change ...
+In the next sprint we will try to work better together as
+a team by increasing our understanding of the subject 
+matter, doing work at the beginning of the sprint, and 
+making sure we ask for help when we need it, which includes
+bouncing ideas off of team members.
