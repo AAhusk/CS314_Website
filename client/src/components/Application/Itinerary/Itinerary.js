@@ -36,9 +36,15 @@ export default class Itinerary extends Component {
   }
 
   onFileSelect(trip, itineraryData){
-    this.setState({
-      trip: trip,
-      itineraryData: itineraryData,
-    });
+      this.setState({ trip: null, itineraryData: null}, () =>
+          this.setState({
+              trip: trip,
+              itineraryData: itineraryData,
+          }) // I want the map markers to un-load before loading new ones on top
+      ); // Does this idea work? I'm not sure.
+    // this.setState({
+    //   trip: trip,
+    //   itineraryData: itineraryData,
+    // });
   }
 }

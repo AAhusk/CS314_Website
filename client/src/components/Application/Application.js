@@ -88,10 +88,11 @@ export default class Application extends Component {
     const Coordinates = require('coordinate-parser');
     try {
       let coords = new Coordinates(rawString.latitude + "," + rawString.longitude);
-      let finalState = '';
+      let finalState = null;
 
-      if (stateVar.charAt(9) === 'O') {finalState = 'origin';}
-      else {finalState = 'destination';}
+      if (stateVar === 'rawStringO') {finalState = 'origin';}
+      else if (stateVar === 'rawStringD') {finalState = 'destination';}
+      //else { finalState = null }
 
       let lat = coords.getLatitude();
       let long = coords.getLongitude();

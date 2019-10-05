@@ -40,6 +40,7 @@ export default class FileInput extends Component {
       }
       
       catch(err){
+        //console.log(err);
         this.setState({ backgroundColor: red });
       }
     }
@@ -50,19 +51,26 @@ export default class FileInput extends Component {
     for(var i=0; i<trip.places.length; i++){
 
       var destination_index = ((i+1) == trip.places.length) ? 0 : i+1;
-  
+
+
+      let formattedCoordsOrigin = this.props.formatCoordinates(
+          { latitude: trip.places[i].latitude, longitude: trip.places[i].longitude}, null, true);
+      let formattedCoordsDestination = this.props.formatCoordinates(
+          { latitude: trip.places[destination_index].latitude, longitude: trip.places[destination_index].longitude}, null, true);
+
+
       itineraryData.push({
         origin: {
           name: trip.places[i].name,
-          latitude: trip.places[i].latitude,
-          longitude: trip.places[i].longitude
+          latitude: formattedCoordsOrigin.latitude,
+          longitude: formattedCoordsOrigin.longitude
         },
         destination: {
           name: trip.places[destination_index].name,
-          latitude: trip.places[destination_index].latitude,
-          longitude: trip.places[destination_index].longitude
+          latitude: formattedCoordsDestination.latitude,
+          longitude: formattedCoordsDestination.longitude
         },
-        distance: trip.distances[i],
+        distance: (trip.distances != null) ? trip.distances[i] : null,
       });
     }
   

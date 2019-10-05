@@ -1,0 +1,24 @@
+{
+  "requestType": "trip",
+  "requestVersion": 2,
+  "options": { "earthRadius": "6371", "title": "Ski" },
+  "places": [
+    { "latitude": "N 37° 16'", "longitude": "W 106° 28'", "name": "Wolf Creek" },
+    { "latitude": "N 37° 33'", "longitude": "W 107° 30'", "name": "Telluride" },
+    { "latitude": "N 38° 18'", "longitude": "W 106° 11'", "name": "Monarch" },
+    { "latitude": "N 37° 31'", "longitude": "W 107° 24'", "name": "Silverton" },
+    { "latitude": "N 37° 22'", "longitude": "W 107° 29'", "name": "Purgatory" },
+    { "latitude": "N 38° 32'", "longitude": "W 106° 34'", "name": "Crested Butte" },
+    { "latitude": "N 39° 02'", "longitude": "W 108° 05'", "name": "Powderhorn" },
+    { "latitude": "N 39° 06'", "longitude": "W 106° 29'", "name": "Aspen mountain" },
+    { "latitude": "N 39° 12'", "longitude": "W 106° 10'", "name": "Ski Cooper" },
+    { "latitude": "N 39° 23'", "longitude": "W 106° 13'", "name": "Vail" },
+    { "latitude": "N 39° 17'", "longitude": "W 106° 01'", "name": "Breckenridge" },
+    { "latitude": "N 39° 24'", "longitude": "W 105° 18'", "name": "Echo Mountain" },
+    { "latitude": "N 40° 16'", "longitude": "W 106° 28'", "name": "Steamboat" },
+    { "latitude": "N 40° 10'", "longitude": "W 105° 19'", "name": "Estes Valley" },
+    { "latitude": "N 39° 33'", "longitude": "W 105° 20'", "name": "Eldora Mountain" },
+    { "latitude": "N 39° 31'", "longitude": "W 105° 27'", "name": "Winter Park" }
+  ],
+  "distances":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16]
+}
