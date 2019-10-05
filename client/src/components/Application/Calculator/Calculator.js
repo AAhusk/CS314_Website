@@ -37,8 +37,8 @@ export default class Calculator extends Component {
               <Row>
                 <Col xs={12} sm={12} md={9} lg={9}>
                 <LMap currentLocation = {this.props.currentLocation}
-                      locationOrigin={this.state.origin}
-                      locationDestination={this.state.destination}/>
+                      locationOrigin={this.props.locationOrigin}
+                      locationDestination={this.props.locationDestination}/>
                 </Col >
                 <Col xs={12} sm={12} md={3} lg={3}>
                   <Button color='primary' onClick={() => this.props.geolocation()}>Use My Location</Button>
