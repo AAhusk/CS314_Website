@@ -8,7 +8,9 @@ import Pane from './Pane';
 import iconblue from './images/iconblue.png';
 import iconblueD from './images/iconblueD.png';
 import iconred from './images/iconred.png';
-import icongreen from './images/icongreen.png'
+//import icongreen from './images/icongreen.png'
+import iconhappy from './images/iconhappy.png'
+//import iconflower from './images/iconflower.png'
 
 export default class LMap extends Component {
   constructor(props) {
@@ -18,94 +20,86 @@ export default class LMap extends Component {
   }
   render() {
     return (
-      <Container>
-        {this.renderMap()}
-      </Container>
+        <Container>
+          {this.renderMap()}
+        </Container>
     );
   }
 
   renderMap() {
     return (
-      <Pane header={'Where Am I?'}
-            bodyJSX={this.renderLeafletMap()}/>
+        <Pane header={'Where Am I?'}
+              bodyJSX={this.renderLeafletMap()}/>
     );
   }
 
-
-    /*
-  How to add multiple markers: https://jsfiddle.net/jpxgwfqd/
-  Adding polylines as dynamic components: https://react-leaflet.js.org/docs/en/components#polyline
-
-  Polylines can connect multiple points by just adding another array to the end of its
-  positions argument, and we can create more markers by doing something along the lines of
-  what i posted in the jsfiddle link above.
-   */
-  renderLeafletMap() {
-
-    let OriginCoords = null;
-    let DestCoords = null;
-    let originMarker = null;
-    let destinationMarker = null;
-    let ODPolyline = null;
-
-    if (this.props.locationOrigin != null) {
-      OriginCoords = [this.props.locationOrigin.latitude, this.props.locationOrigin.longitude];
-      DestCoords = [this.props.locationDestination.latitude, this.props.locationDestination.longitude];
-      ODPolyline = (
-          <Polyline positions={[OriginCoords, DestCoords]}/>
-      );
-      originMarker = (
-          <Marker position={this.currentLocation()}
-                  icon={this.markerIcon(iconblue)}>
-            <Popup className="font-weight-extrabold">
-              Origin:<br/>
-              {this.props.locationOrigin.latitude} Latitude<br/>
-              {this.props.locationOrigin.longitude} Longitude
-            </Popup>
-          </Marker>
-      );
-
-      destinationMarker = (
-          <Marker position={this.currentDestination()}
-                  icon={this.markerIcon(iconblueD)}>
-            <Popup className="font-weight-extrabold">
-              Destination:<br/>
-              {this.props.locationDestination.latitude} Latitude<br/>
-              {this.props.locationDestination.longitude} Longitude
-            </Popup>
-          </Marker>
-      );
-    }
-
-    let pointArr = [];
+  itineraryComponentSetup() {
     let MarkerArr = [];
     let ItinPolylinepts = [];
-    let ItinPolyline = null;
 
-
-    if (this.props.itineraryData != null) {
-      pointArr = this.props.itineraryData;
-      for (let i = 0; i < pointArr.length; i++) {
-        MarkerArr.push(
-            <Marker key={"Marker"+i}
-                    position={L.latLng(pointArr[i].origin.latitude, pointArr[i].origin.longitude)}
-                    icon={this.markerIcon(iconred)}>
-              <Popup className="font-weight-extrabold">
-                Destination:<br/>
-                {pointArr[i].origin.latitude} Latitude<br/>
-                {pointArr[i].origin.longitude} Longitude
-              </Popup>
-            </Marker>
-        );
-        ItinPolylinepts.push(
-            [pointArr[i].origin.latitude, pointArr[i].origin.longitude]
-        );
-      }
-      ItinPolylinepts.push([pointArr[0].origin.latitude, pointArr[0].origin.longitude]);
-      ItinPolyline = (
-          <Polyline positions={ItinPolylinepts}/>
+    let pointArr = this.props.itineraryData;
+    for (let i = 0; i < pointArr.length; i++) {
+      MarkerArr.push(
+          <Marker key={"Marker"+i}
+                  position={L.latLng(pointArr[i].origin.latitude, pointArr[i].origin.longitude)}
+                  icon={this.markerIcon(iconred)}>
+            <Popup className="font-weight-extrabold">
+              Destination:<br/>
+              {pointArr[i].origin.latitude} Latitude<br/>
+              {pointArr[i].origin.longitude} Longitude
+            </Popup>
+          </Marker>
+      );
+      ItinPolylinepts.push(
+          [pointArr[i].origin.latitude, pointArr[i].origin.longitude]
       );
     }
+
+    ItinPolylinepts.push([pointArr[0].origin.latitude, pointArr[0].origin.longitude]);
+    let ItinPolyline = ( <Polyline positions={ItinPolylinepts}/> );
+
+    return {ItinPolyline: ItinPolyline, MarkerArr: MarkerArr}
+  }
+
+  calculatorComponentSetup() {
+    let OriginCoords = [this.props.locationOrigin.latitude, this.props.locationOrigin.longitude];
+    let DestCoords = [this.props.locationDestination.latitude, this.props.locationDestination.longitude];
+    let ODPolyline = (
+        <Polyline positions={[OriginCoords, DestCoords]}/>
+    );
+    let originMarker = (
+        <Marker position={this.currentLocation()}
+                icon={this.markerIcon(iconblue)}>
+          <Popup className="font-weight-extrabold">
+            Origin:<br/>
+            {this.props.locationOrigin.latitude} Latitude<br/>
+            {this.props.locationOrigin.longitude} Longitude
+          </Popup>
+        </Marker>
+    );
+
+    let destinationMarker = (
+        <Marker position={this.currentDestination()}
+                icon={this.markerIcon(iconblueD)}>
+          <Popup className="font-weight-extrabold">
+            Destination:<br/>
+            {this.props.locationDestination.latitude} Latitude<br/>
+            {this.props.locationDestination.longitude} Longitude
+          </Popup>
+        </Marker>
+    );
+    return {ODPolyline: ODPolyline, originMarker: originMarker, destinationMarker: destinationMarker};
+  }
+
+
+
+  renderLeafletMap() {
+
+    let calculatorComponents = {ODPolyline: null, originMarker: null, destinationMarker: null};
+    if (this.props.locationOrigin != null) { calculatorComponents = this.calculatorComponentSetup() }
+
+    let itineraryComponents = { MarkerArr: null, ItinPolyline: null };
+    if (this.props.itineraryData != null) { itineraryComponents = this.itineraryComponentSetup() }
 
     let currentLocationMarker = null;
 
@@ -113,7 +107,7 @@ export default class LMap extends Component {
       currentLocationMarker = (
           <Marker key={"CurrentLocationMarker"}
                   position={L.latLng(this.props.currentLocation.latitude, this.props.currentLocation.longitude)}
-                  icon={this.markerIcon(icongreen)}>
+                  icon={this.markerIcon(iconhappy)}>
             <Popup className="font-weight-extrabold">
               Here I am!<br/>
               {this.props.currentLocation.latitude} Latitude<br/>
@@ -126,23 +120,23 @@ export default class LMap extends Component {
     return (
         // <Map center={this.currentLocation()} zoom={10}
         // <Marker position={this.currentLocation()} zoom={10}
-      <Map center={this.csuOvalGeographicCoordinates()} zoom={10}
-           style={{height: 500, maxwidth: 700}}>
-        <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                   attribution="&copy; <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"/>
+        <Map center={this.csuOvalGeographicCoordinates()} zoom={10}
+             style={{height: 500, maxwidth: 700}}>
+          <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                     attribution="&copy; <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"/>
 
-        {currentLocationMarker}
+          {currentLocationMarker}
 
-        {originMarker}
-        {destinationMarker}
-        {ODPolyline}
+          {calculatorComponents.originMarker}
+          {calculatorComponents.destinationMarker}
+          {calculatorComponents.ODPolyline}
 
-        {MarkerArr.map(marker => (
-            marker
-        ))}
-        {ItinPolyline}
+          {itineraryComponents.MarkerArr && itineraryComponents.MarkerArr.map(marker => (
+              marker
+          ))}
+          {itineraryComponents.ItinPolyline}
 
-      </Map>
+        </Map>
     )
   }
 
