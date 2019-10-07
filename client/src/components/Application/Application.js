@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Container} from 'reactstrap';
+import {Alert, Container} from 'reactstrap';
 
 import Home from './Home';
 import About from './About/About';
@@ -22,6 +22,8 @@ export default class Application extends Component {
     this.updateClientSetting = this.updateClientSetting.bind(this);
     this.createApplicationPage = this.createApplicationPage.bind(this);
     this.onLocationChange = this.onLocationChange.bind(this);
+    this.geolocation = this.geolocation.bind(this);
+    this.formatCoordinates = this.formatCoordinates.bind(this);
 
     this.state = {
       serverConfig: null,
@@ -33,6 +35,7 @@ export default class Application extends Component {
         serverPort: getOriginalServerPort()
       },
       errorMessage: null,
+      currentLocation: null,
       origin: {
         latitude: 1,
         longitude: 1
@@ -64,6 +67,53 @@ export default class Application extends Component {
     this.setState({
       [stateVar]: update
     })
+  }
+
+  geolocation() { // Add a try/catch here
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((position) =>
+          this.onLocationChange(position.coords, 'currentLocation'));
+    }
+    else {
+      return (
+          <Alert color="danger"> Geolocation not supported. </Alert>
+      )
+    }
+  }
+
+  formatCoordinates(rawString, stateVar, returnFormattedCoords = false) { // Input would look like {latitude: '40.123N', longitude: '-74.123W}, "rawStringO"
+    // If returnFormattedCoords is false, it just updates the state
+
+    this.setState({errorMessage: null});
+    const Coordinates = require('coordinate-parser');
+    try {
+      let coords = new Coordinates(rawString.latitude + "," + rawString.longitude);
+      let finalState = null;
+
+      if (stateVar === 'rawStringO') {finalState = 'origin';}
+      else if (stateVar === 'rawStringD') {finalState = 'destination';}
+      //else { finalState = null }
+
+      let lat = coords.getLatitude();
+      let long = coords.getLongitude();
+
+      while (long < -180) { long += 360; }
+      while (long > 180) { long -= 360; }
+      while (lat < -90) { lat += 180; }
+      while (lat > 90) { lat -= 180; }
+
+      let dict = { latitude: lat, longitude: long };
+      this.setState( {[finalState]: dict});
+
+      if (returnFormattedCoords === true) {
+        return {latitude: lat, longitude: long};
+      }
+    }
+    catch(err) {
+      if(!(err.message.includes("Uneven") || err.message.includes("null"))) {
+        this.setState({errorMessage: <ErrorBanner statusText="Error with input" message={err.message}/>})
+      }
+    }
   }
 
   updateClientSetting(field, value) {
@@ -106,17 +156,20 @@ export default class Application extends Component {
                       createErrorBanner={this.createErrorBanner}/>;
 
       case 'calc':
-        return <Calculator  currentLocation = {this.state.loc}
+        return <Calculator  currentLocation = {this.state.currentLocation}
                             options={this.state.planOptions}
                             settings={this.state.clientSettings}
                             createErrorBanner={this.createErrorBanner}
-                            onLocationChange = {this.onLocationChange}
+                            errorMessage={this.state.errorMessage}
                             locationOrigin = {this.state.origin}
-                            locationDestination={this.state.destination}/>;
+                            locationDestination={this.state.destination}
+                            geolocation={this.geolocation}
+                            formatCoordinates={this.formatCoordinates}/>;
 
       case 'itinerary':
         return <Itinerary options={this.state.planOptions}                             
-                          settings={this.state.clientSettings}/>;
+                          settings={this.state.clientSettings}
+                          formatCoordinates={this.formatCoordinates}/>;
 
       case 'options':
         return <Options options={this.state.planOptions}
@@ -130,7 +183,8 @@ export default class Application extends Component {
         return <Home
                 locationOrigin = {this.state.origin}
                 locationDestination = {this.state.destination}
-
+                currentLocation = {this.state.currentLocation}
+                geolocation = {this.geolocation}
         />;
     }
   }

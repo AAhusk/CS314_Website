@@ -8,6 +8,7 @@ import Pane from './Pane';
 import iconblue from './images/iconblue.png';
 import iconblueD from './images/iconblueD.png';
 import iconred from './images/iconred.png';
+import icongreen from './images/icongreen.png'
 
 export default class LMap extends Component {
   constructor(props) {
@@ -30,19 +31,16 @@ export default class LMap extends Component {
     );
   }
 
-  renderLeafletMap() {
+
     /*
-    How to add multiple markers: https://jsfiddle.net/jpxgwfqd/
-    Adding polylines as dynamic components: https://react-leaflet.js.org/docs/en/components#polyline
+  How to add multiple markers: https://jsfiddle.net/jpxgwfqd/
+  Adding polylines as dynamic components: https://react-leaflet.js.org/docs/en/components#polyline
 
-    This is currently compatible with two locations and one line between them. We
-    will have to restructure how it works if we want to make it so there
-    are many points / many lines.
-
-    Polylines can connect multiple points by just adding another array to the end of its
-    positions argument, and we can create more markers by doing something along the lines of
-    what i posted in the jsfiddle link above.
-     */
+  Polylines can connect multiple points by just adding another array to the end of its
+  positions argument, and we can create more markers by doing something along the lines of
+  what i posted in the jsfiddle link above.
+   */
+  renderLeafletMap() {
 
     let OriginCoords = null;
     let DestCoords = null;
@@ -51,7 +49,6 @@ export default class LMap extends Component {
     let ODPolyline = null;
 
     if (this.props.locationOrigin != null) {
-
       OriginCoords = [this.props.locationOrigin.latitude, this.props.locationOrigin.longitude];
       DestCoords = [this.props.locationDestination.latitude, this.props.locationDestination.longitude];
       ODPolyline = (
@@ -88,7 +85,6 @@ export default class LMap extends Component {
 
     if (this.props.itineraryData != null) {
       pointArr = this.props.itineraryData;
-
       for (let i = 0; i < pointArr.length; i++) {
         MarkerArr.push(
             <Marker key={"Marker"+i}
@@ -101,27 +97,42 @@ export default class LMap extends Component {
               </Popup>
             </Marker>
         );
-
         ItinPolylinepts.push(
             [pointArr[i].origin.latitude, pointArr[i].origin.longitude]
         );
       }
-
       ItinPolylinepts.push([pointArr[0].origin.latitude, pointArr[0].origin.longitude]);
       ItinPolyline = (
           <Polyline positions={ItinPolylinepts}/>
       );
     }
 
+    let currentLocationMarker = null;
+
+    if (this.props.currentLocation != null) {
+      currentLocationMarker = (
+          <Marker key={"CurrentLocationMarker"}
+                  position={L.latLng(this.props.currentLocation.latitude, this.props.currentLocation.longitude)}
+                  icon={this.markerIcon(icongreen)}>
+            <Popup className="font-weight-extrabold">
+              Here I am!<br/>
+              {this.props.currentLocation.latitude} Latitude<br/>
+              {this.props.currentLocation.longitude} Longitude
+            </Popup>
+          </Marker>
+      );
+    }
+
     return (
         // <Map center={this.currentLocation()} zoom={10}
         // <Marker position={this.currentLocation()} zoom={10}
-      <Map center={this.csuOvalGeographicCoordinates()} zoom={15}
+      <Map center={this.csuOvalGeographicCoordinates()} zoom={10}
            style={{height: 500, maxwidth: 700}}>
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                    attribution="&copy; <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"/>
 
-         /* Origin Marker */
+        {currentLocationMarker}
+
         {originMarker}
         {destinationMarker}
         {ODPolyline}
@@ -133,15 +144,6 @@ export default class LMap extends Component {
 
       </Map>
     )
-  }
-
-
-
-  renderIntro() {
-    return(
-      <Pane header={'Bon Voyage!'}
-            bodyJSX={'Let us help you plan your next trip.'}/>
-    );
   }
 
   currentLocation() {
