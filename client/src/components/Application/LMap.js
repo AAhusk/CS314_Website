@@ -8,6 +8,7 @@ import Pane from './Pane';
 import iconblue from './images/iconblue.png';
 import iconblueD from './images/iconblueD.png';
 import iconred from './images/iconred.png';
+import icongreen from './images/icongreen.png'
 
 export default class LMap extends Component {
   constructor(props) {
@@ -30,19 +31,16 @@ export default class LMap extends Component {
     );
   }
 
-  renderLeafletMap() {
+
     /*
-    How to add multiple markers: https://jsfiddle.net/jpxgwfqd/
-    Adding polylines as dynamic components: https://react-leaflet.js.org/docs/en/components#polyline
+  How to add multiple markers: https://jsfiddle.net/jpxgwfqd/
+  Adding polylines as dynamic components: https://react-leaflet.js.org/docs/en/components#polyline
 
-    This is currently compatible with two locations and one line between them. We
-    will have to restructure how it works if we want to make it so there
-    are many points / many lines.
-
-    Polylines can connect multiple points by just adding another array to the end of its
-    positions argument, and we can create more markers by doing something along the lines of
-    what i posted in the jsfiddle link above.
-     */
+  Polylines can connect multiple points by just adding another array to the end of its
+  positions argument, and we can create more markers by doing something along the lines of
+  what i posted in the jsfiddle link above.
+   */
+  renderLeafletMap() {
 
     let OriginCoords = null;
     let DestCoords = null;
@@ -115,7 +113,7 @@ export default class LMap extends Component {
       currentLocationMarker = (
           <Marker key={"CurrentLocationMarker"}
                   position={L.latLng(this.props.currentLocation.latitude, this.props.currentLocation.longitude)}
-                  icon={this.markerIcon(iconred)}>
+                  icon={this.markerIcon(icongreen)}>
             <Popup className="font-weight-extrabold">
               Here I am!<br/>
               {this.props.currentLocation.latitude} Latitude<br/>
@@ -135,12 +133,10 @@ export default class LMap extends Component {
 
         {currentLocationMarker}
 
-         /* Calculator Markers / polyline */
         {originMarker}
         {destinationMarker}
         {ODPolyline}
 
-        /* Itinerary Markers / polyline */
         {MarkerArr.map(marker => (
             marker
         ))}
@@ -148,15 +144,6 @@ export default class LMap extends Component {
 
       </Map>
     )
-  }
-
-
-
-  renderIntro() {
-    return(
-      <Pane header={'Bon Voyage!'}
-            bodyJSX={'Let us help you plan your next trip.'}/>
-    );
   }
 
   currentLocation() {
