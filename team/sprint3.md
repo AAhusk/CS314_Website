@@ -1,9 +1,9 @@
-# Sprint 3 - *your team number* - *your team name*
+# Sprint 3 - *t11* - *Team America*
 
 ## Goal
 
 ### Shorter trips to more places!
-### Sprint Leader: *firstname lastname*
+### Sprint Leader: *Aaron Huskerson*
 
 ## Definition of Done
 
@@ -42,8 +42,13 @@
 
 This sprint will complete the following Epics.
 
-* *#0 epic title: description*
-*
+* *#1: Short Trip*
+* *#2: Distance Units*
+* *#3: Use Logging Facility*
+* *#4: Distance Calculator*
+* *#5: Trips*
+* *#6: System*
+* *#7: TIP v4*
 
 ***(Include a discussion of you plan with key diagrams here and remove this!)***
 
@@ -52,16 +57,16 @@ This sprint will complete the following Epics.
 
 | Statistic | # Planned | # Completed |
 | --- | ---: | ---: |
-| Epics | *value* | *value* |
-| Tasks |  *value*   | *value* | 
-| Story Points |  *value*  | *value* | 
+| Epics | *7* | *value* |
+| Tasks |  *16*   | *value* | 
+| Story Points |  *18*  | *value* | 
 
 
 ## Scrums
 
 | Date | Tasks closed  | Tasks in progress | Impediments |
 | :--- | :--- | :--- | :--- |
-| *date* | *#task, ...* | *#task, ...* | *none* | 
+| *10/7* | *none* | *none* | *Initial Planning and bug fixes* | 
 
 
 ## Review (focus on solution and technology)
