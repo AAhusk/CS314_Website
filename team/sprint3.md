@@ -52,10 +52,12 @@ This sprint will complete the following Epics.
 
 ## Notes and Diagrams
 
-*(Diagram 1 shows the different elements of the webpage, and their respective components in the client) 
-<img src="https://github.com/csucs314f19/t11/blob/Sprint3-Plan/team/images/Sprint3_Diagram1.jpg" />
 * Plan on merging Itinerary tab in Calculator tab
 * Create drop down menu for distance units to reduce back and forth between options tab
+
+![Client Hierarchy](/team/images/ClientHierarchyDiagram.jpeg?raw=true "Client Hierarchy")
+
+![Webpage Elements](/team/images/Sprint3_Diagram1.jpg?raw=true "Webpage Elements")
 
 
 ## Metrics
