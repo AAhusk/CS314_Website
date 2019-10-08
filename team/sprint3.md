@@ -50,7 +50,10 @@ This sprint will complete the following Epics.
 * *#6: System*
 * *#7: TIP v4*
 
-***(Include a discussion of you plan with key diagrams here and remove this!)***
+## Notes and Diagrams
+
+* Plan on merging Itinerary tab in Calculator tab
+* Create drop down menu for distance units to reduce back and forth between options tab
 
 
 ## Metrics
