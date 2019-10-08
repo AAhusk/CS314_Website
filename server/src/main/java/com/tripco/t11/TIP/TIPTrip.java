@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Map;
+// import static java.util.System;
 
 
 /** Defines the TIP distance object.
@@ -21,21 +22,20 @@ import java.util.Map;
  *
  */
 public class TIPTrip extends TIPHeader {
-  private Map origin;
-  private Map destination;
-  private Float earthRadius;
-  private Integer distance;
+  private Integer requestVersion;
+  private Map options;
+  private Map[] places;
+  private Integer[] distances;
 
-  private final transient Logger log = LoggerFactory.getLogger(TIPDistance.class);
+  private final transient Logger log = LoggerFactory.getLogger(TIPTrip.class);
 
 
-  TIPTrip(int version, Map origin, Map destination, float earthRadius) {
+  TIPTrip(int version, Map options, Map[] places, Integer[] distances) {
     this();
     this.requestVersion = version;
-    this.origin = origin;
-    this.destination = destination;
-    this.earthRadius = earthRadius;
-    this.distance = 100;
+    this.options = options;
+    this.places = places;
+    this.distances = distances;
   }
 
 
@@ -46,15 +46,7 @@ public class TIPTrip extends TIPHeader {
 
   @Override
   public void buildResponse() {
-    // GreatCircleDistance distBetween = new GreatCircleDistance(origin, destination, earthRadius);
-    distance = 9999;
     log.trace("buildResponse -> {}", this);
-  }
-
-
-  int getDistance() { // This is where the vincenty equation should be made
-
-    return distance;
   }
 
 }
