@@ -55,13 +55,10 @@ export default class Calculator extends Component {
   createInputField(stateVar, coordinate) {
     let updateStateVarOnChange = (event) => {
       this.updateLocationState(stateVar, event.target.name, event.target.value, false);
-
-      // Call the formatcoordinates method ONLY after setState has flushed its buffer
       this.setState({distance : this.state.distance},
           () => this.inputFieldCallback(stateVar)
       );
     };
-
     let capitalizedCoordinate = coordinate.charAt(0).toUpperCase() + coordinate.slice(1);
     if(stateVar.charAt(9) === 'O' && coordinate === 'latitude' && this.state.origin.latitude !== 1) {
       return (
