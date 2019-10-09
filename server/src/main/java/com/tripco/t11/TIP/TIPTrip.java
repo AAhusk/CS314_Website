@@ -1,41 +1,28 @@
 package com.tripco.t11.TIP;
 
 import com.tripco.t11.misc.GreatCircleDistance;
+import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Map;
-// import static java.util.System;
+import java.util.Arrays;
+import java.util.List;
 
 
-/** Defines the TIP distance object.
- *
- * For use with restful API services,
- * An object is created from the request JSON by the MicroServer using GSON.
- * The buildResponse method is called to determine the distance.
- * The MicroServer constructs the response JSON from the object using GSON.
- *
- * For unit testing purposes,
- * An object is created using the constructor below with appropriate parameters.
- * The buildResponse method is called to determine the distance.
- * The getDistance method is called to obtain the distance value for comparisons.
- *
- */
 public class TIPTrip extends TIPHeader {
-  private Integer requestVersion;
   private Map options;
-  private Map[] places;
-  private Integer[] distances;
+  private List<Map> places;
+  private List<Integer> distances;
 
   private final transient Logger log = LoggerFactory.getLogger(TIPTrip.class);
 
 
-  TIPTrip(int version, Map options, Map[] places, Integer[] distances) {
-    this();
+  TIPTrip(int version, Map options, List<Map> places, List<Integer> distances) {
     this.requestVersion = version;
     this.options = options;
     this.places = places;
-    this.distances = distances;
+//    this.distances = Arrays.asList(1 , 2, 3);
   }
 
 
@@ -46,6 +33,7 @@ public class TIPTrip extends TIPHeader {
 
   @Override
   public void buildResponse() {
+    distances = Arrays.asList(1 , 2, 3);
     log.trace("buildResponse -> {}", this);
   }
 
