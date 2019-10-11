@@ -60,6 +60,7 @@ export default class Calculator extends Component {
       );
     };
     let capitalizedCoordinate = coordinate.charAt(0).toUpperCase() + coordinate.slice(1);
+    //console.log(stateVar + capitalizedCoordinate);
     return (
         <Input name={coordinate} placeholder={capitalizedCoordinate}
                id={`${stateVar}${capitalizedCoordinate}`}
@@ -70,7 +71,6 @@ export default class Calculator extends Component {
 
   inputFieldCallback(stateVar) {
     this.props.formatCoordinates(this.state[stateVar], stateVar); // Update Parent data
-
     let finalState = '';  // Update local data
     if (stateVar.charAt(9) === 'O') {finalState = 'origin';}
     else {finalState = 'destination';}

@@ -56,16 +56,16 @@ function simulateOnChangeEvent(inputIndex, reactWrapper) {
   let event = {target: {name: eventName, value: inputIndex}};
   switch(inputIndex) {
     case 0:
-      reactWrapper.find('#originLatitude').at(0).simulate('change', event);
+      reactWrapper.find('#rawStringOLatitude').at(0).simulate('change', event);
       break;
     case 1:
-      reactWrapper.find('#originLatitude').at(0).simulate('change', event);
+      reactWrapper.find('#rawStringOLongitude').at(0).simulate('change', event);
       break;
     case 2:
-      reactWrapper.find('#destinationLatitude').at(0).simulate('change', event);
+      reactWrapper.find('#rawStringDLatitude').at(0).simulate('change', event);
       break;
     case 3:
-      reactWrapper.find('#destinationLongitude').at(0).simulate('change', event);
+      reactWrapper.find('#rawStringDLongitude').at(0).simulate('change', event);
       break;
     default:
   }
