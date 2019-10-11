@@ -60,31 +60,12 @@ export default class Calculator extends Component {
       );
     };
     let capitalizedCoordinate = coordinate.charAt(0).toUpperCase() + coordinate.slice(1);
-    if(stateVar.charAt(9) === 'O' && coordinate === 'latitude' && this.state.origin.latitude !== 1) {
-      return (
-          <Input name={coordinate} placeholder={capitalizedCoordinate}
-                 id={`${stateVar}${capitalizedCoordinate}`}
-                 value={this.state.rawStringO.latitude}
-                 onChange={updateStateVarOnChange}
-                 style={{width: "100%"}}/>
-      )
-    } else if(stateVar.charAt(9) === 'O' && coordinate === 'longitude' && this.state.origin.longitude !== 1) {
-      return (
-          <Input name={coordinate} placeholder={capitalizedCoordinate}
-                 id={`${stateVar}${capitalizedCoordinate}`}
-                 value={this.state.rawStringO.longitude}
-                 onChange={updateStateVarOnChange}
-                 style={{width: "100%"}}/>
-      )
-    } else {
-      return (
-          <Input name={coordinate} placeholder={capitalizedCoordinate}
-                 id={`${stateVar}${capitalizedCoordinate}`}
-
-                 onChange={updateStateVarOnChange}
-                 style={{width: "100%"}}/>
-      )
-    }
+    return (
+        <Input name={coordinate} placeholder={capitalizedCoordinate}
+               id={`${stateVar}${capitalizedCoordinate}`}
+               onChange={updateStateVarOnChange}
+               style={{width: "100%"}}/>
+    );
   }
 
   inputFieldCallback(stateVar) {
