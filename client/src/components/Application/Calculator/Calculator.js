@@ -13,7 +13,6 @@ export default class Calculator extends Component {
     this.updateLocationState = this.updateLocationState.bind(this);
     this.calculateDistance = this.calculateDistance.bind(this);
     this.createInputField = this.createInputField.bind(this);
-    this.formatCoordinates = this.formatCoordinates.bind(this);
 
     this.state = {
       origin: this.props.locationOrigin,
