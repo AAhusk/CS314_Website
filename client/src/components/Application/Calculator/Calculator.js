@@ -70,7 +70,7 @@ export default class Calculator extends Component {
   }
 
   inputFieldCallback(stateVar) {
-    this.props.formatCoordinates(this.state[stateVar], stateVar); // Update Parent data
+    this.props.formatCoordinates(this.state[stateVar], stateVar, false); // Update Parent data
     let finalState = '';  // Update local data
     if (stateVar.charAt(9) === 'O') {finalState = 'origin';}
     else {finalState = 'destination';}
