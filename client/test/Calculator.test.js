@@ -6,7 +6,7 @@ import Calculator from '../src/components/Application/Calculator/Calculator';
 
 const startProperties = {
   'options': {
-    'units': {'miles': 3959, 'kilometers': 6371},
+    'units':  {"kilometers": 6371, "miles": 3959, "nautical miles": 3440},
     'activeUnit': 'miles',
     'serverPort': 'black-bottle.cs.colostate.edu:31400'
   }
