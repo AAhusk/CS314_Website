@@ -54,7 +54,7 @@ export default class Calculator extends Component {
 
   createInputField(stateVar, coordinate) {
     let updateStateVarOnChange = (event) => {
-      this.updateLocationState(stateVar, event.target.name, event.target.value, false);
+      this.updateLocationState(stateVar, event.target.name, event.target.value);
       this.setState({distance : this.state.distance},
           () => this.inputFieldCallback(stateVar)
       );
@@ -128,21 +128,9 @@ export default class Calculator extends Component {
         });
   }
 
-  updateLocationState(stateVar, field, value, currentLocationButton) {
+  updateLocationState(stateVar, field, value) {
     let location = Object.assign({}, this.state[stateVar]);
     location[field] = value;
     this.setState({[stateVar]: location});
-    if (currentLocationButton === true) {
-      if (field === 'latitude') {
-        this.setState({
-          rawStringO: {latitude: value}
-        });
-      }
-      if (field === 'longitude') {
-        this.setState({
-          rawStringO: {longitude: value}
-        });
-      }
-    }
   }
 }
