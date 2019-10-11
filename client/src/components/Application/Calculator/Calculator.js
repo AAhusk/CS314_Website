@@ -5,6 +5,7 @@ import {Form, Input} from 'reactstrap'
 import {sendServerRequestWithBody} from '../../../api/restfulAPI'
 import Pane from '../Pane';
 import LMap from "../LMap";
+import ErrorBanner from "../ErrorBanner";
 
 export default class Calculator extends Component {
   constructor(props) {
@@ -26,6 +27,7 @@ export default class Calculator extends Component {
 
   render() {
     return (
+
         <Container>
           {this.state.errorMessage}
           <Card>
@@ -70,12 +72,48 @@ export default class Calculator extends Component {
   }
 
   inputFieldCallback(stateVar) {
-    this.props.formatCoordinates(this.state[stateVar], stateVar); // Update Parent data
+    this.formatCoordinates(this.state[stateVar], stateVar); // Update Parent data
     let finalState = '';  // Update local data
     if (stateVar.charAt(9) === 'O') {finalState = 'origin';}
     else {finalState = 'destination';}
     this.setState({[finalState]: finalState === 'origin' ? this.props.locationOrigin : this.props.locationDestination})
   }
+
+  formatCoordinates(rawString, stateVar, returnFormattedCoords = false) { // Input would look like {latitude: '40.123N', longitude: '-74.123W}, "rawStringO"
+    // If returnFormattedCoords is false, it just updates the state
+
+    this.setState({errorMessage: null});
+    const Coordinates = require('coordinate-parser');
+    try {
+      let coords = new Coordinates(rawString.latitude + "," + rawString.longitude);
+      let finalState = null;
+
+      if (stateVar === 'rawStringO') {finalState = 'origin';}
+      else if (stateVar === 'rawStringD') {finalState = 'destination';}
+      //else { finalState = null }
+
+      let lat = coords.getLatitude();
+      let long = coords.getLongitude();
+
+      while (long < -180) { long += 360; }
+      while (long > 180) { long -= 360; }
+      while (lat < -90) { lat += 180; }
+      while (lat > 90) { lat -= 180; }
+
+      let dict = { latitude: lat, longitude: long };
+      this.setState( {[finalState]: dict});
+
+      if (returnFormattedCoords === true) {
+        return {latitude: lat, longitude: long};
+      }
+    }
+    catch(err) {
+      if(!(err.message.includes("Uneven") || err.message.includes("null"))) {
+        this.setState({errorMessage: <ErrorBanner statusText="Error with input" message={err.message}/>})
+      }
+    }
+  }
+
   createForm(stateVar) {
     return (
         <Pane header={(stateVar.charAt(9) === 'O') ? 'Origin' : 'Destination'}
