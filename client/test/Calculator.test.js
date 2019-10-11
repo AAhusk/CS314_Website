@@ -36,7 +36,7 @@ function testCreateInputFields() {
 /* Tests that createForm() correctly renders 4 Input components */
 test('Testing the createForm() function in Calculator', testCreateInputFields);
 
-function testInputsOnChange() {
+/*function testInputsOnChange() {
   const calculator = mount((
       <Calculator options={startProperties.options}/>
   ));
@@ -49,7 +49,7 @@ function testInputsOnChange() {
   expect(calculator.state().origin.longitude).toEqual(1);
   expect(calculator.state().destination.latitude).toEqual(2);
   expect(calculator.state().destination.longitude).toEqual(3);
-}
+}*/
 
 /*function simulateOnChangeEvent(inputIndex, reactWrapper) {
   let eventName = (inputIndex % 2 === 0) ? 'latitude' : 'longitude';
