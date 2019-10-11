@@ -51,7 +51,7 @@ function testInputsOnChange() {
   expect(calculator.state().destination.longitude).toEqual(3);
 }
 
-function simulateOnChangeEvent(inputIndex, reactWrapper) {
+/*function simulateOnChangeEvent(inputIndex, reactWrapper) {
   let eventName = (inputIndex % 2 === 0) ? 'latitude' : 'longitude';
   let event = {target: {name: eventName, value: inputIndex}};
   switch(inputIndex) {
@@ -70,7 +70,7 @@ function simulateOnChangeEvent(inputIndex, reactWrapper) {
     default:
   }
   reactWrapper.update();
-}
+}*/
 
 /* Loop through the Input indexes and simulate an onChange event with the index
  * as the input. To simulate the change, an event object needs to be created
