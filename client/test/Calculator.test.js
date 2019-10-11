@@ -36,7 +36,7 @@ function testCreateInputFields() {
 /* Tests that createForm() correctly renders 4 Input components */
 test('Testing the createForm() function in Calculator', testCreateInputFields);
 
-/*function testInputsOnChange() {
+function testInputsOnChange() {
   const calculator = mount((
       <Calculator options={startProperties.options}/>
   ));
@@ -49,9 +49,9 @@ test('Testing the createForm() function in Calculator', testCreateInputFields);
   expect(calculator.state().origin.longitude).toEqual(1);
   expect(calculator.state().destination.latitude).toEqual(2);
   expect(calculator.state().destination.longitude).toEqual(3);
-}*/
+}
 
-/*function simulateOnChangeEvent(inputIndex, reactWrapper) {
+function simulateOnChangeEvent(inputIndex, reactWrapper) {
   let eventName = (inputIndex % 2 === 0) ? 'latitude' : 'longitude';
   let event = {target: {name: eventName, value: inputIndex}};
   switch(inputIndex) {
@@ -70,7 +70,7 @@ test('Testing the createForm() function in Calculator', testCreateInputFields);
     default:
   }
   reactWrapper.update();
-}*/
+}
 
 /* Loop through the Input indexes and simulate an onChange event with the index
  * as the input. To simulate the change, an event object needs to be created
