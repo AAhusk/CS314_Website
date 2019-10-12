@@ -18,13 +18,9 @@ export default class Options extends Component{
         <Container>
           <Card className = 'text-center'>
             <CardHeader className='bg-csu-gold text-white font-weight-semibold'>Options</CardHeader>
-              <Row>
-                <Col xs="12" sm="9" md="6" lg="4" xl="4">
-                  <Units options={this.props.options}
-                         activeUnit={this.props.options.activeUnit}
-                         updateOption={this.props.updateOption}/>
-                </Col>
-              </Row>
+                <Units options={this.props.options}
+                       activeUnit={this.props.options.activeUnit}
+                       updateOption={this.props.updateOption}/>
           </Card>
         </Container>
     )
