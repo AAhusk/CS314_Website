@@ -1,7 +1,8 @@
 import './enzyme.config.js';
 import React from 'react';
-import {mount} from 'enzyme';
+import {shallow, mount} from 'enzyme';
 import Calculator from '../src/components/Application/Calculator/Calculator';
+import Application from '../src/components/Application/Application';
 
 
 const startProperties = {
@@ -13,8 +14,11 @@ const startProperties = {
 };
 
 function testCreateInputFields() {
+  //let formatCoordinates = function () {}
   const calculator = mount((
-      <Calculator options={startProperties.options}/>
+      <Calculator options={startProperties.options}
+                  formatCoordinates={Application.formatCoordinates}
+      />
   ));
 
   let numberOfInputs = calculator.find('Input').length;
@@ -38,39 +42,26 @@ test('Testing the createForm() function in Calculator', testCreateInputFields);
 
 function testInputsOnChange() {
   const calculator = mount((
-      <Calculator options={startProperties.options}/>
+      <Calculator options={startProperties.options}
+                  formatCoordinates={Application.formatCoordinates}
+      />
   ));
 
+  let application = mount (
+    <Application page={'calc'}  />
+  );
+
   for (let inputIndex = 0; inputIndex < 4; inputIndex++){
-    simulateOnChangeEvent(inputIndex, calculator);
+    simulateOnChangeEvent(inputIndex, application);
   }
 
-  expect(calculator.state().origin.latitude).toEqual(0);
-  expect(calculator.state().origin.longitude).toEqual(1);
-  expect(calculator.state().destination.latitude).toEqual(2);
-  expect(calculator.state().destination.longitude).toEqual(3);
+  expect(application.state().origin.latitude).toEqual(0);
+  expect(application.state().origin.longitude).toEqual(1);
+  expect(application.state().destination.latitude).toEqual(2);
+  expect(application.state().destination.longitude).toEqual(3);
 }
 
-function simulateOnChangeEvent(inputIndex, reactWrapper) {
-  let eventName = (inputIndex % 2 === 0) ? 'latitude' : 'longitude';
-  let event = {target: {name: eventName, value: inputIndex}};
-  switch(inputIndex) {
-    case 0:
-      reactWrapper.find('#rawStringOLatitude').at(0).simulate('change', event);
-      break;
-    case 1:
-      reactWrapper.find('#rawStringOLongitude').at(0).simulate('change', event);
-      break;
-    case 2:
-      reactWrapper.find('#rawStringDLatitude').at(0).simulate('change', event);
-      break;
-    case 3:
-      reactWrapper.find('#rawStringDLongitude').at(0).simulate('change', event);
-      break;
-    default:
-  }
-  reactWrapper.update();
-}
+
 
 /* Loop through the Input indexes and simulate an onChange event with the index
  * as the input. To simulate the change, an event object needs to be created
@@ -87,4 +78,3 @@ function simulateOnChangeEvent(inputIndex, reactWrapper) {
  * https://airbnb.io/enzyme/docs/api/ReactWrapper/props.html
  * https://airbnb.io/enzyme/docs/api/ReactWrapper/find.html
  */
-test('Testing the onChange event of longitude Input in Calculator', testInputsOnChange);
