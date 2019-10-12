@@ -108,6 +108,7 @@ export default class Application extends Component {
     }
   }
 
+
   updateClientSetting(field, value) {
     if(field === 'serverPort')
       this.setState({clientSettings: {serverPort: value}}, this.updateServerConfig);

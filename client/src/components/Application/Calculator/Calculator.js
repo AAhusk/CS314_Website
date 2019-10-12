@@ -5,6 +5,7 @@ import {Form, Input} from 'reactstrap'
 import {sendServerRequestWithBody} from '../../../api/restfulAPI'
 import Pane from '../Pane';
 import LMap from "../LMap";
+import ErrorBanner from "../ErrorBanner";
 
 export default class Calculator extends Component {
   constructor(props) {
@@ -26,6 +27,7 @@ export default class Calculator extends Component {
 
   render() {
     return (
+
         <Container>
           {this.state.errorMessage}
           <Card>
@@ -54,47 +56,29 @@ export default class Calculator extends Component {
 
   createInputField(stateVar, coordinate) {
     let updateStateVarOnChange = (event) => {
-      this.updateLocationState(stateVar, event.target.name, event.target.value, false);
+      this.updateLocationState(stateVar, event.target.name, event.target.value);
       this.setState({distance : this.state.distance},
           () => this.inputFieldCallback(stateVar)
       );
     };
     let capitalizedCoordinate = coordinate.charAt(0).toUpperCase() + coordinate.slice(1);
-    if(stateVar.charAt(9) === 'O' && coordinate === 'latitude' && this.state.origin.latitude !== 1) {
-      return (
-          <Input name={coordinate} placeholder={capitalizedCoordinate}
-                 id={`${stateVar}${capitalizedCoordinate}`}
-                 value={this.state.rawStringO.latitude}
-                 onChange={updateStateVarOnChange}
-                 style={{width: "100%"}}/>
-      )
-    } else if(stateVar.charAt(9) === 'O' && coordinate === 'longitude' && this.state.origin.longitude !== 1) {
-      return (
-          <Input name={coordinate} placeholder={capitalizedCoordinate}
-                 id={`${stateVar}${capitalizedCoordinate}`}
-                 value={this.state.rawStringO.longitude}
-                 onChange={updateStateVarOnChange}
-                 style={{width: "100%"}}/>
-      )
-    } else {
-      return (
-          <Input name={coordinate} placeholder={capitalizedCoordinate}
-                 id={`${stateVar}${capitalizedCoordinate}`}
-
-                 onChange={updateStateVarOnChange}
-                 style={{width: "100%"}}/>
-      )
-    }
+    //console.log(stateVar + capitalizedCoordinate);
+    return (
+        <Input name={coordinate} placeholder={capitalizedCoordinate}
+               id={`${stateVar}${capitalizedCoordinate}`}
+               onChange={updateStateVarOnChange}
+               style={{width: "100%"}}/>
+    );
   }
 
   inputFieldCallback(stateVar) {
     this.props.formatCoordinates(this.state[stateVar], stateVar); // Update Parent data
-
     let finalState = '';  // Update local data
     if (stateVar.charAt(9) === 'O') {finalState = 'origin';}
     else {finalState = 'destination';}
     this.setState({[finalState]: finalState === 'origin' ? this.props.locationOrigin : this.props.locationDestination})
   }
+
   createForm(stateVar) {
     return (
         <Pane header={(stateVar.charAt(9) === 'O') ? 'Origin' : 'Destination'}
@@ -147,21 +131,9 @@ export default class Calculator extends Component {
         });
   }
 
-  updateLocationState(stateVar, field, value, currentLocationButton) {
+  updateLocationState(stateVar, field, value) {
     let location = Object.assign({}, this.state[stateVar]);
     location[field] = value;
     this.setState({[stateVar]: location});
-    if (currentLocationButton === true) {
-      if (field === 'latitude') {
-        this.setState({
-          rawStringO: {latitude: value}
-        });
-      }
-      if (field === 'longitude') {
-        this.setState({
-          rawStringO: {longitude: value}
-        });
-      }
-    }
   }
 }
