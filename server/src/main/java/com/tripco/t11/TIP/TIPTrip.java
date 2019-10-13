@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Map;
 import java.util.Arrays;
-import java.util.List;
+
 
 
 public class TIPTrip extends TIPHeader {
@@ -41,10 +41,26 @@ public class TIPTrip extends TIPHeader {
   List<Integer> getDistances(){
 
     if(this.distances == null){
-      return Arrays.asList(1 , 2, 3);
+      return createDistances();
     }
 
     return this.distances;
+  }
+
+  List<Integer> createDistances(){
+    Integer[] distances = new Integer[this.places.size()];
+    float earthRadius = Float.parseFloat(options.get("earthRadius").toString());
+    int lastIndex = places.size() - 1;
+
+    for( int i=0; i<lastIndex; i++ ){
+      GreatCircleDistance distBetween = new GreatCircleDistance(places.get(i), places.get(i+1), earthRadius);
+      distances[i]= distBetween.CalculateDistance();
+    }
+
+    GreatCircleDistance distBetween = new GreatCircleDistance(places.get(lastIndex), places.get(0), earthRadius);
+    distances[lastIndex]= distBetween.CalculateDistance();
+
+    return Arrays.asList(distances);
   }
 
 }
