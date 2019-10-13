@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
-import {Card} from 'reactstrap'
+import {Card, Container} from 'reactstrap'
+import {sendServerRequestWithBody} from '../../../api/restfulAPI'
 
 const green = '#bef7ba';
 const red = '#f7b0b0';
@@ -11,17 +12,21 @@ export default class FileInput extends Component {
     super(props);
 
     this.fileSelectHandler = this.fileSelectHandler.bind(this);
+    this.serverRequest = this.serverRequest.bind(this);
 
     this.state = {
       backgroundColor: white,
+      errorMessage: this.props.errorMessage
     }
   }
 
   render() {
     return (
-      <Card style={{backgroundColor: this.state.backgroundColor}}>
-        <input type="file" onChange={(event) => this.fileSelectHandler(event)}/>
-      </Card>
+      // <Container>
+        <Card style={{backgroundColor: this.state.backgroundColor}}>
+          <input type="file" onChange={(event) => this.fileSelectHandler(event)}/>
+        </Card>
+      // </Container>
     );
   }
 
@@ -34,9 +39,7 @@ export default class FileInput extends Component {
       
       try{
         let trip = JSON.parse(read.result);
-        var itineraryData = this.formatTripData(trip);
-        this.setState({ backgroundColor: green });
-        this.props.onFileSelect(trip, itineraryData);
+        this.serverRequest(trip);
       }
       
       catch(err){
@@ -44,6 +47,22 @@ export default class FileInput extends Component {
         this.setState({ backgroundColor: red });
       }
     }
+  }
+
+  serverRequest(trip){
+    sendServerRequestWithBody('trip', trip, this.props.settings.serverPort)
+      .then((response) => {
+
+        if (response.statusCode >= 200 && response.statusCode <= 299){
+          var itineraryData = this.formatTripData(response.body);
+          this.setState({ backgroundColor: green });
+          this.props.onFileSelect(trip, itineraryData);
+        }
+
+        else{
+          this.props.errorHandler(response.statusText, response.statusCode);
+        }
+    });
   }
 
   formatTripData(trip){

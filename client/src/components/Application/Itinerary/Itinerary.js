@@ -10,23 +10,28 @@ export default class Itinerary extends Component {
     super(props);
     
     this.onFileSelect = this.onFileSelect.bind(this);
+    this.errorHandler = this.errorHandler.bind(this);
 
     this.state = {
       trip: null,
       itineraryData: null,
-      points: null
+      points: null,
       // points: { {"latitude": 50, "longitude": 30}, {}, {}, ... }
+      errorMessage: this.props.errorMessage
     }
   }
 
   render() {
     return (
         <Container>
+          {/* {this.state.errorMessage} */}
           <LMap itineraryData={this.state.itineraryData}/>
           <Card>
             <CardHeader>Itinerary</CardHeader>   
             <FileInput  onFileSelect={this.onFileSelect}
-                        formatCoordinates={this.props.formatCoordinates}/>
+                        formatCoordinates={this.props.formatCoordinates}
+                        settings={this.props.settings}
+                        errorHandler={this.errorHandler}/>
           </Card>
           <Card>
             <ItineraryTable itineraryData={this.state.itineraryData}/>           
@@ -46,5 +51,15 @@ export default class Itinerary extends Component {
     //   trip: trip,
     //   itineraryData: itineraryData,
     // });
+  }
+
+  errorHandler(statusText, statusCode){
+    this.setState({
+      errorMessage: this.props.createErrorBanner(
+        statusText,
+        statusCode,
+        `Request to ${this.props.settings.serverPort} failed.`
+      )
+    });
   }
 }

@@ -169,6 +169,8 @@ export default class Application extends Component {
       case 'itinerary':
         return <Itinerary options={this.state.planOptions}                             
                           settings={this.state.clientSettings}
+                          createErrorBanner={this.createErrorBanner}
+                          errorMessage={this.state.errorMessage}
                           formatCoordinates={this.formatCoordinates}/>;
 
       case 'options':
