@@ -5,6 +5,7 @@ import com.google.gson.Gson;
 import com.tripco.t11.TIP.TIPConfig;
 import com.tripco.t11.TIP.TIPDistance;
 import com.tripco.t11.TIP.TIPHeader;
+import com.tripco.t11.TIP.TIPTrip;
 
 import java.lang.reflect.Type;
 
@@ -62,6 +63,7 @@ class MicroServer {
   private void processRestfulAPIrequests() {
     Spark.get("/api/config", this::processTIPconfigRequest);
     Spark.post("/api/distance", this::processTIPdistanceRequest);
+    Spark.post("/api/trip", this::processTIPtripRequest);
     Spark.get("/api/echo", this::echoHTTPrequest);
     Spark.get("/api/shorttrip", this::processTIPShortDistancesRequest);
 
@@ -94,6 +96,10 @@ class MicroServer {
 
   private String processTIPdistanceRequest(Request request, Response response) {
     return processTIPrequest(TIPDistance.class, request, response);
+  }
+
+  private String processTIPtripRequest(Request request, Response response) {
+    return processTIPrequest(TIPTrip.class, request, response);
   }
 
 

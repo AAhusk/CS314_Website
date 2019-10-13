@@ -17,6 +17,7 @@ import ErrorBanner from './ErrorBanner';
 export default class Application extends Component {
   constructor(props){
     super(props);
+
     this.updatePlanOption = this.updatePlanOption.bind(this);
     this.updateClientSetting = this.updateClientSetting.bind(this);
     this.createApplicationPage = this.createApplicationPage.bind(this);
@@ -30,12 +31,19 @@ export default class Application extends Component {
         units: {'miles':3959, 'kilometers':6371, 'nautical miles':3440},
         activeUnit: 'miles'
       },
-      clientSettings: { serverPort: getOriginalServerPort() },
+      clientSettings: {
+        serverPort: getOriginalServerPort()
+      },
       errorMessage: null,
       currentLocation: null,
-
-      origin: { latitude: 1, longitude: 1},
-      destination: { latitude: 1, longitude: 1}
+      origin: {
+        latitude: 1,
+        longitude: 1
+      },
+      destination: {
+        latitude: 1,
+        longitude: 1
+      }
     };
 
     this.updateServerConfig();
@@ -108,7 +116,6 @@ export default class Application extends Component {
     }
   }
 
-
   updateClientSetting(field, value) {
     if(field === 'serverPort')
       this.setState({clientSettings: {serverPort: value}}, this.updateServerConfig);
@@ -162,10 +169,13 @@ export default class Application extends Component {
       case 'itinerary':
         return <Itinerary options={this.state.planOptions}                             
                           settings={this.state.clientSettings}
+                          createErrorBanner={this.createErrorBanner}
+                          errorMessage={this.state.errorMessage}
                           formatCoordinates={this.formatCoordinates}
-                          serverPort={this.state.clientSettings.serverPort}/>;
+                          serverPort={this.state.clientSettings.serverPort}/>;/>;
 
-      case 'options':
+
+        case 'options':
         return <Options options={this.state.planOptions}
                         config={this.state.serverConfig}
                         updateOption={this.updatePlanOption}/>;
