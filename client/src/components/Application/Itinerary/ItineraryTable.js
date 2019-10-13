@@ -9,7 +9,8 @@ export default class ItineraryTable extends React.Component {
     // this.formatTripData = this.formatTripData.bind(this);
 
     this.state = {
-      itineraryData: null
+      itineraryData: null,
+      totalDistance: null
     };
   }
   
@@ -35,7 +36,15 @@ export default class ItineraryTable extends React.Component {
           
           <tbody>
             {this.props.itineraryData.map(this.renderTripItinerary)}
-          </tbody>    
+          </tbody>
+
+          <tbody>
+            <tr>
+              <th></th>
+              <th>Total Distance</th>
+              <th>{this.props.totalDistance}</th>
+            </tr>
+          </tbody>   
         </Table>
       );
     }

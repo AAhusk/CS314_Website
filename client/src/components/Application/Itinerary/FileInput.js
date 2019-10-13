@@ -22,11 +22,9 @@ export default class FileInput extends Component {
 
   render() {
     return (
-      // <Container>
         <Card style={{backgroundColor: this.state.backgroundColor}}>
           <input type="file" onChange={(event) => this.fileSelectHandler(event)}/>
         </Card>
-      // </Container>
     );
   }
 
@@ -55,8 +53,9 @@ export default class FileInput extends Component {
 
         if (response.statusCode >= 200 && response.statusCode <= 299){
           var itineraryData = this.formatTripData(response.body);
+          var totalDistance = this.calculateTotalDistance(response.body.distances)
           this.setState({ backgroundColor: green });
-          this.props.onFileSelect(trip, itineraryData);
+          this.props.onFileSelect(trip, itineraryData, totalDistance);
         }
 
         else{
@@ -94,6 +93,16 @@ export default class FileInput extends Component {
     }
   
     return itineraryData;
+  }
+
+  calculateTotalDistance(distances){ 
+    var sum = 0;
+
+    distances.map((distance) => {
+      sum =  sum + distance;
+    });
+
+    return sum;
   }
 
 
