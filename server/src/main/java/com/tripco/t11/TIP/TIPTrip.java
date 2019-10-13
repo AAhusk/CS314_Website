@@ -22,7 +22,7 @@ public class TIPTrip extends TIPHeader {
     this.requestVersion = version;
     this.options = options;
     this.places = places;
-//    this.distances = Arrays.asList(1 , 2, 3);
+    this.distances = distances;
   }
 
 
@@ -33,8 +33,18 @@ public class TIPTrip extends TIPHeader {
 
   @Override
   public void buildResponse() {
-    distances = Arrays.asList(1 , 2, 3);
+    this.distances = this.getDistances();
     log.trace("buildResponse -> {}", this);
+  } 
+
+  
+  List<Integer> getDistances(){
+
+    if(this.distances == null){
+      return Arrays.asList(1 , 2, 3);
+    }
+
+    return this.distances;
   }
 
 }
