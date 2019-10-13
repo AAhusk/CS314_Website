@@ -8,6 +8,7 @@ import com.tripco.t11.TIP.TIPHeader;
 
 import java.lang.reflect.Type;
 
+import com.tripco.t11.TIP.TIPShortDistances;
 import spark.Request;
 import spark.Response;
 import spark.Spark;
@@ -62,6 +63,8 @@ class MicroServer {
     Spark.get("/api/config", this::processTIPconfigRequest);
     Spark.post("/api/distance", this::processTIPdistanceRequest);
     Spark.get("/api/echo", this::echoHTTPrequest);
+    Spark.get("/api/shorttrip", this::processTIPShortDistancesRequest);
+
     log.trace("Restful configuration complete");
   }
 
@@ -85,8 +88,9 @@ class MicroServer {
     }
   }
 
-
-
+  private String processTIPShortDistancesRequest(Request request, Response response) {
+    return processTIPrequest(TIPShortDistances.class, request, response);
+  }
 
   private String processTIPdistanceRequest(Request request, Response response) {
     return processTIPrequest(TIPDistance.class, request, response);

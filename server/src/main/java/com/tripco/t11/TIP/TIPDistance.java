@@ -19,6 +19,9 @@ import java.util.Map;
  * The buildResponse method is called to determine the distance.
  * The getDistance method is called to obtain the distance value for comparisons.
  *
+ * The TIPDistance object is created to act as a proxy to the GreatCircleDistance
+ * Class defind in ../misc  , and can be used for any other classes (like GCD) that
+ * only use a single origin, destination, and earthRadius as inputs.
  */
 public class TIPDistance extends TIPHeader {
   private Map origin;
@@ -35,7 +38,7 @@ public class TIPDistance extends TIPHeader {
     this.origin = origin;
     this.destination = destination;
     this.earthRadius = earthRadius;
-    this.distance = 100;
+    this.distance = 100; // What gets returned
   }
 
 

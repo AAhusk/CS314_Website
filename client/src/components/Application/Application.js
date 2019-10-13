@@ -162,7 +162,8 @@ export default class Application extends Component {
       case 'itinerary':
         return <Itinerary options={this.state.planOptions}                             
                           settings={this.state.clientSettings}
-                          formatCoordinates={this.formatCoordinates}/>;
+                          formatCoordinates={this.formatCoordinates}
+                          serverPort={this.state.clientSettings.serverPort}/>;
 
       case 'options':
         return <Options options={this.state.planOptions}

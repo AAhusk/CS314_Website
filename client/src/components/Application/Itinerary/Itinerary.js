@@ -29,7 +29,8 @@ export default class Itinerary extends Component {
                         formatCoordinates={this.props.formatCoordinates}/>
           </Card>
           <Card>
-            <ItineraryTable itineraryData={this.state.itineraryData}/>           
+            <ItineraryTable itineraryData={this.state.itineraryData}
+                            serverPort={this.props.serverPort}/>
           </Card>
         </Container>
     );
