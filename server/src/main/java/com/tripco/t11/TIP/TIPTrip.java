@@ -41,14 +41,14 @@ public class TIPTrip extends TIPHeader {
     log.trace("buildResponse -> {}", this);
   } 
 
-  List<Integer> getDistances(){
+  private List<Integer> getDistances(){
     if(this.distances == null){
       return createDistances();
     }
     return this.distances;
   }
 
-  List<Integer> createDistances() {
+  private List<Integer> createDistances() {
     Integer[] distances = new Integer[this.places.size()];
     double earthRadius = Double.parseDouble(options.get("earthRadius").toString());
     int lastIndex = places.size() - 1;
@@ -64,14 +64,22 @@ public class TIPTrip extends TIPHeader {
     return Arrays.asList(distances);
   }
 
-  List<Map> nearestNeighborOptimization() {
-    Integer[] tour = new Integer[this.places.size()];
-    boolean[] unvisitedCities = new boolean[this.places.size()-1];
-    Integer[][] distanceMatrix = new Integer[this.places.size()][this.places.size()];
-    double earthRadius = Double.parseDouble(options.get("earthRadius").toString());
+  private int findClosestNeighbor(int[] distances, boolean[] unvisitedCities) {
+    int smallest = Integer.MAX_VALUE;
+    int smallestIndex = 0;
+    for (int i = 0; i < distances.length; i++) {
+      if (smallest > distances[i] && distances[i] != 0 && unvisitedCities[i]) {
+        smallest = distances[i];
+        smallestIndex = i;
+      }
+    }
 
-    tour[0] = 0;
-    unvisitedCities[0] = true;
+    return smallestIndex;
+  }
+
+  private List<Map> nearestNeighborOptimization() {
+    int[][] distanceMatrix = new int[this.places.size()][this.places.size()];
+    double earthRadius = Double.parseDouble(options.get("earthRadius").toString());
 
     // Set up the distance matrix
     for (int i = 0; i < this.places.size(); i++) {
@@ -86,20 +94,39 @@ public class TIPTrip extends TIPHeader {
       }
     }
 
-    for (int i = 0; i < this.places.size(); i++) {
+    int[] bestTour = new int[this.places.size()];
+    int bestDistance = 0;
+    for (int startingCity = 0; startingCity < this.places.size(); startingCity++) {
+      int[] tour = new int[this.places.size()];
+      boolean[] unvisitedCities = new boolean[this.places.size()];
+      int lastCity = startingCity;
+      int tourindex = 1;
+      int tourDistance = 0;
 
+      Arrays.fill(unvisitedCities, true);
+      unvisitedCities[startingCity] = false;
+      tour[0] = startingCity;
+
+      for (int unvisitedCitiesCount = this.places.size() - 1; unvisitedCitiesCount > 0; unvisitedCitiesCount--) {
+        int smallestIndex = findClosestNeighbor(distanceMatrix[lastCity], unvisitedCities);
+        tourDistance += distanceMatrix[lastCity][smallestIndex];
+        tour[tourindex] = smallestIndex;
+        tourindex++;
+        lastCity = smallestIndex;
+        unvisitedCities[smallestIndex] = false;
+      }
+
+      if (tourDistance < bestDistance) {
+        bestTour = tour;
+      }
     }
 
-    /*
-    nearestNeighbor(cities) {
-      for each starting city
-        add the starting city to the tour and remove from the list of unvisited cities
-           while there are unvisited cities remaining
-           from the last city in the tour add the nearest unvisited city to the tour
-      return the tour with the shortest round trip distance
+    List<Map> results = new ArrayList<>(this.places.size());
+    for (int i = 0; i < this.places.size(); i++) {
+      results.set(i, this.places.get(bestTour[i]));
+    }
 
-     */
-    return null;
+    return results;
     }
 }
 
