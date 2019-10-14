@@ -1,5 +1,6 @@
 import React from 'react';
-import { Table } from 'reactstrap';
+import {Button, Table} from 'reactstrap';
+import {sendServerRequestWithBody} from "../../../api/restfulAPI";
 
 export default class ItineraryTable extends React.Component {
   constructor(props) {
@@ -25,8 +26,11 @@ export default class ItineraryTable extends React.Component {
   
     else{
       return (
+
         <Table striped>
-          <thead>
+            <Button color='primary' onClick={() => this.myServerRequest()}>Shorten Trip</Button>
+
+            <thead>
             <tr>
               <th>Origin</th>
               <th>Destination</th>
@@ -49,6 +53,42 @@ export default class ItineraryTable extends React.Component {
       );
     }
   }
+
+    myServerRequest() {
+        let tipObject = {
+            "requestType"    : "trip",
+            "requestVersion" : 2,
+            "options"        : {    //  Required in request & response
+                "title": "Short Trip",
+                "earthRadius": "3975", // Required
+                "optimization": "short"
+            },
+            "places": [  //  Required in request & response
+                {"name":"Denver",       "latitude": "39.7", "longitude": "-105.0"},
+                {"name":"Boulder",      "latitude": "40.0", "longitude": "-105.4"},
+                {"name":"Fort Collins", "latitude": "40.6", "longitude": "-105.1"}],
+            "distances"      : []   //  Required in response
+        };
+
+
+        sendServerRequestWithBody('trip', tipObject, this.props.serverPort)
+            .then((response) => {
+                if (response.statusCode >= 200 && response.statusCode <= 299) {
+                    this.setState({
+                        places: response.body.places,
+                        errorMessage: null
+                    }, () => {console.log(this.state.places)});
+                } else {
+                    this.setState({
+                        errorMessage: this.props.createErrorBanner(
+                            response.statusText,
+                            response.statusCode,
+                            `Request to ${this.props.serverPort} failed.`
+                        )
+                    });
+                }
+            });
+    }
 
   renderTripItinerary(entry, index){
     return(

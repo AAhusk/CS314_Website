@@ -50,10 +50,6 @@ export default class Itinerary extends Component {
               totalDistance: totalDistance
           }) // I want the map markers to un-load before loading new ones on top
       ); // Does this idea work? I'm not sure.
-    // this.setState({
-    //   trip: trip,
-    //   itineraryData: itineraryData,
-    // });
   }
 
   errorHandler(statusText, statusCode){

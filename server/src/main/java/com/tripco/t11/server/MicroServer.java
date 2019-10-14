@@ -65,7 +65,6 @@ class MicroServer {
     Spark.post("/api/distance", this::processTIPdistanceRequest);
     Spark.post("/api/trip", this::processTIPtripRequest);
     Spark.get("/api/echo", this::echoHTTPrequest);
-    Spark.get("/api/shorttrip", this::processTIPShortDistancesRequest);
 
     log.trace("Restful configuration complete");
   }
@@ -88,10 +87,6 @@ class MicroServer {
       response.status(500);
       return request.body();
     }
-  }
-
-  private String processTIPShortDistancesRequest(Request request, Response response) {
-    return processTIPrequest(TIPShortDistances.class, request, response);
   }
 
   private String processTIPdistanceRequest(Request request, Response response) {
