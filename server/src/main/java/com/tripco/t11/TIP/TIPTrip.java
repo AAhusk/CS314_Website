@@ -116,14 +116,9 @@ public class TIPTrip extends TIPHeader {
         unvisitedCities[smallestIndex] = false;
       }
 
-      //System.out.println("Tour: " + Arrays.toString(tour) + "D: " + tourDistance);
-      //System.out.println("Current Best: " + bestDistance);
       if (tourDistance < bestDistance) {
-
         bestTour = tour;
         bestDistance = tourDistance;
-        //System.out.println("BTour: " + Arrays.toString(bestTour));
-
       }
     }
 
