@@ -11,6 +11,7 @@ export default class Itinerary extends Component {
     
     this.onFileSelect = this.onFileSelect.bind(this);
     this.errorHandler = this.errorHandler.bind(this);
+    this.updateData = this.updateData.bind(this);
 
     this.state = {
       trip: null,
@@ -25,7 +26,6 @@ export default class Itinerary extends Component {
   render() {
     return (
         <Container>
-          {/* {this.state.errorMessage} */}
           <LMap itineraryData={this.state.itineraryData}/>
           <Card>
             <CardHeader>Itinerary</CardHeader>   
@@ -36,10 +36,16 @@ export default class Itinerary extends Component {
           </Card>
           <Card>
             <ItineraryTable itineraryData={this.state.itineraryData}
-                            totalDistance={this.state.totalDistance}/>           
+                            totalDistance={this.state.totalDistance}
+                            updateData={this.updateData}/>
           </Card>
         </Container>
     );
+  }
+
+  updateData(state, prop){
+      console.log("UpdateData " + state + ": " + prop);
+      this.setState({[state]: prop})
   }
 
   onFileSelect(trip, itineraryData, totalDistance){
