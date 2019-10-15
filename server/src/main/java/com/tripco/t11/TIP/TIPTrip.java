@@ -35,7 +35,7 @@ public class TIPTrip extends TIPHeader {
   @Override
   public void buildResponse() {
     this.distances = this.getDistances();
-    if (options.get("optimization").toString().equals("short") ) {
+    if (options.get("optimization") != null && options.get("optimization").toString().equals("short") ) {
       this.places = this.nearestNeighborOptimization();
     }
     log.trace("buildResponse -> {}", this);
@@ -95,7 +95,7 @@ public class TIPTrip extends TIPHeader {
     }
 
     int[] bestTour = new int[this.places.size()];
-    int bestDistance = 0;
+    int bestDistance = Integer.MAX_VALUE;
     for (int startingCity = 0; startingCity < this.places.size(); startingCity++) {
       int[] tour = new int[this.places.size()];
       boolean[] unvisitedCities = new boolean[this.places.size()];
@@ -116,8 +116,14 @@ public class TIPTrip extends TIPHeader {
         unvisitedCities[smallestIndex] = false;
       }
 
+      //System.out.println("Tour: " + Arrays.toString(tour) + "D: " + tourDistance);
+      //System.out.println("Current Best: " + bestDistance);
       if (tourDistance < bestDistance) {
+
         bestTour = tour;
+        bestDistance = tourDistance;
+        //System.out.println("BTour: " + Arrays.toString(bestTour));
+
       }
     }
 
