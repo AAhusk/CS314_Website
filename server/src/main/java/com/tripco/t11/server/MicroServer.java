@@ -9,7 +9,6 @@ import com.tripco.t11.TIP.TIPTrip;
 
 import java.lang.reflect.Type;
 
-import com.tripco.t11.TIP.TIPShortDistances;
 import spark.Request;
 import spark.Response;
 import spark.Spark;

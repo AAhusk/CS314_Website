@@ -122,8 +122,9 @@ public class TIPTrip extends TIPHeader {
     }
 
     List<Map> results = new ArrayList<>(this.places.size());
+
     for (int i = 0; i < this.places.size(); i++) {
-      results.set(i, this.places.get(bestTour[i]));
+      results.add(this.places.get(bestTour[i]));
     }
 
     return results;

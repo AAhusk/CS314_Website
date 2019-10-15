@@ -172,7 +172,7 @@ export default class Application extends Component {
                           createErrorBanner={this.createErrorBanner}
                           errorMessage={this.state.errorMessage}
                           formatCoordinates={this.formatCoordinates}
-                          serverPort={this.state.clientSettings.serverPort}/>;/>;
+                          serverPort={this.state.clientSettings.serverPort}/>;
 
 
         case 'options':

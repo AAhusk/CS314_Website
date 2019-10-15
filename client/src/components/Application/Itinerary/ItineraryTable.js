@@ -64,7 +64,8 @@ export default class ItineraryTable extends React.Component {
                 "optimization": "short"
             },
             "places": [  //  Required in request & response
-                {"name":"Denver",       "latitude": "39.7", "longitude": "-105.0"},
+                {"name":"Denveer",      "latitude": "49.7", "longitude": "-115.0"},
+                {"name":"Boulder",      "latitude": "40.0", "longitude": "-105.4"},
                 {"name":"Boulder",      "latitude": "40.0", "longitude": "-105.4"},
                 {"name":"Fort Collins", "latitude": "40.6", "longitude": "-105.1"}],
             "distances"      : []   //  Required in response
@@ -79,13 +80,15 @@ export default class ItineraryTable extends React.Component {
                         errorMessage: null
                     }, () => {console.log(this.state.places)});
                 } else {
-                    this.setState({
-                        errorMessage: this.props.createErrorBanner(
-                            response.statusText,
-                            response.statusCode,
-                            `Request to ${this.props.serverPort} failed.`
-                        )
-                    });
+
+                    console.log(response.statusCode + response.statusText);
+                    // this.setState({
+                    //     errorMessage: this.props.createErrorBanner(
+                    //         response.statusText,
+                    //         response.statusCode,
+                    //         `Request to ${this.props.serverPort} failed.`
+                    //     )
+                    // });
                 }
             });
     }
