@@ -8,7 +8,9 @@ import Pane from './Pane';
 import iconblue from './images/iconblue.png';
 import iconblueD from './images/iconblueD.png';
 import iconred from './images/iconred.png';
+//import icongreen from './images/icongreen.png'
 import iconhappy from './images/iconhappy.png'
+//import iconflower from './images/iconflower.png'
 
 export default class LMap extends Component {
   constructor(props) {
@@ -39,7 +41,7 @@ export default class LMap extends Component {
     for (let i = 0; i < pointArr.length; i++) {
       MarkerArr.push(
           <Marker key={"Marker"+i}
-                  position={L.LatLng(pointArr[i].origin.latitude, pointArr[i].origin.longitude)}
+                  position={L.latLng(pointArr[i].origin.latitude, pointArr[i].origin.longitude)}
                   icon={this.markerIcon(iconred)}>
             <Popup className="font-weight-extrabold">
               Destination:<br/>
@@ -104,7 +106,7 @@ export default class LMap extends Component {
     if (this.props.currentLocation != null) {
       currentLocationMarker = (
           <Marker key={"CurrentLocationMarker"}
-                  position={L.LatLng(this.props.currentLocation.latitude, this.props.currentLocation.longitude)}
+                  position={L.latLng(this.props.currentLocation.latitude, this.props.currentLocation.longitude)}
                   icon={this.markerIcon(iconhappy)}>
             <Popup className="font-weight-extrabold">
               Here I am!<br/>
@@ -139,21 +141,21 @@ export default class LMap extends Component {
   }
 
   currentLocation() {
-    return L.LatLng(this.props.locationOrigin.latitude, this.props.locationOrigin.longitude);
+    return L.latLng(this.props.locationOrigin.latitude, this.props.locationOrigin.longitude);
   }
 
   currentDestination() {
-    return L.LatLng(this.props.locationDestination.latitude, this.props.locationDestination.longitude);
+    return L.latLng(this.props.locationDestination.latitude, this.props.locationDestination.longitude);
   }
 
   coloradoGeographicBoundaries() {
     // northwest and southeast corners of the state of Colorado
-    return L.LatLngBounds(L.LatLng(41, -109), L.LatLng(37, -102));
+    return L.latLngBounds(L.latLng(41, -109), L.latLng(37, -102));
 
   }
 
   csuOvalGeographicCoordinates() {
-    return L.LatLng(40.576179, -105.080773);
+    return L.latLng(40.576179, -105.080773);
   }
 
   markerIcon(url=icon) {
