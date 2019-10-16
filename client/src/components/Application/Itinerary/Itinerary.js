@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import {Container, Card, CardHeader} from 'reactstrap'
+import {Row, Button} from 'reactstrap'
 import FileInput from './FileInput'
 import ItineraryTable from './ItineraryTable'
 import LMap from "../LMap";
@@ -38,8 +39,22 @@ export default class Itinerary extends Component {
             <ItineraryTable itineraryData={this.state.itineraryData}
                             totalDistance={this.state.totalDistance}/>           
           </Card>
+          <Card>
+            <Row>
+              <Button className='bg-csu-gold text-white' onClick={this.createOutputJSON}>Export JSON</Button>
+              <Button className='bg-csu-gold text-white' onClick={this.createOutputCSV}>Export CSV</Button>
+            </Row>
+          </Card>
         </Container>
     );
+  }
+  createOutputJSON() {
+    var TIPTrip = [];
+
+  }
+
+  createOutputCSV() {
+
   }
 
   onFileSelect(trip, itineraryData, totalDistance){

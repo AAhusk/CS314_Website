@@ -126,9 +126,9 @@ export default class Calculator extends Component {
   calculateDistance() {
     const tipConfigRequest = {
       'type': 'distance',
-      'version': 1,
-      'origin': this.state.origin,
-      'destination': this.state.destination,
+      'version': 2,
+      'origin': this.props.locationOrigin,
+      'destination': this.props.locationDestination,
       'earthRadius': this.props.options.units[this.props.options.activeUnit]
     };
 
