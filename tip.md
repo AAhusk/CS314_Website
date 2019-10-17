@@ -1,5 +1,5 @@
 # Trip Interchange Protocol (TIP)
-## Fall 19, Version 1
+## Fall 19, Version 3
 
 This document defines the standard object format that all TripCo clients and servers must use.
 This format is shared with other companies to promote interoperabilty.
@@ -32,7 +32,7 @@ The required version and type elements determine the remaining elements in a par
 
 ```javascript
 {
-  "requestVersion"      : 1,
+  "requestVersion"      : 3,
   "requestType"         : "",
   ...
 }
@@ -48,6 +48,7 @@ The type determines the other elements that will appear in the object.
 * __config__ objects allow the server to provide configuration information to the client.
 * __distance__ objects allow the client to request the distance between two geographic locations from the server.
 * __trip__ objects allow the client to request distances between a series of geographic locations that form a round trip, with possible rearrangement.
+* __locations__ objects allow the client to request a list of geographics locations matching some criteria
 
 ## config
 
@@ -63,10 +64,10 @@ This example shows:
 ```javascript
 {
   "requestType"        : "config",
-  "requestVersion"     : 2,
+  "requestVersion"     : 3,
   "serverName"         : "t## name",
-  "placeAttrributes"   : ["name","latitude","longitude"],
-  "optimizations"      : ["none","short"]
+  "placeAttrributes"   : ["name","latitude","longitude","id","altitude","municipality","type"],
+  "optimizations"      : ["none","short","shorter"]
 }
 ```
 
@@ -97,7 +98,7 @@ This object is used in both the request from the client and the response from th
 ```javascript
 {
   "requestType"    : "distance",
-  "requestVersion" : 1,
+  "requestVersion" : 3,
   "origin"         : {"latitude":  "40.6", "longitude": "-105.1", "name":"Fort Collins, Colorado, USA"},
   "destination"    : {"latitude": "-33.9", "longitude":  "151.2", "name":"Sydney, New South Wales, Australia"},
   "earthRadius"    : 3958.8,
@@ -121,7 +122,7 @@ This object is used in both the request from the client and the response from th
 ```javascript
 {
   "requestType"    : "trip",
-  "requestVersion" : 2,
+  "requestVersion" : 3,
   "options"        : {},
   "places"         : [],
   "distances"      : []
@@ -143,14 +144,15 @@ For other levels of optimization, the `places` list in the response object may c
 
 The `places` element contains a list/array of objects describing the geographic locations in the trip and may include elements for the `placeAttributes` returned by the __config__ TIP object.
 The list of locations in the `places` element represents a round trip, returning from the last item in the list to the first item.
-The `latitude` and `longitude` elements must be specified for each place in signed decimal degrees. 
+The `name`, `latitude` and `longitude` elements must exist in each place entry.
+The `latitude` and `longitude` elements must be specified in signed decimal degrees. 
 
 The `distances` element contains a list/array of integers representing the distances from the corresponding location to the following location, with the last entry representing the distance from the last location back to the first location.
 
 ```
 {
   "requestType"    : "trip",
-  "requestVersion" : 2,
+  "requestVersion" : 3,
   "options"        : { "title":"My Trip", 
                        "earthRadius":"3958.8",
                        "optimization":"none" },
@@ -165,6 +167,74 @@ TIP __trip__ objects may be stored in files for sharing with other tools.
 The `distances` element is optional in a file.
 The `latitude` and `longitude` elements are not restricted to signed decimal degrees when stored in a file.
 They must be converted from other formats to signed decimal degrees when sent to the server using a Restful API service.
+
+
+## locations
+
+A TIP object of the type __locations__ is used to obtain a list of geographic locations matching some criteria.
+This object is used in both the request from the client and the response from the server.
+* The client sends an `HTTP POST` request to the `/api/location` restful API service on the server with a TIP __locations__ object in the request body.
+* The server responds with a TIP __locations__ object in the response body with a list of places matching the criteria.
+
+```javascript
+{
+  "requestType"    : "locations",
+  "requestVersion" : 3,
+  "match"          : "",
+  "limit"          : 0,
+  "found"          : 0,
+  "places"         : []
+}
+```
+
+The `match` element is required in the client request and server response.
+The `limit` element is optional in the client request and should only appear in the server response if it was provided in the client request.
+The `places` and `found` elements are only required in the server response.
+
+The `match` element contains a string used to identify matching geographic locations in the available data sources.
+A __locations__ request with `"match":"dave"` should find all locations with the string `"dave"` in the name, municipality, or other identifying columns.
+The string may contain alphanumeric characters or an underscore.
+The underscore, `_`, character is a single character wildcard to match special characters in the original match string entered by the user.
+If the user enters `Dave's`, the request `"dave_s"` would match the desired entries.  
+All non-alphanumeric characters in the user's match string should be replaced by underscores.
+
+The `limit` element contains an integer that determines the maximum number of geographic locations that should appear in the places element from the server.
+The client uses this value to prevent the server from sending back too much information.
+The user does not specify this value and it should not appear in the user interface.
+A `limit` of 0 signifies that there is no limit on the number of locations that the client can accept from the server.
+If no limit is specified there is also no limit.
+However, the server may have its own internal limits on the number of elements that it will return, but this should be a reasonably large value of at least 100.
+
+The `found` element returns the total number of matching locations available in the data sources, not just the number of matching places returned.
+It is independent of any limit.
+
+The `places` element contains a list/array of objects describing the geographic locations.
+Each object contains attributes describing the location that are available from the data source. 
+All keys and values are strings.  
+The attribute names should appear in the `placeAttributes` of the __config__ object.
+The `latitude` and `longitude` elements must be specified for each place in signed decimal degrees. 
+
+```
+{
+  "requestType"    : "locations",
+  "requestVersion" : 3,
+  "match"          : "dave",
+  "limit"          : 10,
+  "found"          : 1,
+  "places"         : [{"name":"Dave's Airport", 
+                       "latitude": "40.0332984924", 
+                       "longitude": "-105.124000549",
+                       "id":"0CO1",
+                       "altitude":"5170",
+                       "municipality":"Louisville",
+                       "type":"small_airport"
+                       }]
+}
+```
+
+This example response searched for `"dave"` with a `limit` of ten places in the response.  
+The response notes that a single response was `found` and includes the elements from the `placeAttributes` in the __config__ object.
+
 
 
 ## HTTP Status Codes
@@ -182,6 +252,11 @@ The client must detect the response and report errors to the user in some manner
 
 ## Version History
 
+#### Version 3 - October 06, 2019
+* New version number - 3.
+* New placeAttributes for places.
+* New optimization level added.
+* Added **locations** type.
 #### Version 2 - September 15, 2019
 * Added **trip** type.
 * Modified **config** type to support the **trip** type.
