@@ -97,12 +97,15 @@ export default class Itinerary extends Component {
         TripArray[i+1] = TripSegment;
       }
 
+      TripArray[TripArray.length-1] = ["", "Total Distance", this.state.totalDistance];
+
       let TripCSV = "";
 
       TripArray.forEach(function (rowArray) {
         let row = rowArray.join(",");
         TripCSV += row + "\r\n";
       });
+
 
       let downloadCSV = document.getElementById("TripCSV");
       let file = new Blob([TripCSV], {type: 'text/csv'},
