@@ -17,6 +17,7 @@ export default class Itinerary extends Component {
     this.createOutputCSV = this.createOutputCSV.bind(this);
     
 
+
     this.state = {
       trip: null,
       itineraryData: null,
@@ -30,7 +31,6 @@ export default class Itinerary extends Component {
   render() {
     return (
         <Container>
-          {/* {this.state.errorMessage} */}
           <LMap itineraryData={this.state.itineraryData}/>
           <Card>
             <CardHeader>Itinerary</CardHeader>   
@@ -41,7 +41,8 @@ export default class Itinerary extends Component {
           </Card>
           <Card>
             <ItineraryTable itineraryData={this.state.itineraryData}
-                            totalDistance={this.state.totalDistance}/>           
+                            totalDistance={this.state.totalDistance}
+                            updateData={this.updateData}/>
           </Card>
           <Card>
             <Row>
@@ -130,10 +131,6 @@ export default class Itinerary extends Component {
               totalDistance: totalDistance
           }) // I want the map markers to un-load before loading new ones on top
       ); // Does this idea work? I'm not sure.
-    // this.setState({
-    //   trip: trip,
-    //   itineraryData: itineraryData,
-    // });
   }
 
   errorHandler(statusText, statusCode){
