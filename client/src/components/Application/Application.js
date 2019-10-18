@@ -17,7 +17,6 @@ import ErrorBanner from './ErrorBanner';
 export default class Application extends Component {
   constructor(props){
     super(props);
-
     this.updatePlanOption = this.updatePlanOption.bind(this);
     this.updateClientSetting = this.updateClientSetting.bind(this);
     this.createApplicationPage = this.createApplicationPage.bind(this);
@@ -31,19 +30,12 @@ export default class Application extends Component {
         units: {'miles':3959, 'kilometers':6371, 'nautical miles':3440},
         activeUnit: 'miles'
       },
-      clientSettings: {
-        serverPort: getOriginalServerPort()
-      },
+      clientSettings: { serverPort: getOriginalServerPort() },
       errorMessage: null,
       currentLocation: null,
-      origin: {
-        latitude: 1,
-        longitude: 1
-      },
-      destination: {
-        latitude: 1,
-        longitude: 1
-      }
+
+      origin: { latitude: 1, longitude: 1},
+      destination: { latitude: 1, longitude: 1}
     };
 
     this.updateServerConfig();
@@ -115,6 +107,7 @@ export default class Application extends Component {
       }
     }
   }
+
 
   updateClientSetting(field, value) {
     if(field === 'serverPort')

@@ -3,13 +3,11 @@ package com.tripco.t11.TIP;
 import com.tripco.t11.misc.GreatCircleDistance;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.Map;
-import java.util.Arrays;
-
 
 
 public class TIPTrip extends TIPHeader {
