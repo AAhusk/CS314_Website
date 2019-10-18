@@ -1,0 +1,30 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title" : "TIPTrip schema",
+  "description" : "schema for a Trip json file",
+  "type"  : "object",
+  "properties"  : {
+    "requestType" : {
+      "type"  : "string"
+    },
+
+    "requestVersion"  : {
+      "type"  : "integer"
+    },
+
+    "serverName" : {
+      "type"  : "string"
+    },
+
+    "placeAttributes"  : {
+      "type"  : "array"
+    },
+
+    "optimizations"  : {
+      "type"  : "array"
+    }
+
+  },
+  "required"  : ["requestType", "requestVersion", "serverName", "placeAttributes", "optimizations"]
+
+}
