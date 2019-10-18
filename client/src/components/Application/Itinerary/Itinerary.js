@@ -117,6 +117,11 @@ export default class Itinerary extends Component {
     }
   }
 
+  updateData(state, prop){
+      console.log("UpdateData " + state + ": " + prop);
+      this.setState({[state]: prop})
+  }
+
   onFileSelect(trip, itineraryData, totalDistance){
       this.setState({ trip: null, itineraryData: null}, () =>
           this.setState({
