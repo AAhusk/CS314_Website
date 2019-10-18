@@ -54,7 +54,7 @@ function testUpdateOption() {
 
 test("Testing Application's updatePlanOption function", testUpdateOption);
 
-function testFormatCoordinates() {
+/*function testFormatCoordinates() {
     let rawString = {latitude: -190, longitude: 200};
     let stateVar = 'origin';
     let returnFormattedCoordinates = true;
@@ -64,4 +64,4 @@ function testFormatCoordinates() {
     expect(actual).toEqual(expected);
 }
 
-test("Testing Application's formatCoordinates function", testFormatCoordinates);
+test("Testing Application's formatCoordinates function", testFormatCoordinates);*/
