@@ -66,6 +66,7 @@ class MicroServer {
     Spark.post("/api/trip", this::processTIPtripRequest);
     Spark.get("/api/echo", this::echoHTTPrequest);
     Spark.post("/api/location", this::processTIPLocationRequest);
+    
     log.trace("Restful configuration complete");
   }
 
@@ -89,9 +90,11 @@ class MicroServer {
     }
   }
 
+
   private String processTIPLocationRequest(Request request, Response response) {
     return processTIPrequest(TIPLocation.class, request, response);
   }
+
 
   private String processTIPdistanceRequest(Request request, Response response) {
     return processTIPrequest(TIPDistance.class, request, response);
