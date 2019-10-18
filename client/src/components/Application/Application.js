@@ -88,11 +88,52 @@ export default class Application extends Component {
 
       let lat = coords.getLatitude();
       let long = coords.getLongitude();
+      let latNew = lat;
+      let longNew = long;
 
-      while (long < -180) { long += 360; }
-      while (long > 180) { long -= 360; }
-      while (lat < -90) { lat += 180; }
-      while (lat > 90) { lat -= 180; }
+
+      // Compute Latitude
+      if(lat > 180 || lat < -180) { lat = lat % 180; }
+      if(lat > 90) {
+        latNew = 0;
+        if(lat % 180 == 0) { latNew = 0; }
+        else if(lat % 180 > 90) { latNew = ((lat % 180) % 90) + -90; }
+        else if(lat % 180 < 90) { latNew = (lat % 180) + -90; }
+        else { latNew = 0; }
+        lat = latNew;
+      } else if(lat < -90) {
+        lat = -1 * lat;
+        latNew = 0;
+        if(lat % 180 == 0) { latNew = 0; }
+        else if(lat % 180 > 90) { latNew = -1 * (((lat % 180) % 90) + -90); }
+        else if(lat % 180 < 90) { latNew = -1 * ((lat % 180) + -90); }
+        else { latNew = 0; }
+        lat = latNew;
+      } else {
+        latNew = lat;
+      }
+      
+      // Compute Longitude
+      if(long > 360 || long < -360) { long = long % 360; }
+      if(long > 180) {
+        longNew = 0;
+        if(long % 360 == 0) { longNew = 0; }
+        else if(long % 360 > 180) { longNew = (((long % 360) % 180) + -180); }
+        else if(long % 360 < 180) { longNew = ((long % 360) + -180); }
+        else { longNew = 0; }
+        long = longNew;
+      } else if(long < -180) {
+        long = -1 * long;
+        longNew = 0;
+        if(long % 360 == 0) { longNew = 0; }
+        else if(long % 360 > 180) { longNew = -1 * (((long % 360) % 180) + -180); }
+        else if(long % 360 < 180) { longNew = -1 * ((long % 360) + -180); }
+        else { longNew = 0; }
+        long = longNew;
+      } else{
+        longNew = long;
+      }
+
 
       let dict = { latitude: lat, longitude: long };
       this.setState( {[finalState]: dict});
