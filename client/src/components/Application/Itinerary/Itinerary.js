@@ -12,8 +12,10 @@ export default class Itinerary extends Component {
     
     this.onFileSelect = this.onFileSelect.bind(this);
     this.errorHandler = this.errorHandler.bind(this);
+    this.updateData = this.updateData.bind(this);
     this.createOutputJSON = this.createOutputJSON.bind(this);
     this.createOutputCSV = this.createOutputCSV.bind(this);
+    
 
     this.state = {
       trip: null,
