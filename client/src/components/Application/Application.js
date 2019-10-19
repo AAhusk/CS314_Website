@@ -35,7 +35,8 @@ export default class Application extends Component {
       currentLocation: null,
 
       origin: { latitude: 1, longitude: 1},
-      destination: { latitude: 1, longitude: 1}
+      destination: { latitude: 1, longitude: 1},
+      itineraryData: null
     };
 
     this.updateServerConfig();
@@ -106,7 +107,6 @@ export default class Application extends Component {
     }
   }
 
-
   updateClientSetting(field, value) {
     if(field === 'serverPort')
       this.setState({clientSettings: {serverPort: value}}, this.updateServerConfig);
@@ -155,7 +155,8 @@ export default class Application extends Component {
                             locationOrigin = {this.state.origin}
                             locationDestination={this.state.destination}
                             geolocation={this.geolocation}
-                            formatCoordinates={this.formatCoordinates}/>;
+                            formatCoordinates={this.formatCoordinates}
+                            updateItineraryData={this.updateItineraryData}/>;
 
       case 'itinerary':
         return <Itinerary options={this.state.planOptions}                             

@@ -72,9 +72,9 @@ export default class FileInput extends Component {
 
 
       let formattedCoordsOrigin = this.props.formatCoordinates(
-          { latitude: trip.places[i].latitude, longitude: trip.places[i].longitude}, null, true);
+          `${trip.places[i].latitude}, ${trip.places[i].longitude}`, null, true);
       let formattedCoordsDestination = this.props.formatCoordinates(
-          { latitude: trip.places[destination_index].latitude, longitude: trip.places[destination_index].longitude}, null, true);
+          `${trip.places[destination_index].latitude}, ${trip.places[destination_index].longitude}`, null, true);
 
 
       itineraryData.push({

@@ -17,7 +17,6 @@ export default class Itinerary extends Component {
       itineraryData: null,
       totalDistance: null,
       points: null,
-      // points: { {"latitude": 50, "longitude": 30}, {}, {}, ... }
       errorMessage: this.props.errorMessage
     }
   }
@@ -25,10 +24,9 @@ export default class Itinerary extends Component {
   render() {
     return (
         <Container>
-          {/* {this.state.errorMessage} */}
-          <LMap itineraryData={this.state.itineraryData}/>
+
           <Card>
-            <CardHeader>Itinerary</CardHeader>   
+            <CardHeader>Itinerary</CardHeader>
             <FileInput  onFileSelect={this.onFileSelect}
                         formatCoordinates={this.props.formatCoordinates}
                         settings={this.props.settings}
@@ -50,10 +48,8 @@ export default class Itinerary extends Component {
               totalDistance: totalDistance
           }) // I want the map markers to un-load before loading new ones on top
       ); // Does this idea work? I'm not sure.
-    // this.setState({
-    //   trip: trip,
-    //   itineraryData: itineraryData,
-    // });
+
+      this.props.updateItineraryData(itineraryData);
   }
 
   errorHandler(statusText, statusCode){

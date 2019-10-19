@@ -15,6 +15,7 @@ export default class Calculator extends Component {
     this.updateLocationState = this.updateLocationState.bind(this);
     this.calculateDistance = this.calculateDistance.bind(this);
     this.createInputField = this.createInputField.bind(this);
+    this.updateItineraryData = this.updateItineraryData.bind(this);
 
     this.state = {
       origin: this.props.locationOrigin,
@@ -22,7 +23,8 @@ export default class Calculator extends Component {
       rawStringO: null,
       rawStringD: null,
       distance: 0,
-      errorMessage: this.props.errorMessage
+      errorMessage: this.props.errorMessage,
+      itineraryData: null
     };
   }
 
@@ -34,7 +36,9 @@ export default class Calculator extends Component {
             <Col xs={9} sm={9} md={9} lg={9}>
               <LMap currentLocation = {this.props.currentLocation}
                     locationOrigin={this.props.locationOrigin}
-                    locationDestination={this.props.locationDestination}/>
+                    locationDestination={this.props.locationDestination}
+                    itineraryData={this.state.itineraryData}
+              />
             </Col>
             <Col xs={3} sm={3} md={3} lg={3}>
               <ListGroup>
@@ -50,7 +54,9 @@ export default class Calculator extends Component {
                        settings={this.props.settings}
                        createErrorBanner={this.createErrorBanner}
                        errorMessage={this.state.errorMessage}
-                       formatCoordinates={this.props.formatCoordinates}/>
+                       updateItineraryData={this.updateItineraryData}
+                       formatCoordinates={this.props.formatCoordinates}
+            />
           </Row>
         </div>
     );
@@ -67,6 +73,10 @@ export default class Calculator extends Component {
              id={`${stateVar}field`}
              onChange={updateStateVarOnChange}/>
     );
+  }
+
+  updateItineraryData(data) {
+    this.setState({itineraryData: data});
   }
 
   inputFieldCallback(stateVar, rawString) {
