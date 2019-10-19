@@ -26,7 +26,6 @@ export default class App extends Component {
     this.setAppPage = this.setAppPage.bind(this);
   }
 
-
   render() {
     return (
       <div className="csu-branding">

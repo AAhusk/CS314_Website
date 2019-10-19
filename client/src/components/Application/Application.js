@@ -73,18 +73,16 @@ export default class Application extends Component {
     }
   }
 
-  formatCoordinates(rawString, stateVar, returnFormattedCoords = false) { // Input would look like {latitude: '40.123N', longitude: '-74.123W}, "rawStringO"
+  formatCoordinates(rawString, stateVar, returnFormattedCoords = false) { // Input would look like "40N, 100W", "rawStringO"
     // If returnFormattedCoords is false, it just updates the state
 
     this.setState({errorMessage: null});
     const Coordinates = require('coordinate-parser');
     try {
-      let coords = new Coordinates(rawString.latitude + "," + rawString.longitude);
-      let finalState = null;
+      let coords = new Coordinates(rawString);
+      let finalState = "destination";
 
       if (stateVar === 'rawStringO') {finalState = 'origin';}
-      else if (stateVar === 'rawStringD') {finalState = 'destination';}
-      //else { finalState = null }
 
       let lat = coords.getLatitude();
       let long = coords.getLongitude();

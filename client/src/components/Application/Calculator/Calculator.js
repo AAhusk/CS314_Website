@@ -1,11 +1,11 @@
 import React, {Component} from 'react'
-import {Container, Row, Col, Card, CardHeader, CardBody, CardText} from 'reactstrap'
+import {Container, Row, Col} from 'reactstrap'
 import {Button} from 'reactstrap'
 import {Form, Input} from 'reactstrap'
 import {sendServerRequestWithBody} from '../../../api/restfulAPI'
-import Pane from '../Pane';
 import LMap from "../LMap";
-import ErrorBanner from "../ErrorBanner";
+import ListGroupItem from "reactstrap/es/ListGroupItem";
+import ListGroup from "reactstrap/es/ListGroup";
 
 export default class Calculator extends Component {
   constructor(props) {
@@ -18,8 +18,8 @@ export default class Calculator extends Component {
     this.state = {
       origin: this.props.locationOrigin,
       destination: this.props.locationDestination,
-      rawStringO: {latitude: 0, longitude: 0},
-      rawStringD: {latitude: 0, longitude: 0},
+      rawStringO: null,
+      rawStringD: null,
       distance: 0,
       errorMessage: this.props.errorMessage
     };
@@ -27,80 +27,60 @@ export default class Calculator extends Component {
 
   render() {
     return (
-
-        <Container>
-          {this.state.errorMessage}
-          <Card>
-            <CardHeader>Calculator</CardHeader>
-            <CardBody>
-              <CardText>Determine the distance between the origin and destination. Change the units on
-                the <b>Options</b> page.</CardText>
-              <Row>
-                <Col xs={12} sm={12} md={9} lg={9}>
-                <LMap currentLocation = {this.props.currentLocation}
-                      locationOrigin={this.props.locationOrigin}
-                      locationDestination={this.props.locationDestination}/>
-                </Col >
-                <Col xs={12} sm={12} md={3} lg={3}>
-                  <Button color='primary' onClick={() => this.props.geolocation()}>Use My Location</Button>
-                    {this.createForm('rawStringO')}
-                    {this.createForm('rawStringD')}
-                    {this.createDistance()}
-                </Col>
-              </Row>
-            </CardBody>
-          </Card>
-        </Container>
+          <Row>
+            {this.state.errorMessage}
+            <Col xs={9} sm={9} md={9} lg={9}>
+              <LMap currentLocation = {this.props.currentLocation}
+                    locationOrigin={this.props.locationOrigin}
+                    locationDestination={this.props.locationDestination}/>
+            </Col>
+            <Col xs={3} sm={3} md={3} lg={3}>
+              <ListGroup>
+                <ListGroupItem> <Button color='primary' onClick={() => this.props.geolocation()}>Use My Location</Button> </ListGroupItem>
+                <ListGroupItem> {this.createInputField("origin")}</ListGroupItem>
+                <ListGroupItem> {this.createInputField("destination")}</ListGroupItem>
+                <ListGroupItem> {this.createDistance()}</ListGroupItem>
+              </ListGroup>
+            </Col>
+          </Row>
     );
   }
 
-  createInputField(stateVar, coordinate) {
+  createInputField(stateVar) {
+    //let stateVar = "origin";
     let updateStateVarOnChange = (event) => {
-      this.updateLocationState(stateVar, event.target.name, event.target.value);
-      this.setState({distance : this.state.distance},
-          () => this.inputFieldCallback(stateVar)
-      );
+      this.inputFieldCallback(stateVar, event.target.value); // origin / destination --- rawString
     };
-    let capitalizedCoordinate = coordinate.charAt(0).toUpperCase() + coordinate.slice(1);
-    //console.log(stateVar + capitalizedCoordinate);
     return (
-        <Input name={coordinate} placeholder={capitalizedCoordinate}
-               id={`${stateVar}${capitalizedCoordinate}`}
-               onChange={updateStateVarOnChange}
-               style={{width: "100%"}}/>
+      <Input name={stateVar + "field"}
+             placeholder={stateVar.charAt(0).toUpperCase() + stateVar.slice(1)}
+             id={`${stateVar}field`}
+             onChange={updateStateVarOnChange}/>
     );
   }
 
-  inputFieldCallback(stateVar) {
-    this.props.formatCoordinates(this.state[stateVar], stateVar); // Update Parent data
-    let finalState = '';  // Update local data
-    if (stateVar.charAt(9) === 'O') {finalState = 'origin';}
-    else {finalState = 'destination';}
-    this.setState({[finalState]: finalState === 'origin' ? this.props.locationOrigin : this.props.locationDestination})
-  }
+  inputFieldCallback(stateVar, rawString) {
+    let rawStateName = "rawStringD";
+    if (stateVar == "origin") { rawStateName = "rawStringO"}
 
-  createForm(stateVar) {
-    return (
-        <Pane header={(stateVar.charAt(9) === 'O') ? 'Origin' : 'Destination'}
-              bodyJSX={
-                <Form>
-                  {this.createInputField(stateVar, 'latitude')}
-                  {this.createInputField(stateVar, 'longitude')}
-                </Form>
-              }
-        />);
+    // rawString should look like "40N, 108W"
+    this.props.formatCoordinates(rawString, rawStateName);
+    this.setState({ [rawStateName]: rawString })
   }
 
   createDistance() {
     return (
-        <Pane header={'Distance'}
-              bodyJSX={
-                <div>
-                  <h5>{this.state.distance} {this.props.options.activeUnit}</h5>
-                  <Button color='primary' onClick={this.calculateDistance}>Calculate</Button>
-                </div>}
-        />
-    );
+        <Container>
+          <Row>
+            <Col>
+              <Button color='primary' onClick={this.calculateDistance}>Calculate</Button>
+            </Col>
+            <Col>
+              <h5>{`${this.state.distance} ${this.props.options.activeUnit}`}</h5>
+            </Col>
+          </Row>
+        </Container>
+    )
   }
 
   calculateDistance() {

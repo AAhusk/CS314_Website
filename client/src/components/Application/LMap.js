@@ -4,12 +4,12 @@ import icon from 'leaflet/dist/images/marker-icon.png';
 import iconShadow from 'leaflet/dist/images/marker-shadow.png';
 import 'leaflet/dist/leaflet.css';
 import { Map, Marker, Popup, TileLayer, Polyline} from 'react-leaflet';
-import Pane from './Pane';
 import iconblue from './images/iconblue.png';
 import iconblueD from './images/iconblueD.png';
 import iconred from './images/iconred.png';
 //import icongreen from './images/icongreen.png'
 import iconhappy from './images/iconhappy.png'
+import Card from "reactstrap/es/Card";
 //import iconflower from './images/iconflower.png'
 
 export default class LMap extends Component {
@@ -28,8 +28,9 @@ export default class LMap extends Component {
 
   renderMap() {
     return (
-        <Pane header={'Where Am I?'}
-              bodyJSX={this.renderLeafletMap()}/>
+        <Card>
+          {this.renderLeafletMap()}
+        </Card>
     );
   }
 
