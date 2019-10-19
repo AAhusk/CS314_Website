@@ -6,6 +6,7 @@ import {sendServerRequestWithBody} from '../../../api/restfulAPI'
 import LMap from "../LMap";
 import ListGroupItem from "reactstrap/es/ListGroupItem";
 import ListGroup from "reactstrap/es/ListGroup";
+import Itinerary from "../Itinerary/Itinerary";
 
 export default class Calculator extends Component {
   constructor(props) {
@@ -27,6 +28,7 @@ export default class Calculator extends Component {
 
   render() {
     return (
+        <div>
           <Row>
             {this.state.errorMessage}
             <Col xs={9} sm={9} md={9} lg={9}>
@@ -43,6 +45,14 @@ export default class Calculator extends Component {
               </ListGroup>
             </Col>
           </Row>
+          <Row>
+            <Itinerary options={this.props.options}
+                       settings={this.props.settings}
+                       createErrorBanner={this.createErrorBanner}
+                       errorMessage={this.state.errorMessage}
+                       formatCoordinates={this.props.formatCoordinates}/>
+          </Row>
+        </div>
     );
   }
 
