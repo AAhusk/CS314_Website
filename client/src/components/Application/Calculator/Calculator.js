@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import {Container, Row, Col} from 'reactstrap'
 import {Button} from 'reactstrap'
-import {Form, Input} from 'reactstrap'
+import {Input} from 'reactstrap'
 import {sendServerRequestWithBody} from '../../../api/restfulAPI'
 import LMap from "../LMap";
 import ListGroupItem from "reactstrap/es/ListGroupItem";
@@ -63,7 +63,6 @@ export default class Calculator extends Component {
   }
 
   createInputField(stateVar) {
-    //let stateVar = "origin";
     let updateStateVarOnChange = (event) => {
       this.inputFieldCallback(stateVar, event.target.value); // origin / destination --- rawString
     };

@@ -94,10 +94,13 @@ export default class Application extends Component {
       while (lat > 90) { lat -= 180; }
 
       let dict = { latitude: lat, longitude: long };
-      this.setState( {[finalState]: dict});
+
 
       if (returnFormattedCoords === true) {
         return {latitude: lat, longitude: long};
+      }
+      else {
+        this.setState( {[finalState]: dict});
       }
     }
     catch(err) {
