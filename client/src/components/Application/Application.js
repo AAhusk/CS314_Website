@@ -166,9 +166,11 @@ export default class Application extends Component {
                           settings={this.state.clientSettings}
                           createErrorBanner={this.createErrorBanner}
                           errorMessage={this.state.errorMessage}
-                          formatCoordinates={this.formatCoordinates}/>;
+                          formatCoordinates={this.formatCoordinates}
+                          serverPort={this.state.clientSettings.serverPort}/>;
 
-      case 'options':
+
+        case 'options':
         return <Options options={this.state.planOptions}
                         config={this.state.serverConfig}
                         updateOption={this.updatePlanOption}/>;

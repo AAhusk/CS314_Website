@@ -65,17 +65,15 @@ export default class FileInput extends Component {
   }
 
   formatTripData(trip){
-    var itineraryData = [];  
+    var itineraryData = [];
     for(var i=0; i<trip.places.length; i++){
 
       var destination_index = ((i+1) == trip.places.length) ? 0 : i+1;
-
 
       let formattedCoordsOrigin = this.props.formatCoordinates(
           `${trip.places[i].latitude}, ${trip.places[i].longitude}`, null, true);
       let formattedCoordsDestination = this.props.formatCoordinates(
           `${trip.places[destination_index].latitude}, ${trip.places[destination_index].longitude}`, null, true);
-
 
       itineraryData.push({
         origin: {
@@ -91,7 +89,7 @@ export default class FileInput extends Component {
         distance: (trip.distances != null) ? trip.distances[i] : null,
       });
     }
-  
+
     return itineraryData;
   }
 

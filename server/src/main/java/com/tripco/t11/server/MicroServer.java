@@ -6,6 +6,7 @@ import com.tripco.t11.TIP.TIPConfig;
 import com.tripco.t11.TIP.TIPDistance;
 import com.tripco.t11.TIP.TIPHeader;
 import com.tripco.t11.TIP.TIPTrip;
+import com.tripco.t11.TIP.TIPLocation;
 
 import java.lang.reflect.Type;
 
@@ -64,6 +65,8 @@ class MicroServer {
     Spark.post("/api/distance", this::processTIPdistanceRequest);
     Spark.post("/api/trip", this::processTIPtripRequest);
     Spark.get("/api/echo", this::echoHTTPrequest);
+    Spark.post("/api/location", this::processTIPLocationRequest);
+    
     log.trace("Restful configuration complete");
   }
 
@@ -88,6 +91,9 @@ class MicroServer {
   }
 
 
+  private String processTIPLocationRequest(Request request, Response response) {
+    return processTIPrequest(TIPLocation.class, request, response);
+  }
 
 
   private String processTIPdistanceRequest(Request request, Response response) {
@@ -97,7 +103,6 @@ class MicroServer {
   private String processTIPtripRequest(Request request, Response response) {
     return processTIPrequest(TIPTrip.class, request, response);
   }
-
 
   private String processTIPrequest(Type tipType, Request request, Response response) {
     log.info("TIP Request: {}", HTTPrequestToJson(request));
