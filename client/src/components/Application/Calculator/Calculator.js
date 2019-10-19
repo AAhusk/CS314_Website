@@ -1,11 +1,9 @@
 import React, {Component} from 'react'
-import {Container, Row, Col} from 'reactstrap'
+import {Container, Row, Col, ListGroupItem, ListGroup} from 'reactstrap'
 import {Button} from 'reactstrap'
 import {Input} from 'reactstrap'
 import {sendServerRequestWithBody} from '../../../api/restfulAPI'
 import LMap from "../LMap";
-import ListGroupItem from "reactstrap/es/ListGroupItem";
-import ListGroup from "reactstrap/es/ListGroup";
 import Itinerary from "../Itinerary/Itinerary";
 
 export default class Calculator extends Component {
