@@ -4,7 +4,6 @@ import {Alert, Container} from 'reactstrap';
 import Home from './Home';
 import About from './About/About';
 import Calculator from './Calculator/Calculator';
-import Itinerary from './Itinerary/Itinerary';
 import Options from './Options/Options';
 import Settings from './Settings/Settings';
 import {getOriginalServerPort, sendServerRequest} from '../../api/restfulAPI';
@@ -160,15 +159,6 @@ export default class Application extends Component {
                             geolocation={this.geolocation}
                             formatCoordinates={this.formatCoordinates}
                             updateItineraryData={this.updateItineraryData}/>;
-
-      case 'itinerary':
-        return <Itinerary options={this.state.planOptions}                             
-                          settings={this.state.clientSettings}
-                          createErrorBanner={this.createErrorBanner}
-                          errorMessage={this.state.errorMessage}
-                          formatCoordinates={this.formatCoordinates}
-                          serverPort={this.state.clientSettings.serverPort}/>;
-
 
         case 'options':
         return <Options options={this.state.planOptions}

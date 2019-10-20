@@ -14,7 +14,6 @@ export default class App extends Component {
       { title: 't11 Team America', page: ''},
       { title: 'About', page: 'about'},
       { title: 'Calculator', page: 'calc'},
-      { title: 'Itinerary', page: 'itinerary'},
       { title: 'Options', page: 'options'},
       { title: '\u2699', page: 'settings' }
     ];
