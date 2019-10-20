@@ -1,9 +1,9 @@
 import React, {Component} from 'react'
-import {Container, Card, CardHeader} from 'reactstrap'
+import {Container, Card, CardHeader, ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem} from 'reactstrap'
 import {Row, Button} from 'reactstrap'
 import FileInput from './FileInput'
 import ItineraryTable from './ItineraryTable'
-import LMap from "../LMap";
+import {sendServerRequestWithBody} from "../../../api/restfulAPI";
 
 export default class Itinerary extends Component {
   
@@ -12,7 +12,6 @@ export default class Itinerary extends Component {
     
     this.onFileSelect = this.onFileSelect.bind(this);
     this.errorHandler = this.errorHandler.bind(this);
-    this.updateData = this.updateData.bind(this);
     this.createOutputJSON = this.createOutputJSON.bind(this);
     this.createOutputCSV = this.createOutputCSV.bind(this);
     
@@ -23,16 +22,20 @@ export default class Itinerary extends Component {
       itineraryData: null,
       totalDistance: null,
       points: null,
-      errorMessage: this.props.errorMessage
+      errorMessage: this.props.errorMessage,
     }
   }
 
   render() {
     return (
         <Container>
-          <LMap itineraryData={this.state.itineraryData}/>
           <Card>
-            <CardHeader>Itinerary</CardHeader>
+            <CardHeader>
+                Itinerary
+                <Button id="ShortTrip" color='primary' className="float-right" onClick={() => this.shortTripOptimization()}>Shorten Trip</Button>
+                <Button id="TripJSON" className='bg-csu-gold text-white float-right' onClick={() => this.createOutputJSON()}>Export JSON</Button>
+                <Button id="TripCSV" className='bg-csu-gold text-white float-right' onClick={() => this.createOutputCSV()}>Export CSV</Button>
+            </CardHeader>
             <FileInput  onFileSelect={this.onFileSelect}
                         formatCoordinates={this.props.formatCoordinates}
                         settings={this.props.settings}
@@ -41,25 +44,75 @@ export default class Itinerary extends Component {
           <Card>
             <ItineraryTable itineraryData={this.state.itineraryData}
                             totalDistance={this.state.totalDistance}
-                            updateData={this.updateData}/>
-          </Card>
-          <Card>
-            <Row>
-              <Button href="#" id="TripJSON" className='bg-csu-gold text-white' onClick={() => this.createOutputJSON()}>Export JSON</Button>
-              <Button href="#" id="TripCSV" className='bg-csu-gold text-white' onClick={() => this.createOutputCSV()}>Export CSV</Button>
-            </Row>
+            />
           </Card>
         </Container>
     );
   }
 
+    shortTripOptimization() {
+        let tipObject = {
+            "requestType": "trip",
+            "requestVersion": 2,
+            "options": {    //  Required in request & response
+                "title": "Short Trip",
+                "earthRadius": "1337", // Doesn't matter, we dont use this value
+                "optimization": "short"
+            },
+            "places": this.extractPlacesFromItineraryData(),
+        };
+
+        sendServerRequestWithBody('trip', tipObject, this.state.serverPort)
+            .then((response) => {
+                if (response.statusCode >= 200 && response.statusCode <= 299) {
+                    this.setState({
+                        places: response.body.places,
+                        errorMessage: null
+                    }, () => {
+                        this.insertPlacesIntoItineraryData()
+                    });
+                } else {
+                    this.setState({errorMessage: response.statusCode + ": " + response.statusText})
+                    //console.log(response.statusCode + response.statusText);
+                    // this.setState({
+                    //     errorMessage: this.props.createErrorBanner(
+                    //         response.statusText,
+                    //         response.statusCode,
+                    //         `Request to ${this.props.serverPort} failed.`
+                    //     )
+                    // });
+                }
+            });
+    }
+
+    extractPlacesFromItineraryData() {
+        let places = [];
+        for (let i = 0; i < this.state.itineraryData.length; i++) {
+            places.push(this.state.itineraryData[i].origin);
+        }
+        return places;
+    }
+
+    insertPlacesIntoItineraryData() {
+        let places = this.state.places;
+        let ItinData = this.state.itineraryData;
+
+        for (let i = 0; i < ItinData.length - 1; i++) {
+            ItinData[i].origin = places[i];
+            ItinData[i].destination = places[i+1]
+        }
+        ItinData[this.state.itineraryData.length - 1].origin = places[places.length - 1];
+        ItinData[this.state.itineraryData.length - 1].destination = places[0];
+
+        this.setState({itineraryData: ItinData}); // Local data
+        this.props.updateItineraryData(ItinData);
+    }
 
   createOutputJSON() {
      if (this.state.trip == null) {
        this.errorHandler("No file to export", 201);
      }
      else {
-
        let TIPTrip = {
          "requestType"    : "trip",
          "requestVersion" : 2,
@@ -115,11 +168,6 @@ export default class Itinerary extends Component {
       downloadCSV.href = URL.createObjectURL(file);
       downloadCSV.download = 'TIPTrip.csv';
     }
-  }
-
-  updateData(state, prop){
-      console.log("UpdateData " + state + ": " + prop);
-      this.setState({[state]: prop})
   }
 
   onFileSelect(trip, itineraryData, totalDistance){
