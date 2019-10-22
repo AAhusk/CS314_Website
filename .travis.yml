@@ -20,7 +20,7 @@ install:
 
 script:
   - npm test --prefix client || travis_terminate 1
-  - mvn test || travis_terminate 2
+  - mvn verify || travis_terminate 2
 
 after_script:
   - JACOCO_SOURCE_PATH=server/src/main/java ./cc-test-reporter format-coverage -t jacoco target/site/jacoco/jacoco.xml --output "codeclimate.java.json"
