@@ -18,10 +18,10 @@ export default class Itinerary extends Component {
 		
 		this.state = {
 			trip: null,
-			itineraryData: null,
+			itineraryData: [],
 			totalDistance: null,
 			points: null,
-			places: null,
+			places: [],
 			errorMessage: this.props.errorMessage,
 			addModal: {
 				addModalToggle: false,
@@ -265,7 +265,7 @@ export default class Itinerary extends Component {
 	}
 	
 	onFileSelect(trip, itineraryData, totalDistance) {
-		this.setState({trip: null, itineraryData: null}, () =>
+		this.setState({trip: null, itineraryData: []}, () =>
 			this.setState({
 				trip: trip,
 				itineraryData: itineraryData,
