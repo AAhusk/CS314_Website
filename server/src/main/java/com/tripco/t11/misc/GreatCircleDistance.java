@@ -31,7 +31,7 @@ public class GreatCircleDistance {
     double centralAngleInRadians = calcCentralAngle();
 
     double distance = centralAngleInRadians * EarthRadius;
-    return (int) Math.round(distance);
+    return Math.abs((int) Math.round(distance));
   }
 
   private double calcCentralAngle() {
