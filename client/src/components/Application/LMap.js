@@ -39,27 +39,28 @@ export default class LMap extends Component {
 		let ItinPolylinepts = [];
 		
 		let pointArr = this.props.itineraryData;
-		for (let i = 0; i < pointArr.length; i++) {
-			MarkerArr.push(
-				<Marker key={"Marker" + i}
-				        position={L.latLng(pointArr[i].origin.latitude, pointArr[i].origin.longitude)}
-				        icon={this.markerIcon(iconred)}>
-					<Popup className="font-weight-extrabold">
-						Destination:<br/>
-						{pointArr[i].origin.latitude} Latitude<br/>
-						{pointArr[i].origin.longitude} Longitude
-					</Popup>
-				</Marker>
-			);
-			ItinPolylinepts.push(
-				[pointArr[i].origin.latitude, pointArr[i].origin.longitude]
-			);
+		if (pointArr[0].origin != null) {
+			for (let i = 0; i < pointArr.length; i++) {
+				MarkerArr.push(
+					<Marker key={"Marker" + i}
+					        position={L.latLng(pointArr[i].origin.latitude, pointArr[i].origin.longitude)}
+					        icon={this.markerIcon(iconred)}>
+						<Popup className="font-weight-extrabold">
+							Destination:<br/>
+							{pointArr[i].origin.latitude} Latitude<br/>
+							{pointArr[i].origin.longitude} Longitude
+						</Popup>
+					</Marker>
+				);
+				ItinPolylinepts.push(
+					[pointArr[i].origin.latitude, pointArr[i].origin.longitude]
+				);
+			}
+			ItinPolylinepts.push([pointArr[0].origin.latitude, pointArr[0].origin.longitude]);
+			let ItinPolyline = (<Polyline positions={ItinPolylinepts}/>);
+			
+			return {ItinPolyline: ItinPolyline, MarkerArr: MarkerArr}
 		}
-		
-		ItinPolylinepts.push([pointArr[0].origin.latitude, pointArr[0].origin.longitude]);
-		let ItinPolyline = (<Polyline positions={ItinPolylinepts}/>);
-		
-		return {ItinPolyline: ItinPolyline, MarkerArr: MarkerArr}
 	}
 	
 	calculatorComponentSetup() {
@@ -102,7 +103,9 @@ export default class LMap extends Component {
 		
 		let itineraryComponents = {MarkerArr: null, ItinPolyline: null};
 		if (this.props.itineraryData != null) {
-			itineraryComponents = this.itineraryComponentSetup()
+			if (this.props.itineraryData.length !== 0) {
+				itineraryComponents = this.itineraryComponentSetup()
+			}
 		}
 		
 		let currentLocationMarker = null;
@@ -135,10 +138,10 @@ export default class LMap extends Component {
 				{calculatorComponents.destinationMarker}
 				{calculatorComponents.ODPolyline}
 				
-				{itineraryComponents.MarkerArr && itineraryComponents.MarkerArr.map(marker => (
+				{itineraryComponents != null && itineraryComponents.MarkerArr != null && itineraryComponents.MarkerArr.map(marker => (
 					marker
 				))}
-				{itineraryComponents.ItinPolyline}
+				{itineraryComponents != null && itineraryComponents.ItinPolyline != null && itineraryComponents.ItinPolyline}
 			
 			</Map>
 		)

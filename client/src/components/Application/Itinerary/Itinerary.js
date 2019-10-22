@@ -15,6 +15,7 @@ export default class Itinerary extends Component {
 		this.createOutputCSV = this.createOutputCSV.bind(this);
 		this.modalPlaceInputCallback = this.modalPlaceInputCallback.bind(this);
 		this.addPlaceToItineraryData = this.addPlaceToItineraryData.bind(this);
+		this.updatePlaces = this.updatePlaces.bind(this);
 		
 		this.state = {
 			trip: null,
@@ -92,12 +93,19 @@ export default class Itinerary extends Component {
 					<FileInput onFileSelect={this.onFileSelect}
 					           formatCoordinates={this.props.formatCoordinates}
 					           settings={this.props.settings}
-					           errorHandler={this.errorHandler}/>
+					           places={this.state.places}
+					           calculateTotalDistance={this.calculateTotalDistance}
+					           errorHandler={this.errorHandler}
+					/>
 				</Card>
 				<Card>
+					{(this.state.places != null || this.state.places.length !== 0) &&
 					<ItineraryTable itineraryData={this.state.itineraryData}
 					                totalDistance={this.state.totalDistance}
+					                places={this.extractPlacesFromItineraryData()}
+					                updatePlaces={this.updatePlaces}
 					/>
+					}
 				</Card>
 			</Container>
 		);
@@ -175,6 +183,12 @@ export default class Itinerary extends Component {
 		});
 	}
 	
+	updatePlaces(places) {
+		this.setState({places: places},
+		() => this.insertPlacesIntoItineraryData());
+		
+	}
+	
 	extractPlacesFromItineraryData() {
 		let places = [];
 		for (let i = 0; i < this.state.itineraryData.length; i++) {
@@ -192,13 +206,13 @@ export default class Itinerary extends Component {
 				origin: places[i],
 				destination: places[i+1],
 				distance: this.state.itineraryData[i].distance != null ? this.state.itineraryData[i].distance : null
-			}
+			};
 			ItinData = ItinData.concat(newObj);
 		}
 		let lastObj = {
 			origin: places[places.length - 1],
 			destination: places[0]
-		}
+		};
 		ItinData = ItinData.concat(lastObj);
 		
 		this.setState({itineraryData: ItinData}); // Local data
@@ -275,6 +289,16 @@ export default class Itinerary extends Component {
 		
 		this.props.updateItineraryData(itineraryData);
 		
+	}
+	
+	calculateTotalDistance(distances) {
+		var sum = 0;
+		
+		distances.map((distance) => {
+			sum = sum + distance;
+		});
+		
+		return sum;
 	}
 	
 	errorHandler(statusText, statusCode) {
