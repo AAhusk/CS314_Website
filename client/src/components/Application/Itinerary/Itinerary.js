@@ -71,7 +71,12 @@ export default class Itinerary extends Component {
 
        let quantityPlaces = this.state.itineraryData.length;
        for (let i=0; i<quantityPlaces; ++i) {
-         TIPTrip.places[i] = this.state.itineraryData[i].origin.name;
+         let TIPTripPlace = {
+           "name" : this.state.itineraryData[i].origin.name,
+           "latitude" : this.state.itineraryData[i].origin.latitude,
+           "longitude"  : this.state.itineraryData[i].origin.longitude
+         }
+         TIPTrip.places[i] = TIPTripPlace;
          TIPTrip.distances[i] = this.state.itineraryData[i].distance;
        }
 
