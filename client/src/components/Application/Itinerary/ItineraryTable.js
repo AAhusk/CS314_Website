@@ -11,9 +11,13 @@ export default class ItineraryTable extends React.Component {
 	}
 	
 	render() {
+		//console.log(this.props.itineraryData);
+		
 		if (this.props.itineraryData != null) {
 			return (
 				<Table striped>
+					
+					
 					<thead>
 					<tr>
 						<th>Origin</th>

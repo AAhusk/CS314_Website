@@ -13,18 +13,22 @@ export default class Itinerary extends Component {
 		this.errorHandler = this.errorHandler.bind(this);
 		this.createOutputJSON = this.createOutputJSON.bind(this);
 		this.createOutputCSV = this.createOutputCSV.bind(this);
-		this.modalInputCallback = this.modalInputCallback.bind(this);
+		this.modalPlaceInputCallback = this.modalPlaceInputCallback.bind(this);
+		this.addPlaceToItineraryData = this.addPlaceToItineraryData.bind(this);
 		
 		this.state = {
 			trip: null,
 			itineraryData: null,
 			totalDistance: null,
 			points: null,
+			places: null,
 			errorMessage: this.props.errorMessage,
 			addModal: {
 				addModalToggle: false,
-				modalInput: null,
+				modalPlaceInput: null,
+				modalNameInput: null,
 				submitActive: false
+				
 			}
 		}
 	}
@@ -33,8 +37,18 @@ export default class Itinerary extends Component {
 		let toggleModal = () => {
 			this.setState({addModal: {
 				addModalToggle: !this.state.addModal.addModalToggle,
-				modalInput: this.state.addModal.modalInput,
+				modalPlaceInput: this.state.addModal.modalPlaceInput,
+				modalNameInput: this.state.addModal.modalNameInput,
 				submitActive: this.state.addModal.submitActive
+				}});
+		};
+		
+		let modalNameInputCallback = (event) => {
+			this.setState({addModal: {
+					addModalToggle: this.state.addModal.addModalToggle,
+					modalPlaceInput: this.state.addModal.modalPlaceInput,
+					modalNameInput: event.target.value,
+					submitActive: this.state.addModal.submitActive
 				}});
 		};
 		
@@ -43,11 +57,12 @@ export default class Itinerary extends Component {
 				<ModalHeader toggle={toggleModal}>Add a new place</ModalHeader>
 				<ModalBody>
 					
-					{this.props.createInputField("place", this.modalInputCallback)}
+					{this.props.createInputField("name", modalNameInputCallback)}
+					{this.props.createInputField("place", this.modalPlaceInputCallback)}
 					
 				</ModalBody>
 				<ModalFooter>
-					<Button color="primary" onClick={toggleModal} disabled={!this.state.addModal.submitActive}>Submit</Button>{' '}
+					<Button color="primary" onClick={this.addPlaceToItineraryData} disabled={!this.state.addModal.submitActive}>Submit</Button>{' '}
 				</ModalFooter>
 			</Modal>
 		);
@@ -73,7 +88,6 @@ export default class Itinerary extends Component {
 								<Button onClick={toggleModal} className="float-right">+</Button>
 							</Col>
 						</Row>
-					
 					</CardHeader>
 					<FileInput onFileSelect={this.onFileSelect}
 					           formatCoordinates={this.props.formatCoordinates}
@@ -89,21 +103,38 @@ export default class Itinerary extends Component {
 		);
 	}
 	
-	modalInputCallback(event) {
+	addPlaceToItineraryData() {
+		let places = this.extractPlacesFromItineraryData();
+		let joined = places.concat(
+			{
+				name: this.state.addModal.modalNameInput,
+				latitude: this.state.addModal.modalPlaceInput.latitude,
+				longitude: this.state.addModal.modalPlaceInput.longitude
+			}
+		);
+		
+		this.setState({ places: joined }, () => {
+			this.insertPlacesIntoItineraryData();
+		})
+	}
+	
+	modalPlaceInputCallback(event) {
 		let output = this.props.formatCoordinates(event.target.value, null, true);
-		console.log(output);
 		if (output !== 1) {
+			
 			this.setState({ addModal: {
 				submitActive: true,
 				addModalToggle: this.state.addModal.addModalToggle,
-				modalInput: event.target.value
+				modalPlaceInput: output,
+				modalNameInput: this.state.addModal.modalNameInput
 			}});
 		}
 		else {
 			this.setState({ addModal: {
 					submitActive: false,
 					addModalToggle: this.state.addModal.addModalToggle,
-					modalInput: this.state.addModal.modalInput
+					modalPlaceInput: this.state.addModal.modalPlaceInput,
+					modalNameInput: this.state.addModal.modalNameInput
 				}});
 		}
 	}
@@ -123,6 +154,7 @@ export default class Itinerary extends Component {
 		sendServerRequestWithBody('trip', tipObject, this.state.serverPort)
 		.then((response) => {
 			if (response.statusCode >= 200 && response.statusCode <= 299) {
+				
 				this.setState({
 					places: response.body.places,
 					errorMessage: null
@@ -153,14 +185,21 @@ export default class Itinerary extends Component {
 	
 	insertPlacesIntoItineraryData() {
 		let places = this.state.places;
-		let ItinData = this.state.itineraryData;
+		let ItinData = [];
 		
-		for (let i = 0; i < ItinData.length - 1; i++) {
-			ItinData[i].origin = places[i];
-			ItinData[i].destination = places[i + 1]
+		for (let i = 0; i < places.length-1; i++) {
+			let newObj = {
+				origin: places[i],
+				destination: places[i+1],
+				distance: this.state.itineraryData[i].distance != null ? this.state.itineraryData[i].distance : null
+			}
+			ItinData = ItinData.concat(newObj);
 		}
-		ItinData[this.state.itineraryData.length - 1].origin = places[places.length - 1];
-		ItinData[this.state.itineraryData.length - 1].destination = places[0];
+		let lastObj = {
+			origin: places[places.length - 1],
+			destination: places[0]
+		}
+		ItinData = ItinData.concat(lastObj);
 		
 		this.setState({itineraryData: ItinData}); // Local data
 		this.props.updateItineraryData(ItinData);
