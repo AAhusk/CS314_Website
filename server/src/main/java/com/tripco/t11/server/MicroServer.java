@@ -7,6 +7,16 @@ import com.tripco.t11.TIP.TIPDistance;
 import com.tripco.t11.TIP.TIPHeader;
 import com.tripco.t11.TIP.TIPTrip;
 import com.tripco.t11.TIP.TIPLocation;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.util.List;
+import org.everit.json.schema.Schema;
+import org.everit.json.schema.ValidationException;
+import org.everit.json.schema.loader.SchemaLoader;
+import org.json.JSONObject;
+import org.everit.json.schema.SchemaException;
+import org.everit.json.schema.Validator;
+import org.json.JSONTokener;
 
 import java.lang.reflect.Type;
 
@@ -92,16 +102,65 @@ class MicroServer {
 
 
   private String processTIPLocationRequest(Request request, Response response) {
+    performValidation(request.body(), "./resources/TIPLocationsRequestSchema.json");
     return processTIPrequest(TIPLocation.class, request, response);
   }
 
 
   private String processTIPdistanceRequest(Request request, Response response) {
+    performValidation(request.body(), "./resources/TIPDistanceRequestSchema.json");
     return processTIPrequest(TIPDistance.class, request, response);
   }
 
   private String processTIPtripRequest(Request request, Response response) {
+    performValidation(request.body(), "/home/aahusk/IdeaProjects/t11/server/src/resources/TIPDistanceRequestSchema.json");
     return processTIPrequest(TIPTrip.class, request, response);
+  }
+
+
+
+  private boolean performValidation(String TripRequest, String JSONSchemaFile) {
+    boolean validationResult = true;
+    JSONObject JSONrequest = null;
+    try {
+      JSONrequest = new JSONObject(TripRequest);
+      log.info("This should be the JSONrequestBody: {}", JSONrequest);
+    }
+    catch (Exception e) {
+      log.error("Couldn't create JSON object from request body");
+      validationResult = false;
+    }
+    try {
+      InputStream JSONinputStream = getClass().getResourceAsStream(JSONSchemaFile);
+      JSONObject JSONSchema = new JSONObject(new JSONTokener(JSONinputStream));
+      Schema schema = SchemaLoader.load(JSONSchema);
+      log.info("This should be the JSON schema: {}", schema);
+      // This is the line that will throw a ValidationException if anything doesn't conform to the schema!
+      schema.validate(JSONrequest);
+    }
+    catch (SchemaException e) {
+      log.error("Caught a schema exception!");
+      e.printStackTrace();
+      validationResult = false;
+    }
+    catch (ValidationException e) {
+      log.error("Caught validation exception when validating schema! Root message: {}", e.getErrorMessage());
+      log.error("All messages from errors (including nested):");
+      // For now, messages are probably just good for debugging, to see why something failed
+      List<String> allMessages = e.getAllMessages();
+      for (String message : allMessages) {
+        log.error(message);
+      }
+      validationResult = false;
+    }
+    catch (Exception e) {
+      log.error("Unknown error");
+      validationResult = false;
+    }
+    finally {
+      log.info("VALIDATION: {}", validationResult);
+      return validationResult;
+    }
   }
 
   private String processTIPrequest(Type tipType, Request request, Response response) {
