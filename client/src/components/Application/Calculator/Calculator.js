@@ -70,7 +70,7 @@ export default class Calculator extends Component {
 			<Input name={stateVar + "field"}
 			       placeholder={stateVar.charAt(0).toUpperCase() + stateVar.slice(1)}
 			       id={`${stateVar}field`}
-			       onChange={callback == null ? updateStateVarOnChange : callback}/>
+			       onChange={() => (callback == null ? updateStateVarOnChange : callback)}/>
 		);
 	}
 	
@@ -94,7 +94,7 @@ export default class Calculator extends Component {
 			<Container>
 				<Row>
 					<Col>
-						<Button color='primary' onClick={this.calculateDistance}>Calculate</Button>
+						<Button color='primary' onClick={() => this.calculateDistance}>Calculate</Button>
 					</Col>
 					<Col>
 						<h5>{`${this.state.distance} ${this.props.options.activeUnit}`}</h5>

@@ -98,13 +98,13 @@ export default class LMap extends Component {
 		
 		let calculatorComponents = {ODPolyline: null, originMarker: null, destinationMarker: null};
 		if (this.props.locationOrigin != null) {
-			calculatorComponents = this.calculatorComponentSetup()
+			calculatorComponents = this.calculatorComponentSetup();
 		}
 		
 		let itineraryComponents = {MarkerArr: null, ItinPolyline: null};
 		if (this.props.itineraryData != null) {
 			if (this.props.itineraryData.length !== 0) {
-				itineraryComponents = this.itineraryComponentSetup()
+				itineraryComponents = this.itineraryComponentSetup();
 			}
 		}
 		

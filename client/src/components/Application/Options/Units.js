@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Card, CardHeader, CardBody } from 'reactstrap'
-import { Row, Col, Button, ButtonGroup } from 'reactstrap'
+import { Button, ButtonGroup } from 'reactstrap'
 
 export default class Units extends Component {
   constructor(props) {
@@ -12,7 +12,7 @@ export default class Units extends Component {
       <Card className='text-left'>
           <CardHeader className='bg-csu-green text-white font-weight-semibold'>Units</CardHeader>
           <CardBody>
-              <ButtonGroup horizontal className='w100'>
+              <ButtonGroup horizontal={"true"} className='w100'>
                 {this.renderUnitButtons(Object.keys(this.props.options.units))}
               </ButtonGroup>
           </CardBody>

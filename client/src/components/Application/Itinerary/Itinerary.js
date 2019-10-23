@@ -63,7 +63,7 @@ export default class Itinerary extends Component {
 					
 				</ModalBody>
 				<ModalFooter>
-					<Button color="primary" onClick={this.addPlaceToItineraryData} disabled={!this.state.addModal.submitActive}>Submit</Button>{' '}
+					<Button color="primary" onClick={() => this.addPlaceToItineraryData} disabled={!this.state.addModal.submitActive}>Submit</Button>{' '}
 				</ModalFooter>
 			</Modal>
 		);
@@ -86,7 +86,7 @@ export default class Itinerary extends Component {
 								<Button id="TripCSV" className='bg-csu-gold text-white'
 								        onClick={() => this.createOutputCSV()}>Export CSV</Button>{'  '}
 								        
-								<Button onClick={toggleModal} className="float-right">+</Button>
+								<Button onClick={() => toggleModal} className="float-right">+</Button>
 							</Col>
 						</Row>
 					</CardHeader>

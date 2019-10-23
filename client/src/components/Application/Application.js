@@ -175,7 +175,7 @@ export default class Application extends Component {
 	
 	updateClientSetting(field, value) {
 		if (field === 'serverPort')
-			this.setState({clientSettings: {serverPort: value}}, this.updateServerConfig);
+			this.setState({clientSettings: {serverPort: value}}, () => this.updateServerConfig);
 		else {
 			let newSettings = Object.assign({}, this.state.planOptions);
 			newSettings[field] = value;
