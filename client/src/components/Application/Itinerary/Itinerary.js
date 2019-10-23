@@ -183,10 +183,9 @@ export default class Itinerary extends Component {
 		});
 	}
 	
-	updatePlaces(places) {
+	updatePlaces(places, index = -1) {
 		this.setState({places: places},
-		() => this.insertPlacesIntoItineraryData());
-		
+		() => this.insertPlacesIntoItineraryData(index));
 	}
 	
 	extractPlacesFromItineraryData() {
@@ -197,21 +196,24 @@ export default class Itinerary extends Component {
 		return places;
 	}
 	
-	insertPlacesIntoItineraryData() {
+	insertPlacesIntoItineraryData(removeIndex = -1) {
 		let places = this.state.places;
 		let ItinData = [];
 		
-		for (let i = 0; i < places.length-1; i++) {
+		for (let i = 0; i < places.length - 1; i++) {
 			let newObj = {
 				origin: places[i],
 				destination: places[i+1],
-				distance: this.state.itineraryData[i].distance != null ? this.state.itineraryData[i].distance : null
+				//distance: this.state.itineraryData[i].distance != null ? this.state.itineraryData[i].distance : null
+				distance: (removeIndex !== -1 && i >= removeIndex) ? this.state.itineraryData[i+1].distance : this.state.itineraryData[i].distance
 			};
 			ItinData = ItinData.concat(newObj);
 		}
+		
 		let lastObj = {
 			origin: places[places.length - 1],
-			destination: places[0]
+			destination: places[0],
+			distance: this.state.itineraryData[this.state.itineraryData.length - 1].distance
 		};
 		ItinData = ItinData.concat(lastObj);
 		
@@ -279,14 +281,7 @@ export default class Itinerary extends Component {
 	}
 	
 	onFileSelect(trip, itineraryData, totalDistance) {
-		this.setState({trip: null, itineraryData: []}, () =>
-			this.setState({
-				trip: trip,
-				itineraryData: itineraryData,
-				totalDistance: totalDistance
-			}) // I want the map markers to un-load before loading new ones on top
-		); // Does this idea work? I'm not sure.
-		
+		this.setState({trip: trip, itineraryData: itineraryData, totalDistance: totalDistance});
 		this.props.updateItineraryData(itineraryData);
 		
 	}

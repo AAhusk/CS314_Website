@@ -62,6 +62,6 @@ export default class ItineraryTable extends React.Component {
 	
 	removePlaceFromPlaces(index) {
 		this.props.places.splice(index, 1);
-		this.props.updatePlaces(this.props.places);
+		this.props.updatePlaces(this.props.places, index);
 	}
 }

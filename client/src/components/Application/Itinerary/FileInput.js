@@ -71,19 +71,21 @@ export default class FileInput extends Component {
 			let formattedCoordsDestination = this.props.formatCoordinates(
 				`${trip.places[destination_index].latitude}, ${trip.places[destination_index].longitude}`, null, true);
 			
-			itineraryData.push({
-				origin: {
-					name: trip.places[i].name,
-					latitude: formattedCoordsOrigin.latitude,
-					longitude: formattedCoordsOrigin.longitude
-				},
-				destination: {
-					name: trip.places[destination_index].name,
-					latitude: formattedCoordsDestination.latitude,
-					longitude: formattedCoordsDestination.longitude
-				},
-				distance: (trip.distances != null) ? trip.distances[i] : null,
-			});
+			itineraryData.push(
+				{
+					origin: {
+						name: trip.places[i].name,
+						latitude: formattedCoordsOrigin.latitude,
+						longitude: formattedCoordsOrigin.longitude
+					},
+					destination: {
+						name: trip.places[destination_index].name,
+						latitude: formattedCoordsDestination.latitude,
+						longitude: formattedCoordsDestination.longitude
+					},
+					distance: (trip.distances != null) ? trip.distances[i] : null,
+				}
+				);
 		}
 		
 		return itineraryData;
