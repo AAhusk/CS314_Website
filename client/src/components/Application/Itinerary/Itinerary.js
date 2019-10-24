@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
-import {Container, Card, CardHeader, Col, Row, Button, Modal, ModalHeader, ModalBody, ModalFooter} from 'reactstrap'
+import {Container, Card, CardHeader, Col, Row, Button, Modal, ModalHeader, ModalBody, ModalFooter, Input
+} from 'reactstrap'
 import FileInput from './FileInput'
 import ItineraryTable from './ItineraryTable'
 import {sendServerRequestWithBody} from "../../../api/restfulAPI";
@@ -58,12 +59,12 @@ export default class Itinerary extends Component {
 				<ModalHeader toggle={toggleModal}>Add a new place</ModalHeader>
 				<ModalBody>
 					
-					{this.props.createInputField("name", modalNameInputCallback)}
-					{this.props.createInputField("place", this.modalPlaceInputCallback)}
+					{this.createInputField("name", modalNameInputCallback)}
+					{this.createInputField("place", this.modalPlaceInputCallback)}
 					
 				</ModalBody>
 				<ModalFooter>
-					<Button color="primary" onClick={() => this.addPlaceToItineraryData} disabled={!this.state.addModal.submitActive}>Submit</Button>{' '}
+					<Button color="primary" onClick={this.addPlaceToItineraryData} disabled={!this.state.addModal.submitActive}>Submit</Button>{' '}
 				</ModalFooter>
 			</Modal>
 		);
@@ -86,7 +87,7 @@ export default class Itinerary extends Component {
 								<Button id="TripCSV" className='bg-csu-gold text-white'
 								        onClick={() => this.createOutputCSV()}>Export CSV</Button>{'  '}
 								        
-								<Button onClick={() => toggleModal} className="float-right">+</Button>
+								<Button onClick={toggleModal} className="float-right">+</Button>
 							</Col>
 						</Row>
 					</CardHeader>
@@ -108,6 +109,15 @@ export default class Itinerary extends Component {
 					}
 				</Card>
 			</Container>
+		);
+	}
+	
+	createInputField(stateVar, callback = null) {
+		return (
+			<Input name={stateVar + "field"}
+			       placeholder={stateVar.charAt(0).toUpperCase() + stateVar.slice(1)}
+			       id={`${stateVar}field`}
+			       onChange={callback}/>
 		);
 	}
 	
@@ -204,16 +214,23 @@ export default class Itinerary extends Component {
 			let newObj = {
 				origin: places[i],
 				destination: places[i+1],
-				//distance: this.state.itineraryData[i].distance != null ? this.state.itineraryData[i].distance : null
-				distance: (removeIndex !== -1 && i >= removeIndex) ? this.state.itineraryData[i+1].distance : this.state.itineraryData[i].distance
+				//distance: this.state.itineraryData[i].distance != null ? this.state.itineraryData[i].distance : 0
+				distance: (this.state.itineraryData[i+1] != null && this.state.itineraryData[i] != null) ?
+					((removeIndex !== -1 && i >= removeIndex) ? this.state.itineraryData[i+1].distance : this.state.itineraryData[i].distance) : 0
 			};
 			ItinData = ItinData.concat(newObj);
 		}
 		
+		let a = 0;
+		if (this.state.itineraryData[this.state.itineraryData.length - 1] != null) {
+			//console.log(itineraryData);
+			a = this.state.itineraryData[this.state.itineraryData.length - 1].distance;
+		}
+
 		let lastObj = {
 			origin: places[places.length - 1],
 			destination: places[0],
-			distance: this.state.itineraryData[this.state.itineraryData.length - 1].distance
+			distance: a
 		};
 		ItinData = ItinData.concat(lastObj);
 		
@@ -222,6 +239,7 @@ export default class Itinerary extends Component {
 	}
 	
 	createOutputJSON() {
+		
 		if (this.state.trip == null) {
 			this.errorHandler("No file to export", 201);
 		} else {
@@ -234,6 +252,7 @@ export default class Itinerary extends Component {
 			};
 			
 			let quantityPlaces = this.state.itineraryData.length;
+			console.log(this.state.itineraryData);
 			for (let i = 0; i < quantityPlaces; ++i) {
 				TIPTrip.places[i] = this.state.itineraryData[i].origin.name;
 				TIPTrip.distances[i] = this.state.itineraryData[i].distance;
@@ -258,7 +277,7 @@ export default class Itinerary extends Component {
 			for (var i = 0; i < this.state.itineraryData.length; ++i) {
 				let TripSegment = [this.state.itineraryData[i].origin.name,
 					this.state.itineraryData[i].destination.name,
-					this.state.itineraryData[i].distance];
+					this.state.itineraryData[i].distance == null ? 0 : this.state.itineraryData[i].distance];
 				TripArray[i + 1] = TripSegment;
 			}
 			
