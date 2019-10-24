@@ -22,9 +22,22 @@ export default class Calculator extends Component {
       rawStringD: null,
       distance: 0,
       errorMessage: this.props.errorMessage,
-      itineraryData: null
+      itineraryData: null,
+      useLocation: false
     };
   }
+
+  handleButtonClick() {
+    this.props.geolocation('origin');
+    this.setState({
+      rawStringO: {
+        latitude: this.props.locationOrigin.latitude,
+        longitude: this.props.locationOrigin.longitude
+      },
+      useLocation: true
+    });
+  }
+
 
   render() {
     return (
@@ -40,7 +53,7 @@ export default class Calculator extends Component {
             </Col>
             <Col xs={3} sm={3} md={3} lg={3}>
               <ListGroup>
-                <ListGroupItem> <Button color='primary' onClick={() => this.props.geolocation()}>Use My Location</Button> </ListGroupItem>
+                <ListGroupItem> <Button color='primary' onClick={() => this.handleButtonClick()}>Use My Location</Button> </ListGroupItem>
                 <ListGroupItem> {this.createInputField("origin")}</ListGroupItem>
                 <ListGroupItem> {this.createInputField("destination")}</ListGroupItem>
                 <ListGroupItem> {this.createDistance()}</ListGroupItem>
@@ -62,14 +75,25 @@ export default class Calculator extends Component {
 
   createInputField(stateVar) {
     let updateStateVarOnChange = (event) => {
+      this.setState({useLocation: false});
       this.inputFieldCallback(stateVar, event.target.value); // origin / destination --- rawString
     };
-    return (
-      <Input name={stateVar + "field"}
-             placeholder={stateVar.charAt(0).toUpperCase() + stateVar.slice(1)}
-             id={`${stateVar}field`}
-             onChange={updateStateVarOnChange}/>
-    );
+    if(stateVar === 'origin' && this.state.useLocation === true) {
+      return (
+        <Input name={stateVar + "field"}
+               placeholder={stateVar.charAt(0).toUpperCase() + stateVar.slice(1)}
+               value={this.props.locationOrigin.latitude + ", " + this.props.locationOrigin.longitude}
+               id={`${stateVar}field`}
+               onChange={updateStateVarOnChange}/>
+      );
+    } else{
+      return (
+         <Input name={stateVar + "field"}
+                placeholder={stateVar.charAt(0).toUpperCase() + stateVar.slice(1)}
+                id={`${stateVar}field`}
+                onChange={updateStateVarOnChange}/>
+      );
+    }
   }
 
   updateItineraryData(data) {
