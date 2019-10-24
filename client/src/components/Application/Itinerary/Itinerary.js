@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {Container, Card, CardHeader, ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem} from 'reactstrap'
+import {Container, Card, CardHeader, Modal, ModalFooter, ModalBody, ModalHeader, Col, Input} from 'reactstrap'
 import {Row, Button} from 'reactstrap'
 import FileInput from './FileInput'
 import ItineraryTable from './ItineraryTable'
@@ -48,26 +48,19 @@ export default class Itinerary extends Component {
 				}});
 		};
 		
-		let modalNameInputCallback = (event) => {
-			this.setState({addModal: {
-					addModalToggle: this.state.addModal.addModalToggle,
-					modalPlaceInput: this.state.addModal.modalPlaceInput,
-					modalNameInput: event.target.value,
-					submitActive: this.state.addModal.submitActive
-				}});
-		};
+		
 		
 		let addPlaceModal = (
 			<Modal isOpen={this.state.addModal.addModalToggle} toggle={toggleModal}>
 				<ModalHeader toggle={toggleModal}>Add a new place</ModalHeader>
 				<ModalBody>
 					
-					{this.props.createInputField("name", modalNameInputCallback)}
-					{this.props.createInputField("place", this.modalPlaceInputCallback)}
+					{this.createInputField("name", this.modalNameInputCallback)}
+					{this.createInputField("place", this.modalPlaceInputCallback)}
 				
 				</ModalBody>
 				<ModalFooter>
-					<Button color="primary" onClick={() => this.addPlaceToItineraryData} disabled={!this.state.addModal.submitActive}>Submit</Button>{' '}
+					<Button color="primary" onClick={this.addPlaceToItineraryData} disabled={!this.state.addModal.submitActive}>Submit</Button>{' '}
 				</ModalFooter>
 			</Modal>
 		);
@@ -90,7 +83,7 @@ export default class Itinerary extends Component {
 								<Button id="TripCSV" className='bg-csu-gold text-white'
 								        onClick={() => this.createOutputCSV()}>Export CSV</Button>{'  '}
 								
-								<Button onClick={() => toggleModal} className="float-right">+</Button>
+								<Button onClick={toggleModal} className="float-right">+</Button>
 							</Col>
 						</Row>
 					</CardHeader>
@@ -114,7 +107,36 @@ export default class Itinerary extends Component {
 			</Container>
 		);
 	}
-
+	
+	modalNameInputCallback(event) {
+		this.setState({addModal: {
+				addModalToggle: this.state.addModal.addModalToggle,
+				modalPlaceInput: this.state.addModal.modalPlaceInput,
+				modalNameInput: event.target.value,
+				submitActive: this.state.addModal.submitActive
+			}});
+	};
+	
+	createInputField(stateVar) {
+		
+		return (
+			<Input name={stateVar + "field"}
+			       placeholder={stateVar.charAt(0).toUpperCase() + stateVar.slice(1)}
+			       id={`${stateVar}field`}
+			       onChange={(e) => (stateVar === "name" ? this.modalNameInputCallback(e) : this.modalPlaceInputCallback(e)) }/>
+		);
+	}
+	
+	calculateTotalDistance(distances){
+		var sum = 0;
+		
+		distances.map((distance) => {
+			sum =  sum + distance;
+		});
+		
+		return sum;
+	}
+	
     shortTripOptimization() {
         let tipObject = {
             "requestType": "trip",
@@ -170,7 +192,7 @@ export default class Itinerary extends Component {
 				}});
 		}
 	}
- 
+	
 	addPlaceToItineraryData() {
 		let places = this.extractPlacesFromItineraryData();
 		let joined = places.concat(
@@ -180,7 +202,6 @@ export default class Itinerary extends Component {
 				longitude: this.state.addModal.modalPlaceInput.longitude
 			}
 		);
-		
 		this.setState({ places: joined }, () => {
 			this.insertPlacesIntoItineraryData();
 		})
@@ -210,7 +231,7 @@ export default class Itinerary extends Component {
 	createCSVArray(TripArray, id, altitude, municipality, type) {
 		let cumulativeDistance = 0;
 		for (let i = 0; i < this.state.itineraryData.length; ++i) {
-			let distance = (i==0) ? 0 : this.state.itineraryData[i-1].distance;
+			let distance = (i===0) ? 0 : this.state.itineraryData[i-1].distance;
 			cumulativeDistance += distance;
 			let TripLocation = [this.state.itineraryData[i].origin.name,
 				this.state.itineraryData[i].origin.latitude,
@@ -248,10 +269,15 @@ export default class Itinerary extends Component {
 			ItinData = ItinData.concat(newObj);
 		}
 		
+		let a = 0;
+		if (this.state.itineraryData[this.state.itineraryData.length - 1] != null) {
+			a = this.state.itineraryData[this.state.itineraryData.length - 1].distance;
+		}
+		
 		let lastObj = {
 			origin: places[places.length - 1],
 			destination: places[0],
-			distance: this.state.itineraryData[this.state.itineraryData.length - 1].distance
+			distance: a
 		};
 		ItinData = ItinData.concat(lastObj);
 		
@@ -330,19 +356,12 @@ export default class Itinerary extends Component {
 			FileSaver.saveAs(file, "TIPTrip.csv");
 		}
 	}
-
-  onFileSelect(trip, itineraryData, totalDistance){
-      this.setState({ trip: null, itineraryData: null}, () =>
-          this.setState({
-              trip: trip,
-              itineraryData: itineraryData,
-              totalDistance: totalDistance
-          }) // I want the map markers to un-load before loading new ones on top
-      ); // Does this idea work? I'm not sure.
-
-      this.props.updateItineraryData(itineraryData);
-
-  }
+	
+	onFileSelect(trip, itineraryData, totalDistance) {
+		this.setState({trip: trip, itineraryData: itineraryData, totalDistance: totalDistance});
+		this.props.updateItineraryData(itineraryData);
+		
+	}
 
   errorHandler(statusText, statusCode){
     this.setState({
