@@ -66,16 +66,23 @@ This sprint will complete the following Epics.
 
 | Statistic | # Planned | # Completed |
 | --- | ---: | ---: |
-| Epics | *7* | *value* |
-| Tasks |  *16*   | *value* | 
-| Story Points |  *18*  | *value* | 
+| Epics | *7* | *4* |
+| Tasks |  *16*   | *19* | 
+| Story Points |  *18*  | *23* | 
 
 
 ## Scrums
 
 | Date | Tasks closed  | Tasks in progress | Impediments |
 | :--- | :--- | :--- | :--- |
-| *10/7* | *none* | *none* | *Initial Planning and bug fixes* | 
+| *10/7* | *none* | *none* | *Initial Planning and bug fixes* |
+| *10/9* | *#109* | *#111, #117* | *none* |
+| *10/11* | *#111, #117* | *#110* | *none* |
+| *10/14* | *#110* | *#59,#65, #144* | *none* |
+| *10/16* | *#59, #65* | *#118, #145, #156, #144* | *none* |
+| *10/18* | *#118, #145, #156, #144* | *#119, #164* | *none* |
+| *10/21* | *#119* | *#164* | *none* |
+| *10/23* | *#164* | *none* | *none* |
 
 
 ## Review (focus on solution and technology)
@@ -86,15 +93,18 @@ In this sprint, ...
 
 These Epics were completed.
 
-* *## epic title: comments*
-* 
+* *#1: Short Trip*: 
+* *#2: Distance Units*: 
+* *#5: Trips*: 
+* *#7: TIP v4*: 
 
 #### Incomplete epics in Sprint Backlog 
 
 These Epics were not completed.
 
-* *## epic title: explanation*
-*
+* *#3: Use Logging Facility*: 
+* *#4: Distance Calculator*: 
+* *#6: System*: 
 
 #### What went well
 
