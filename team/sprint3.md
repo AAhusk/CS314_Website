@@ -87,51 +87,51 @@ This sprint will complete the following Epics.
 
 ## Review (focus on solution and technology)
 
-In this sprint, ...
+In this sprint, we focused on Itinerary and Short Trip. We were able to condense a lot of our code to be more efficient and are able to read and manipulate itinerary files. Our nearest neighbor algorithm works great and works relatively fast depending on the task.
 
 #### Completed epics in Sprint Backlog 
 
 These Epics were completed.
 
-* *#1: Short Trip*: 
-* *#2: Distance Units*: 
-* *#5: Trips*: 
-* *#7: TIP v4*: 
+* *#1: Short Trip*
+* *#2: Distance Units*
+* *#5: Trips*
+* *#7: TIP v4*
 
 #### Incomplete epics in Sprint Backlog 
 
 These Epics were not completed.
 
-* *#3: Use Logging Facility*: 
-* *#4: Distance Calculator*: 
-* *#6: System*: 
+* *#3: Use Logging Facility*: Didn't have enough time.
+* *#4: Distance Calculator*: Started implimentation but did not finish.
+* *#6: System*: Did not understand full and got pushed back.
 
 #### What went well
 
-The ...
+Our team was able to complete some of the major epics and we were able to get less sidetracked with other epics/tasks. We were better this sprint at asking for help when we needed it and stuck well to the process in GitHub.
 
 
 #### Problems encountered and resolutions
 
-The ...
+Our communication could have been better between what has been completed and what needs to be completed. We started off in groups on epics, but as it came closer to crunch time we did our own epics. However this led to there being some complications. Our goal for next sprint is to start early as a team and end early. We will communicate our work better in order to lessen confusion.
 
 
 ## Retrospective (focus on people, process, tools)
 
-In this sprint, ...
+In this sprint, we had a hard time balancing this project and midterms/other projects. We were able to work well together and ask each other for help when we needed it. The tools CodeClimate and Travis helped with our process and sped things along, leading to less breaks in code and more prevention.
 
 #### What we changed this sprint
 
-Our changes for this sprint included ...
+Our changes for this sprint included working in groups on epics in the beginning. This worked for a bit, but schedule got busy. Keeping on top of this will be a main priority for next sprint.
 
 #### What we did well
 
-We ...
+We were able to use the helpful tools of CodeClimate and Travis which helped with debugging and creating more clean code. The layout of CodeClimate allowed our group to have similar looking code without communicating about it too much.
 
 #### What we need to work on
 
-We could improve ...
+We need to work more on daily communication as opposed to out daily scrum every Monday, Wednesday, and Friday. 
 
 #### What we will change next sprint 
 
-We will change ...
+We need to communicate more daily. Keeping each other updated on progress daily will help us all stay on the same page. Maybe like a daily blast in the morning or night will be able to help with that.
