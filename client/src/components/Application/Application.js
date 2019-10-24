@@ -4,6 +4,7 @@ import {Alert, Container} from 'reactstrap';
 import Home from './Home';
 import About from './About/About';
 import Calculator from './Calculator/Calculator';
+import Itinerary from './Itinerary/Itinerary';
 import Options from './Options/Options';
 import Settings from './Settings/Settings';
 import {getOriginalServerPort, sendServerRequest} from '../../api/restfulAPI';
@@ -33,9 +34,8 @@ export default class Application extends Component {
       errorMessage: null,
       currentLocation: null,
 
-      origin: { latitude: 1, longitude: 1},
-      destination: { latitude: 1, longitude: 1},
-      itineraryData: null
+      origin: { latitude: 0, longitude: 0},
+      destination: { latitude: 0, longitude: 0}
     };
 
     this.updateServerConfig();
@@ -61,10 +61,15 @@ export default class Application extends Component {
     })
   }
 
-  geolocation() { // Add a try/catch here
+  geolocation(stateVar) { // Add a try/catch here
     if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition((position) =>
-          this.onLocationChange(position.coords, 'currentLocation'));
+      if(stateVar !== 'origin') {
+        navigator.geolocation.getCurrentPosition((position) =>
+            this.onLocationChange(position.coords, 'currentLocation'));
+      } else {
+        navigator.geolocation.getCurrentPosition((position) =>
+            this.onLocationChange(position.coords, 'origin'));
+      }
     }
     else {
       return (
@@ -73,16 +78,18 @@ export default class Application extends Component {
     }
   }
 
-  formatCoordinates(rawString, stateVar, returnFormattedCoords = false) { // Input would look like "40N, 100W", "rawStringO"
+  formatCoordinates(rawString, stateVar, returnFormattedCoords = false) { // Input would look like {latitude: '40.123N', longitude: '-74.123W}, "rawStringO"
     // If returnFormattedCoords is false, it just updates the state
 
     this.setState({errorMessage: null});
     const Coordinates = require('coordinate-parser');
     try {
-      let coords = new Coordinates(rawString);
-      let finalState = "destination";
+      let coords = new Coordinates(rawString.latitude + "," + rawString.longitude);
+      let finalState = null;
 
       if (stateVar === 'rawStringO') {finalState = 'origin';}
+      else if (stateVar === 'rawStringD') {finalState = 'destination';}
+      //else { finalState = null }
 
       let lat = coords.getLatitude();
       let long = coords.getLongitude();
@@ -93,13 +100,10 @@ export default class Application extends Component {
       while (lat > 90) { lat -= 180; }
 
       let dict = { latitude: lat, longitude: long };
-
+      this.setState( {[finalState]: dict});
 
       if (returnFormattedCoords === true) {
         return {latitude: lat, longitude: long};
-      }
-      else {
-        this.setState( {[finalState]: dict});
       }
     }
     catch(err) {
@@ -108,6 +112,7 @@ export default class Application extends Component {
       }
     }
   }
+
 
   updateClientSetting(field, value) {
     if(field === 'serverPort')
@@ -157,10 +162,16 @@ export default class Application extends Component {
                             locationOrigin = {this.state.origin}
                             locationDestination={this.state.destination}
                             geolocation={this.geolocation}
-                            formatCoordinates={this.formatCoordinates}
-                            updateItineraryData={this.updateItineraryData}/>;
+                            formatCoordinates={this.formatCoordinates}/>;
 
-        case 'options':
+      case 'itinerary':
+        return <Itinerary options={this.state.planOptions}                             
+                          settings={this.state.clientSettings}
+                          createErrorBanner={this.createErrorBanner}
+                          errorMessage={this.state.errorMessage}
+                          formatCoordinates={this.formatCoordinates}/>;
+
+      case 'options':
         return <Options options={this.state.planOptions}
                         config={this.state.serverConfig}
                         updateOption={this.updatePlanOption}/>;
@@ -198,3 +209,4 @@ export default class Application extends Component {
     }
   }
 }
+
