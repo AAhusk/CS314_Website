@@ -4,6 +4,7 @@ import {Row, Button} from 'reactstrap'
 import FileInput from './FileInput'
 import ItineraryTable from './ItineraryTable'
 import {sendServerRequestWithBody} from "../../../api/restfulAPI";
+//import {saveAs} from "file-saver";
 
 export default class Itinerary extends Component {
   
@@ -14,7 +15,6 @@ export default class Itinerary extends Component {
     this.errorHandler = this.errorHandler.bind(this);
     this.createOutputJSON = this.createOutputJSON.bind(this);
     this.createOutputCSV = this.createOutputCSV.bind(this);
-    
 
 
     this.state = {
@@ -126,12 +126,11 @@ export default class Itinerary extends Component {
          TIPTrip.places[i] = this.state.itineraryData[i].origin.name;
          TIPTrip.distances[i] = this.state.itineraryData[i].distance;
        }
-
-       let a = document.getElementById("TripJSON");
+       
        let file = new Blob([JSON.stringify(TIPTrip, null, 2)],
            {type: 'application/json'});
-       a.href = URL.createObjectURL(file);
-       a.download = 'TIPTrip.json';
+         let FileSaver = require('file-saver');
+         FileSaver.saveAs(file, "TIPTrip.json");
      }
   }
 
@@ -161,12 +160,13 @@ export default class Itinerary extends Component {
         TripCSV += row + "\r\n";
       });
 
-
       let downloadCSV = document.getElementById("TripCSV");
-      let file = new Blob([TripCSV], {type: 'text/csv'},
-          {type: 'application/json'});
+      let file = new Blob([TripCSV], {type: 'text/csv'});
       downloadCSV.href = URL.createObjectURL(file);
       downloadCSV.download = 'TIPTrip.csv';
+        let FileSaver = require('file-saver');
+        FileSaver.saveAs(file, "TIPTrip.csv");
+    
     }
   }
 
