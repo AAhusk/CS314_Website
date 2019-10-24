@@ -75,7 +75,7 @@ export default class Calculator extends Component {
 
   createInputField(stateVar) {
     let updateStateVarOnChange = (event) => {
-      this.setState({useLocation: false});
+      if(this.state.useLocation === true) { this.setState({useLocation: false}); }
       this.inputFieldCallback(stateVar, event.target.value); // origin / destination --- rawString
     };
     if(stateVar === 'origin' && this.state.useLocation === true) {
