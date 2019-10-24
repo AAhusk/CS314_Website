@@ -113,7 +113,6 @@ export default class Itinerary extends Component {
     if (this.state.trip == null) {
       this.errorHandler("No file to export", 201);
     }
-
     else {
       let TIPTrip = this.state.trip;
 
@@ -163,67 +162,58 @@ export default class Itinerary extends Component {
       }
       TripArray[0].push("Distance", "Cumulative Distance");
 
-      let cumulativeDistance = 0;
-
-      for (var i = 0; i < this.state.itineraryData.length; ++i) {
-        let distance = (i==0) ? 0 : this.state.itineraryData[i-1].distance;
-        cumulativeDistance += distance;
-        let TripLocation = [this.state.itineraryData[i].origin.name,
-          this.state.itineraryData[i].origin.latitude,
-          this.state.itineraryData[i].origin.longitude,
-        ];
-        if (id) {
-          TripLocation.push(this.state.trip.places[i].id);
-        }
-        if (altitude) {
-          TripLocation.push(this.state.trip.places[i].altitude);
-        }
-        if (municipality) {
-          TripLocation.push(this.state.trip.places[i].municipality);
-        }
-        if (type) {
-          TripLocation.push(this.state.trip.places[i].type)
-        }
-        TripLocation.push(distance, cumulativeDistance);
-        TripArray[i+1] = TripLocation;
-      }
-
-      let backToStartingLocation = TripArray[1].slice(0);
-      let lastItineraryEntry = this.state.itineraryData[this.state.itineraryData.length-1];
-      backToStartingLocation[backToStartingLocation.length-2] = lastItineraryEntry.distance;
-      backToStartingLocation[backToStartingLocation.length-1] = lastItineraryEntry.distance + cumulativeDistance;
+      let cumulativeDistance = this.createCSVArray(TripArray, id, altitude, municipality, type);
+      let backToStartingLocation = this.getLastCSVEntry(TripArray, cumulativeDistance);
       TripArray.push(backToStartingLocation);
 
       let TripCSV = "";
-
       TripArray.forEach(function (rowArray) {
         let row = rowArray.join(",");
         TripCSV += row + "\r\n";
       });
 
-
-      let downloadCSV = document.getElementById("TripCSV");
       let file = new Blob([TripCSV], {type: 'text/csv'},
           {type: 'application/json'});
-      downloadCSV.href = URL.createObjectURL(file);
-      downloadCSV.download = 'TIPTrip.csv';
+
       let FileSaver = require('file-saver');
       FileSaver.saveAs(file, "TIPTrip.csv");
     }
   }
 
+  getLastCSVEntry(TripArray, cumulativeDistance) {
+    let backToStartingLocation = TripArray[1].slice(0);
+    let lastItineraryEntry = this.state.itineraryData[this.state.itineraryData.length-1];
+    backToStartingLocation[backToStartingLocation.length-2] = lastItineraryEntry.distance;
+    backToStartingLocation[backToStartingLocation.length-1] = lastItineraryEntry.distance + cumulativeDistance;
+    return backToStartingLocation;
+  }
 
-
-
-
-
-
-
-
-
-
-
-
+  createCSVArray(TripArray, id, altitude, municipality, type) {
+    let cumulativeDistance = 0;
+    for (let i = 0; i < this.state.itineraryData.length; ++i) {
+      let distance = (i==0) ? 0 : this.state.itineraryData[i-1].distance;
+      cumulativeDistance += distance;
+      let TripLocation = [this.state.itineraryData[i].origin.name,
+        this.state.itineraryData[i].origin.latitude,
+        this.state.itineraryData[i].origin.longitude,
+      ];
+      if (id) {
+        TripLocation.push(this.state.trip.places[i].id);
+      }
+      if (altitude) {
+        TripLocation.push(this.state.trip.places[i].altitude);
+      }
+      if (municipality) {
+        TripLocation.push(this.state.trip.places[i].municipality);
+      }
+      if (type) {
+        TripLocation.push(this.state.trip.places[i].type)
+      }
+      TripLocation.push(distance, cumulativeDistance);
+      TripArray[i+1] = TripLocation;
+    }
+    return cumulativeDistance;
+  }
 
   onFileSelect(trip, itineraryData, totalDistance){
       this.setState({ trip: null, itineraryData: null}, () =>
