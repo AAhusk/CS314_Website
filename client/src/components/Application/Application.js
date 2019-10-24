@@ -4,7 +4,6 @@ import {Alert, Container} from 'reactstrap';
 import Home from './Home';
 import About from './About/About';
 import Calculator from './Calculator/Calculator';
-import Itinerary from './Itinerary/Itinerary';
 import Options from './Options/Options';
 import Settings from './Settings/Settings';
 import {getOriginalServerPort, sendServerRequest} from '../../api/restfulAPI';
@@ -35,7 +34,8 @@ export default class Application extends Component {
       currentLocation: null,
 
       origin: { latitude: 1, longitude: 1},
-      destination: { latitude: 1, longitude: 1}
+      destination: { latitude: 1, longitude: 1},
+      itineraryData: null
     };
 
     this.updateServerConfig();
@@ -73,18 +73,16 @@ export default class Application extends Component {
     }
   }
 
-  formatCoordinates(rawString, stateVar, returnFormattedCoords = false) { // Input would look like {latitude: '40.123N', longitude: '-74.123W}, "rawStringO"
+  formatCoordinates(rawString, stateVar, returnFormattedCoords = false) { // Input would look like "40N, 100W", "rawStringO"
     // If returnFormattedCoords is false, it just updates the state
 
     this.setState({errorMessage: null});
     const Coordinates = require('coordinate-parser');
     try {
-      let coords = new Coordinates(rawString.latitude + "," + rawString.longitude);
-      let finalState = null;
+      let coords = new Coordinates(rawString);
+      let finalState = "destination";
 
       if (stateVar === 'rawStringO') {finalState = 'origin';}
-      else if (stateVar === 'rawStringD') {finalState = 'destination';}
-      //else { finalState = null }
 
       let lat = coords.getLatitude();
       let long = coords.getLongitude();
@@ -136,10 +134,13 @@ export default class Application extends Component {
 
 
       let dict = { latitude: lat, longitude: long };
-      this.setState( {[finalState]: dict});
+
 
       if (returnFormattedCoords === true) {
         return {latitude: lat, longitude: long};
+      }
+      else {
+        this.setState( {[finalState]: dict});
       }
     }
     catch(err) {
@@ -148,7 +149,6 @@ export default class Application extends Component {
       }
     }
   }
-
 
   updateClientSetting(field, value) {
     if(field === 'serverPort')
@@ -198,16 +198,8 @@ export default class Application extends Component {
                             locationOrigin = {this.state.origin}
                             locationDestination={this.state.destination}
                             geolocation={this.geolocation}
-                            formatCoordinates={this.formatCoordinates}/>;
-
-      case 'itinerary':
-        return <Itinerary options={this.state.planOptions}                             
-                          settings={this.state.clientSettings}
-                          createErrorBanner={this.createErrorBanner}
-                          errorMessage={this.state.errorMessage}
-                          formatCoordinates={this.formatCoordinates}
-                          serverPort={this.state.clientSettings.serverPort}/>;
-
+                            formatCoordinates={this.formatCoordinates}
+                            updateItineraryData={this.updateItineraryData}/>;
 
         case 'options':
         return <Options options={this.state.planOptions}
