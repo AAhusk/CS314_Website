@@ -1,9 +1,9 @@
-# Sprint 4 - *your team number* - *your team name*
+# Sprint 4 - *t11* - *Team America*
 
 ## Goal
 
 ### Worldwide!
-### Sprint Leader: *firstname lastname*
+### Sprint Leader: *Chandler Day*
 
 ## Definition of Done
 
