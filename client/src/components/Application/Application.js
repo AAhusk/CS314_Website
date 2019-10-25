@@ -4,7 +4,6 @@ import {Alert, Container} from 'reactstrap';
 import Home from './Home';
 import About from './About/About';
 import Calculator from './Calculator/Calculator';
-import Itinerary from './Itinerary/Itinerary';
 import Options from './Options/Options';
 import Settings from './Settings/Settings';
 import {getOriginalServerPort, sendServerRequest} from '../../api/restfulAPI';
@@ -15,7 +14,7 @@ import ErrorBanner from './ErrorBanner';
  * Holds the destinations and options state shared with the trip.
  */
 export default class Application extends Component {
-  constructor(props){
+  constructor(props) {
     super(props);
     this.updatePlanOption = this.updatePlanOption.bind(this);
     this.updateClientSetting = this.updateClientSetting.bind(this);
@@ -27,15 +26,16 @@ export default class Application extends Component {
     this.state = {
       serverConfig: null,
       planOptions: {
-        units: {'miles':3959, 'kilometers':6371, 'nautical miles':3440},
+        units: {'miles': 3959, 'kilometers': 6371, 'nautical miles': 3440},
         activeUnit: 'miles'
       },
-      clientSettings: { serverPort: getOriginalServerPort() },
+      clientSettings: {serverPort: getOriginalServerPort()},
       errorMessage: null,
       currentLocation: null,
 
-      origin: { latitude: 0, longitude: 0},
-      destination: { latitude: 0, longitude: 0}
+      origin: {latitude: 0, longitude: 0},
+      destination: {latitude: 0, longitude: 0},
+      itineraryData: null
     };
 
     this.updateServerConfig();
@@ -45,9 +45,9 @@ export default class Application extends Component {
     let pageToRender = this.state.serverConfig ? this.props.page : 'settings';
 
     return (
-      <div className='application-width'>
-        { this.state.errorMessage }{ this.createApplicationPage(pageToRender) }
-      </div>
+        <div className='application-width'>
+          {this.state.errorMessage}{this.createApplicationPage(pageToRender)}
+        </div>
     );
   }
 
