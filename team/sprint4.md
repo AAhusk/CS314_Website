@@ -43,11 +43,12 @@
 
 This sprint will complete the following Epics.
 
-* *#1: Trips*
-* *#2: System*
+* *#1: Modify Trip*
+* *#2: API Validation*
 * *#3: TIP v4*
-* *#4: Distance Calculator*
-* *#5: API Validation*
+* *#4: Shorter Trip*
+* *#5: Worldwide*
+* *#6: Distance Units*
 
 ## Notes and Diagrams
 
@@ -62,7 +63,7 @@ This sprint will complete the following Epics.
 
 | Statistic | # Planned | # Completed |
 | --- | ---: | ---: |
-| Epics | *5* | *value* |
+| Epics | *6* | *value* |
 | Tasks |  *22*   | *value* | 
 | Story Points |  *22*  | *value* | 
 
