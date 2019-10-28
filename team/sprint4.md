@@ -64,8 +64,8 @@ This sprint will complete the following Epics.
 | Statistic | # Planned | # Completed |
 | --- | ---: | ---: |
 | Epics | *6* | *value* |
-| Tasks |  *22*   | *value* | 
-| Story Points |  *22*  | *value* | 
+| Tasks |  *14*   | *value* | 
+| Story Points |  *20*  | *value* | 
 
 
 ## Scrums
