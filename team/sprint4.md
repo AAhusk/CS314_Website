@@ -43,19 +43,28 @@
 
 This sprint will complete the following Epics.
 
-* *#0 epic title: description*
-*
+* *#1: Trips*
+* *#2: System*
+* *#3: TIP v4*
+* *#4: Distance Calculator*
+* *#5: API Validation*
 
-***(Include a discussion of you plan with key diagrams here and remove this!)***
+## Notes and Diagrams
+
+![Client Hierarchy](/team/images/ClientHierarchyDiagram.jpeg?raw=true "Client Hierarchy")
+
+![Server Hierarchy](/team/images/ServerHierarchyDiagram.PNG?raw=true "Server Hierarchy")
+
+![Webpage Elements](/team/images/Sprint3_Diagram1.jpg?raw=true "Webpage Elements")
 
 
 ## Metrics
 
 | Statistic | # Planned | # Completed |
 | --- | ---: | ---: |
-| Epics | *value* | *value* |
-| Tasks |  *value*   | *value* | 
-| Story Points |  *value*  | *value* | 
+| Epics | *5* | *value* |
+| Tasks |  *22*   | *value* | 
+| Story Points |  *22*  | *value* | 
 
 
 ## Scrums
