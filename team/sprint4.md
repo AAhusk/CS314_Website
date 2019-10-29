@@ -56,7 +56,7 @@ This sprint will complete the following Epics.
 
 ![Server Hierarchy](/team/images/SP4_Server_Hierarchy.jpg?raw=true "Server Hierarchy")
 
-![Webpage Elements](/team/images/Sprint3_Diagram1.jpg?raw=true "Webpage Elements")
+![Webpage Elements](/team/images/SP4_Client_Component_Layout.jpg?raw=true "Webpage Elements")
 
 
 ## Metrics
