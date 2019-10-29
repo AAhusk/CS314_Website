@@ -39,7 +39,7 @@ import org.slf4j.LoggerFactory;
  */
 class MicroServer {
 
-  private final Logger log = LoggerFactory.getLogger(MicroServer.class);
+  private static final Logger log = LoggerFactory.getLogger(MicroServer.class);
 
 
   MicroServer(int serverPort) {
@@ -107,24 +107,37 @@ class MicroServer {
 
 
   private String processTIPLocationRequest(Request request, Response response) {
-    performValidation(request.body(), "/TIPLocationsRequestSchema.json");
+    JSONObject LocationSchema = getSchema("/TIPLocationsRequestSchema.json");
+    performValidation(request.body(), LocationSchema);
     return processTIPrequest(TIPLocation.class, request, response);
   }
 
 
   private String processTIPdistanceRequest(Request request, Response response) {
-    performValidation(request.body(), "/TIPDistanceRequestSchema.json");
+    JSONObject DistanceSchema = getSchema("/TIPDistanceRequestSchema.json");
+    performValidation(request.body(), DistanceSchema);
     return processTIPrequest(TIPDistance.class, request, response);
   }
 
   private String processTIPtripRequest(Request request, Response response) {
-    performValidation(request.body(), "/TIPTripRequestSchema.json");
+    JSONObject TripSchema = getSchema("/TIPTripRequestSchema.json");
+    performValidation(request.body(), TripSchema);
     return processTIPrequest(TIPTrip.class, request, response);
   }
 
+  private JSONObject getSchema(String SchemaFilePath) {
+    JSONObject JSONSchema = null;
+    try {
+      InputStream JSONinputStream = getClass().getResourceAsStream(SchemaFilePath);
+      JSONSchema = new JSONObject(new JSONTokener(JSONinputStream));
+    }
+    catch (Exception e) {
+      log.error("Error retrieving schema file from resources!");
+    }
+    return JSONSchema;
+  }
 
-
-  private boolean performValidation(String TripRequest, String JSONSchemaFile) {
+  public static boolean performValidation(String TripRequest, JSONObject JSONSchema) {
     boolean validationResult = true;
     JSONObject JSONrequest = null;
     try {
@@ -136,8 +149,6 @@ class MicroServer {
       validationResult = false;
     }
     try {
-      InputStream JSONinputStream = getClass().getResourceAsStream(JSONSchemaFile);
-      JSONObject JSONSchema = new JSONObject(new JSONTokener(JSONinputStream));
       Schema schema = SchemaLoader.load(JSONSchema);
       log.info("This should be the JSON schema: {}", JSONSchema);
       // This is the line that will throw a ValidationException if anything doesn't conform to the schema!
@@ -158,10 +169,7 @@ class MicroServer {
       }
       validationResult = false;
     }
-    catch (Exception e) {
-      log.error("Error retreiving schema file from resources!");
-      validationResult = false;
-    }
+
     finally {
       log.info("VALIDATION: {}", validationResult);
       return validationResult;
