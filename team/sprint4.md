@@ -52,9 +52,9 @@ This sprint will complete the following Epics.
 
 ## Notes and Diagrams
 
-![Client Hierarchy](/team/images/ClientHierarchyDiagram.jpeg?raw=true "Client Hierarchy")
+![Client Hierarchy](/team/images/SP4_Client_Hierarchy.jpg?raw=true "Client Hierarchy")
 
-![Server Hierarchy](/team/images/ServerHierarchyDiagram.PNG?raw=true "Server Hierarchy")
+![Server Hierarchy](/team/images/SP4_Server_Hierarchy.jpg?raw=true "Server Hierarchy")
 
 ![Webpage Elements](/team/images/Sprint3_Diagram1.jpg?raw=true "Webpage Elements")
 
