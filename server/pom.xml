@@ -23,7 +23,7 @@
                 <directory>../client/dist</directory>
             </resource>
             <resource>
-                <directory>src/resources</directory>
+                <directory>src/main/resources</directory>
             </resource>
         </resources>
         <plugins>

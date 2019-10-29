@@ -7,9 +7,11 @@ import com.tripco.t11.TIP.TIPDistance;
 import com.tripco.t11.TIP.TIPHeader;
 import com.tripco.t11.TIP.TIPTrip;
 import com.tripco.t11.TIP.TIPLocation;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.List;
+import java.util.Scanner;
 import org.everit.json.schema.Schema;
 import org.everit.json.schema.ValidationException;
 import org.everit.json.schema.loader.SchemaLoader;
@@ -19,6 +21,9 @@ import org.everit.json.schema.Validator;
 import org.json.JSONTokener;
 
 import java.lang.reflect.Type;
+import java.io.InputStream;
+import java.lang.String;
+import java.io.File;
 
 import spark.Request;
 import spark.Response;
@@ -102,18 +107,18 @@ class MicroServer {
 
 
   private String processTIPLocationRequest(Request request, Response response) {
-    performValidation(request.body(), "./resources/TIPLocationsRequestSchema.json");
+    performValidation(request.body(), "/TIPLocationsRequestSchema.json");
     return processTIPrequest(TIPLocation.class, request, response);
   }
 
 
   private String processTIPdistanceRequest(Request request, Response response) {
-    performValidation(request.body(), "./resources/TIPDistanceRequestSchema.json");
+    performValidation(request.body(), "/TIPDistanceRequestSchema.json");
     return processTIPrequest(TIPDistance.class, request, response);
   }
 
   private String processTIPtripRequest(Request request, Response response) {
-    performValidation(request.body(), "/home/aahusk/IdeaProjects/t11/server/src/resources/TIPDistanceRequestSchema.json");
+    performValidation(request.body(), "/TIPTripRequestSchema.json");
     return processTIPrequest(TIPTrip.class, request, response);
   }
 
@@ -134,7 +139,7 @@ class MicroServer {
       InputStream JSONinputStream = getClass().getResourceAsStream(JSONSchemaFile);
       JSONObject JSONSchema = new JSONObject(new JSONTokener(JSONinputStream));
       Schema schema = SchemaLoader.load(JSONSchema);
-      log.info("This should be the JSON schema: {}", schema);
+      log.info("This should be the JSON schema: {}", JSONSchema);
       // This is the line that will throw a ValidationException if anything doesn't conform to the schema!
       schema.validate(JSONrequest);
     }
@@ -154,7 +159,7 @@ class MicroServer {
       validationResult = false;
     }
     catch (Exception e) {
-      log.error("Unknown error");
+      log.error("Error retreiving schema file from resources!");
       validationResult = false;
     }
     finally {
