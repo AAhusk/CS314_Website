@@ -4,11 +4,10 @@ export default class ItineraryTable extends React.Component {
 	constructor(props) {
 		super(props);
 		
-		this.removePlaceFromPlaces = this.removePlaceFromPlaces.bind(this);
+		this.removePlaceFromItineraryData = this.removePlaceFromItineraryData.bind(this);
 		this.renderTripItinerary = this.renderTripItinerary.bind(this);
 		
 		this.state = {
-			itineraryData: this.props.itineraryData,
 			totalDistance: null
 		};
 	}
@@ -27,7 +26,7 @@ export default class ItineraryTable extends React.Component {
 					</thead>
 					
 					<tbody>
-					{this.props.itineraryData != null && this.props.itineraryData.map(this.renderTripItinerary)}
+					{this.props.itineraryData.formattedDestinations != null && this.props.itineraryData.formattedDestinations.map(this.renderTripItinerary)}
 					</tbody>
 					
 					<tbody>
@@ -48,20 +47,22 @@ export default class ItineraryTable extends React.Component {
 	
 	renderTripItinerary(entry, index) {
 		return (
+			
 			<React.Fragment key={"cont" + index}>
 				{entry.origin != null &&
 				<tr key={index}>
 					<td key={"name" + index}>{entry.origin != null && entry.origin.name}</td>
 					<td key={"dest" + index}>{entry.destination != null && entry.destination.name}</td>
 					<td key={"dist" + index}>{entry.distance != null && entry.distance}</td>
-					<td key={"minus" + index}><Button color="danger" className={"float-right"} onClick={() => this.removePlaceFromPlaces(index)}>-</Button></td>
+					<td key={"minus" + index}><Button color="danger" className={"float-right"} onClick={() => this.removePlaceFromItineraryData(index)}>-</Button></td>
 				</tr>}
 			</React.Fragment>
 		);
 	}
 	
-	removePlaceFromPlaces(index) {
-		this.props.places.splice(index, 1);
-		this.props.updatePlaces(this.props.places, index);
+	removePlaceFromItineraryData(index) {
+		let data = this.props.itineraryData
+		data.places.splice(index, 1);
+		this.props.updateItineraryData(data);
 	}
 }

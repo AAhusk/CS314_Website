@@ -39,7 +39,6 @@ export default class FileInput extends Component {
 				let trip = JSON.parse(read.result);
 				this.serverRequest(trip);
 			} catch (err) {
-				//console.log(err);
 				this.setState({backgroundColor: red});
 			}
 		}
@@ -61,7 +60,10 @@ export default class FileInput extends Component {
 	}
 	
 	formatTripData(trip) {
-		var itineraryData = [];
+		let itineraryData;
+		let places = [];
+		let formattedDestinations = [];
+		let distances = [];
 		for (var i = 0; i < trip.places.length; i++) {
 			
 			var destination_index = ((i + 1) === trip.places.length) ? 0 : i + 1;
@@ -71,7 +73,14 @@ export default class FileInput extends Component {
 			let formattedCoordsDestination = this.props.formatCoordinates(
 				`${trip.places[destination_index].latitude}, ${trip.places[destination_index].longitude}`, null, true);
 			
-			itineraryData.push(
+			places.push(
+				{
+					name: trip.places[i].name,
+					latitude: formattedCoordsOrigin.latitude,
+					longitude: formattedCoordsOrigin.longitude
+				});
+			
+			formattedDestinations.push(
 				{
 					origin: {
 						name: trip.places[i].name,
@@ -82,16 +91,18 @@ export default class FileInput extends Component {
 						name: trip.places[destination_index].name,
 						latitude: formattedCoordsDestination.latitude,
 						longitude: formattedCoordsDestination.longitude
-					},
-					distance: (trip.distances != null) ? trip.distances[i] : null,
-				}
-				);
+					}
+				});
+			
+			distances.push((trip.distances != null) ? trip.distances[i] : "")
 		}
+		
+		itineraryData = {
+			places: places,
+			formattedDestinations: formattedDestinations,
+			distances: distances
+		};
 		
 		return itineraryData;
 	}
-	
-
-	
-	
 }

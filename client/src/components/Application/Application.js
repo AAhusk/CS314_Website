@@ -18,6 +18,7 @@ export default class Application extends Component {
 		super(props);
 		this.updatePlanOption = this.updatePlanOption.bind(this);
 		this.updateClientSetting = this.updateClientSetting.bind(this);
+		this.updateItineraryData = this.updateItineraryData.bind(this);
 		this.createApplicationPage = this.createApplicationPage.bind(this);
 		this.onLocationChange = this.onLocationChange.bind(this);
 		this.geolocation = this.geolocation.bind(this);
@@ -35,7 +36,7 @@ export default class Application extends Component {
 			
 			origin: {latitude: 1, longitude: 1},
 			destination: {latitude: 1, longitude: 1},
-			itineraryData: null
+			itineraryData: {}
 		};
 		
 		this.updateServerConfig();
@@ -43,12 +44,47 @@ export default class Application extends Component {
 	
 	render() {
 		let pageToRender = this.state.serverConfig ? this.props.page : 'settings';
+		this.geolocation()
 		
 		return (
 			<div className='application-width'>
 				{this.state.errorMessage}{this.createApplicationPage(pageToRender)}
 			</div>
 		);
+	}
+	
+	updateItineraryData(data) {
+		// Assume data is an itineraryData object that has updated places,
+		// but not an updated formattedDestinations
+		
+		let formattedDestinations = [];
+		for (let i = 0; i < data.places.length; i++) {
+			let destination_index = ((i + 1) === data.places.length) ? 0 : i + 1;
+			
+			let formattedCoordsOrigin = this.formatCoordinates(
+				`${data.places[i].latitude}, ${data.places[i].longitude}`, null, true);
+			let formattedCoordsDestination = this.formatCoordinates(
+				`${data.places[destination_index].latitude}, ${data.places[destination_index].longitude}`, null, true);
+			
+			formattedDestinations.push(
+				{
+					origin: {
+						name: data.places[i].name,
+						latitude: formattedCoordsOrigin.latitude,
+						longitude: formattedCoordsOrigin.longitude
+					},
+					destination: {
+						name: data.places[destination_index].name,
+						latitude: formattedCoordsDestination.latitude,
+						longitude: formattedCoordsDestination.longitude
+					}
+				});
+		}
+		data.formattedDestinations = formattedDestinations;
+		
+		this.setState({
+			itineraryData: data
+		})
 	}
 	
 	onLocationChange(position, stateVar) {
@@ -72,7 +108,8 @@ export default class Application extends Component {
 		}
 	}
 	
-	formatCoordinates(rawString, stateVar, returnFormattedCoords = false) { // Input would look like "40N, 100W", "rawStringO"
+	formatCoordinates(rawString, stateVar, returnFormattedCoords = false) {
+		// Input would look like "40N, 100W", "rawStringO"
 		// If returnFormattedCoords is false, it just updates the state
 		
 		this.setState({errorMessage: null});
@@ -222,7 +259,9 @@ export default class Application extends Component {
 				                   locationDestination={this.state.destination}
 				                   geolocation={this.geolocation}
 				                   formatCoordinates={this.formatCoordinates}
-				                   updateItineraryData={this.updateItineraryData}/>;
+				                   updateItineraryData={this.updateItineraryData}
+				                   itineraryData={this.state.itineraryData}
+									/>;
 			
 			case 'options':
 				return <Options options={this.state.planOptions}

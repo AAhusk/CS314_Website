@@ -22,7 +22,7 @@ export default class Calculator extends Component {
 			rawStringD: null,
 			distance: 0,
 			errorMessage: this.props.errorMessage,
-			itineraryData: null
+			itineraryData: {}
 		};
 	}
 	
@@ -35,7 +35,7 @@ export default class Calculator extends Component {
 						<LMap currentLocation={this.props.currentLocation}
 						      locationOrigin={this.props.locationOrigin}
 						      locationDestination={this.props.locationDestination}
-						      itineraryData={this.state.itineraryData}
+						      itineraryData={this.props.itineraryData}
 						/>
 					</Col>
 					<Col xs={12} sm={12} md={3} lg={3}>
@@ -53,7 +53,8 @@ export default class Calculator extends Component {
 					           settings={this.props.settings}
 					           createErrorBanner={this.createErrorBanner}
 					           errorMessage={this.state.errorMessage}
-					           updateItineraryData={this.updateItineraryData}
+					           updateItineraryData={this.props.updateItineraryData}
+					           itineraryData={this.props.itineraryData}
 					           formatCoordinates={this.props.formatCoordinates}
 					           createInputField={this.createInputField}
 					/>

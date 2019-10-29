@@ -38,25 +38,25 @@ export default class LMap extends Component {
 		let MarkerArr = [];
 		let ItinPolylinepts = [];
 		
-		let pointArr = this.props.itineraryData;
-		if (pointArr[0].origin != null) {
+		let pointArr = this.props.itineraryData.places;
+		if (pointArr != null) {
 			for (let i = 0; i < pointArr.length; i++) {
 				MarkerArr.push(
 					<Marker key={"Marker" + i}
-					        position={L.latLng(pointArr[i].origin.latitude, pointArr[i].origin.longitude)}
+					        position={L.latLng(pointArr[i].latitude, pointArr[i].longitude)}
 					        icon={this.markerIcon(iconred)}>
 						<Popup className="font-weight-extrabold">
 							Destination:<br/>
-							{pointArr[i].origin.latitude} Latitude<br/>
-							{pointArr[i].origin.longitude} Longitude
+							{pointArr[i].latitude} Latitude<br/>
+							{pointArr[i].longitude} Longitude
 						</Popup>
 					</Marker>
 				);
 				ItinPolylinepts.push(
-					[pointArr[i].origin.latitude, pointArr[i].origin.longitude]
+					[pointArr[i].latitude, pointArr[i].longitude]
 				);
 			}
-			ItinPolylinepts.push([pointArr[0].origin.latitude, pointArr[0].origin.longitude]);
+			ItinPolylinepts.push([pointArr[0].latitude, pointArr[0].longitude]);
 			let ItinPolyline = (<Polyline positions={ItinPolylinepts}/>);
 			
 			return {ItinPolyline: ItinPolyline, MarkerArr: MarkerArr}
@@ -125,8 +125,6 @@ export default class LMap extends Component {
 		}
 		
 		return (
-			// <Map center={this.currentLocation()} zoom={10}
-			// <Marker position={this.currentLocation()} zoom={10}
 			<Map center={this.csuOvalGeographicCoordinates()} zoom={10}
 			     style={{height: 500, maxwidth: 700}}>
 				<TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
