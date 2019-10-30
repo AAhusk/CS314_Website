@@ -95,9 +95,8 @@ export default class Itinerary extends Component {
 				<Card>
 					<ItineraryTable itineraryData={this.props.itineraryData}
 					                totalDistance={this.state.totalDistance}
-					                updatePlaces={this.props.updateItineraryData}
+					                updateItineraryData={this.props.updateItineraryData}
 					/>
-					}
 				</Card>
 			</Container>
 		);
@@ -124,11 +123,9 @@ export default class Itinerary extends Component {
 	
 	calculateTotalDistance(distances){
 		var sum = 0;
-		
 		distances.map((distance) => {
 			sum =  sum + distance;
 		});
-		
 		return sum;
 	}
 	

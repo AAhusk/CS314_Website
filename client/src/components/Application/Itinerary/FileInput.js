@@ -34,7 +34,6 @@ export default class FileInput extends Component {
 		var read = new FileReader();
 		read.readAsBinaryString(file_selected);
 		read.onload = () => {
-			
 			try {
 				let trip = JSON.parse(read.result);
 				this.serverRequest(trip);
@@ -94,7 +93,7 @@ export default class FileInput extends Component {
 					}
 				});
 			
-			distances.push((trip.distances != null) ? trip.distances[i] : "")
+			distances.push((trip.distances != null) ? trip.distances[i] : "");
 		}
 		
 		itineraryData = {

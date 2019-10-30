@@ -13,7 +13,7 @@ export default class ItineraryTable extends React.Component {
 	}
 	
 	render() {
-		if (this.props.itineraryData.length !== 0) {
+		if (this.props.itineraryData.formattedDestinations.length > 0) {
 			return (
 				<Table striped>
 					<thead>
@@ -26,18 +26,17 @@ export default class ItineraryTable extends React.Component {
 					</thead>
 					
 					<tbody>
-					{this.props.itineraryData.formattedDestinations != null && this.props.itineraryData.formattedDestinations.map(this.renderTripItinerary)}
+						{this.props.itineraryData.formattedDestinations.length > 0 && this.props.itineraryData.formattedDestinations.map(this.renderTripItinerary)}
 					</tbody>
 					
 					<tbody>
 					
-					{this.props.itineraryData != null &&
+					{this.props.itineraryData.places.length > 0 &&
 					<tr>
 						<th></th>
 						<th>Total Distance</th>
 						<th>{this.props.totalDistance}</th>
-					</tr>
-					}
+					</tr>}
 					</tbody>
 				</Table>
 			);
@@ -61,7 +60,7 @@ export default class ItineraryTable extends React.Component {
 	}
 	
 	removePlaceFromItineraryData(index) {
-		let data = this.props.itineraryData
+		let data = this.props.itineraryData;
 		data.places.splice(index, 1);
 		this.props.updateItineraryData(data);
 	}

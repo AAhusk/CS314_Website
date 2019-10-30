@@ -39,7 +39,7 @@ export default class LMap extends Component {
 		let ItinPolylinepts = [];
 		
 		let pointArr = this.props.itineraryData.places;
-		if (pointArr != null) {
+		if (pointArr.length !== 0) {
 			for (let i = 0; i < pointArr.length; i++) {
 				MarkerArr.push(
 					<Marker key={"Marker" + i}
