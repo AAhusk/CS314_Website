@@ -1,6 +1,7 @@
 package com.tripco.t11.server;
 
 import java.io.InputStream;
+import javax.xml.stream.Location;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 import org.junit.Before;
@@ -17,6 +18,9 @@ public class TestJSONvalidator {
 
   private final Logger log = LoggerFactory.getLogger(MicroServer.class);
   private final String TripSchema = "/TIPTripRequestSchema.json";
+  private final String DistanceSchema = "/TIPDistanceRequestSchema.json";
+  private final String LocationsSchema = "/TIPLocationsRequestSchema.json";
+
   private final String Valid_Trip_brew = "{\n"
       + "  \"requestType\"    : \"trip\",\n"
       + "  \"requestVersion\" : 2,\n"
@@ -54,6 +58,34 @@ public class TestJSONvalidator {
       + "  ,{\"id\": \"cube\", \"name\": \"wild woods brewery\", \"municipality\": \"Boulder\", \"latitude\": \"40.01\", \"longitude\": \"-105.13\", \"altitude\": \"5219\"}\n"
       + "  ]\n"
       + "}";
+  private final String Valid_Distance = "{\n"
+      +"  \"requestType\"    : \"distance\",\n"
+      +"  \"requestVersion\" : 4,\n"
+      +"  \"origin\"         : {\"latitude\":  \"40.6\", \"longitude\": \"-105.1\", \"name\":\"Fort Collins, Colorado, USA\"},\n"
+      +" \"destination\"    : {\"latitude\": \"-33.9\", \"longitude\":  \"151.2\", \"name\":\"Sydney, New South Wales, Australia\"},\n"
+      +" \"earthRadius\"    : 3958.8,\n"
+      +" \"distance\"       : 0\n"
+      +" }";
+  private final String Invalid_Distance = "{\n"
+      +"  \"requestType\"    : \"distance\",\n"
+      +"  \"requestVersion\" : 4,\n"
+      +"  \"origin\"         : {\"latitude\":  \"40.6\", \"longitude\": \"-105.1\", \"name\":\"Fort Collins, Colorado, USA\"},\n"
+      +" \"destination\"    : {\"latitude\": \"-33.9\", \"longitude\":  \"151.2\", \"name\":\"Sydney, New South Wales, Australia\"},\n"
+      +" \"distance\"       : 0\n"
+      +" }";
+  private final String Valid_Locations = "{\n"
+      +"  \"requestType\"    : \"locations\",\n"
+      +"  \"requestVersion\" : 4,\n"
+      +"  \"match\"          : \"Colorado\",\n"
+      +"  \"found\"          : 0,\n"
+      +"  \"places\"         : []\n"
+      +"}";
+  private final String Invalid_Locations = "{\n"
+      +"  \"requestType\"    : \"locations\",\n"
+      +"  \"requestVersion\" : 4,\n"
+      +"  \"found\"          : 0,\n"
+      +"  \"places\"         : []\n"
+      +"}";
 
   @Test
   public void testValidTIPTripJSON() {
@@ -71,6 +103,46 @@ public class TestJSONvalidator {
     InputStream JSONinputStream = getClass().getResourceAsStream(TripSchema);
     JSONSchema = new JSONObject(new JSONTokener(JSONinputStream));
     Boolean validJSON = MicroServer.performValidation(Invalid_Trip_brew, JSONSchema);
+    assertFalse(validJSON);
+    return;
+  }
+
+  @Test
+  public void testValidTIPDistanceJSON() {
+    JSONObject JSONSchema = null;
+    InputStream JSONinputStream = getClass().getResourceAsStream(DistanceSchema);
+    JSONSchema = new JSONObject(new JSONTokener(JSONinputStream));
+    Boolean validJSON = MicroServer.performValidation(Valid_Distance, JSONSchema);
+    assertTrue(validJSON);
+    return;
+  }
+
+  @Test
+  public void testInvalidTIPDistanceJSON() {
+    JSONObject JSONSchema = null;
+    InputStream JSONinputStream = getClass().getResourceAsStream(DistanceSchema);
+    JSONSchema = new JSONObject(new JSONTokener(JSONinputStream));
+    Boolean validJSON = MicroServer.performValidation(Invalid_Distance, JSONSchema);
+    assertFalse(validJSON);
+    return;
+  }
+
+  @Test
+  public void testValidTIPLocationsJSON() {
+    JSONObject JSONSchema = null;
+    InputStream JSONinputStream = getClass().getResourceAsStream(LocationsSchema);
+    JSONSchema = new JSONObject(new JSONTokener(JSONinputStream));
+    Boolean validJSON = MicroServer.performValidation(Valid_Locations, JSONSchema);
+    assertTrue(validJSON);
+    return;
+  }
+
+  @Test
+  public void testInvalidTIPLocationsJSON() {
+    JSONObject JSONSchema = null;
+    InputStream JSONinputStream = getClass().getResourceAsStream(LocationsSchema);
+    JSONSchema = new JSONObject(new JSONTokener(JSONinputStream));
+    Boolean validJSON = MicroServer.performValidation(Invalid_Locations, JSONSchema);
     assertFalse(validJSON);
     return;
   }
