@@ -93,7 +93,6 @@ export default class LMap extends Component {
 		return {ODPolyline: ODPolyline, originMarker: originMarker, destinationMarker: destinationMarker};
 	}
 	
-	
 	renderLeafletMap() {
 		
 		let calculatorComponents = {ODPolyline: null, originMarker: null, destinationMarker: null};

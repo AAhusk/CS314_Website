@@ -13,7 +13,6 @@ export default class Calculator extends Component {
 		this.updateLocationState = this.updateLocationState.bind(this);
 		this.calculateDistance = this.calculateDistance.bind(this);
 		this.createInputField = this.createInputField.bind(this);
-		this.updateItineraryData = this.updateItineraryData.bind(this);
 		
 		this.state = {
 			origin: this.props.locationOrigin,
@@ -22,7 +21,6 @@ export default class Calculator extends Component {
 			rawStringD: null,
 			distance: 0,
 			errorMessage: this.props.errorMessage,
-			itineraryData: {},
 			useLocation: false
 		};
 	}
@@ -36,12 +34,12 @@ export default class Calculator extends Component {
 						<LMap currentLocation={this.props.currentLocation}
 						      locationOrigin={this.props.locationOrigin}
 						      locationDestination={this.props.locationDestination}
-						      itineraryData={this.state.itineraryData}
+						      itineraryData={this.props.itineraryData}
 						/>
 					</Col>
 					<Col xs={12} sm={12} md={3} lg={3}>
 						<ListGroup>
-							<ListGroupItem> <Button color='primary' onClick={() => this.props.geolocation()}>Use My
+							<ListGroupItem> <Button color='primary' onClick={() => this.handleButtonClick()}>Use My
 								Location</Button> </ListGroupItem>
 							<ListGroupItem> {this.createInputField("origin")}</ListGroupItem>
 							<ListGroupItem> {this.createInputField("destination")}</ListGroupItem>
@@ -54,9 +52,10 @@ export default class Calculator extends Component {
 					           settings={this.props.settings}
 					           createErrorBanner={this.createErrorBanner}
 					           errorMessage={this.state.errorMessage}
-					           updateItineraryData={this.updateItineraryData}
+					           updateItineraryData={this.props.updateItineraryData}
 					           formatCoordinates={this.props.formatCoordinates}
 					           createInputField={this.createInputField}
+					           itineraryData={this.props.itineraryData}
 					/>
 				</Row>
 			</div>
@@ -95,10 +94,6 @@ export default class Calculator extends Component {
 				       onChange={(e) => (callback == null ? updateStateVarOnChange(e) : callback)}/>
 			);
 		}
-	}
-	
-	updateItineraryData(data) {
-		this.setState({itineraryData: data});
 	}
 	
 	inputFieldCallback(stateVar, rawString) {
