@@ -96,6 +96,7 @@ export default class Itinerary extends Component {
 					<ItineraryTable itineraryData={this.props.itineraryData}
 					                totalDistance={this.state.totalDistance}
 					                updateItineraryData={this.props.updateItineraryData}
+					                formatCoordinates={this.props.formatCoordinates}
 					/>
 				</Card>
 			</Container>
@@ -148,7 +149,6 @@ export default class Itinerary extends Component {
                     this.props.updateItineraryData(
 	                    {
 		                    places: response.body.places,
-		                    formattedDestinations: this.props.itineraryData.formattedDestinations,
 		                    distances: this.props.itineraryData.distances
 	                    });
                 } else {

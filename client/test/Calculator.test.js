@@ -18,7 +18,7 @@ function testCreateInputFields() {
   const calculator = mount((
       <Calculator options={startProperties.options}
                   formatCoordinates={Application.formatCoordinates}
-                  itineraryData={{places: [], formattedDestinations: [], distances: []}}
+                  itineraryData={{places: [], distances: []}}
 
       />
   ));

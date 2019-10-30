@@ -36,7 +36,7 @@ export default class Application extends Component {
 			
 			origin: {latitude: 1, longitude: 1},
 			destination: {latitude: 1, longitude: 1},
-			itineraryData: {places: [], formattedDestinations: [], distances: []}
+			itineraryData: {places: [], distances: []}
 		};
 		
 		this.updateServerConfig();
@@ -63,34 +63,6 @@ export default class Application extends Component {
 	}
 	
 	updateItineraryData(data) {
-		// Assume data is an itineraryData object that has updated places,
-		// but not an updated formattedDestinations
-		
-		let formattedDestinations = [];
-		for (let i = 0; i < data.places.length; i++) {
-			let destination_index = ((i + 1) === data.places.length) ? 0 : i + 1;
-			
-			let formattedCoordsOrigin = this.formatCoordinates(
-				`${data.places[i].latitude}, ${data.places[i].longitude}`, null, true);
-			let formattedCoordsDestination = this.formatCoordinates(
-				`${data.places[destination_index].latitude}, ${data.places[destination_index].longitude}`, null, true);
-			
-			formattedDestinations.push(
-				{
-					origin: {
-						name: data.places[i].name,
-						latitude: formattedCoordsOrigin.latitude,
-						longitude: formattedCoordsOrigin.longitude
-					},
-					destination: {
-						name: data.places[destination_index].name,
-						latitude: formattedCoordsDestination.latitude,
-						longitude: formattedCoordsDestination.longitude
-					}
-				});
-		}
-		data.formattedDestinations = formattedDestinations;
-		
 		this.setState({
 			itineraryData: data
 		})
@@ -117,7 +89,9 @@ export default class Application extends Component {
 		// Input would look like "40N, 100W", "rawStringO"
 		// If returnFormattedCoords is false, it just updates the state
 		
-		this.setState({errorMessage: null});
+		if (returnFormattedCoords === false) {
+			this.setState({errorMessage: null});
+		}
 		const Coordinates = require('coordinate-parser');
 		try {
 			let coords = new Coordinates(rawString);
@@ -163,8 +137,6 @@ export default class Application extends Component {
 						latNew = 0;
 					}
 					lat = latNew;
-				} else {
-					latNew = lat;
 				}
 				
 				// Compute Longitude
@@ -196,8 +168,6 @@ export default class Application extends Component {
 						longNew = 0;
 					}
 					long = longNew;
-				} else {
-					longNew = long;
 				}
 			}
 			

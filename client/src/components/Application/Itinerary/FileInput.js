@@ -61,16 +61,15 @@ export default class FileInput extends Component {
 	formatTripData(trip) {
 		let itineraryData;
 		let places = [];
-		let formattedDestinations = [];
 		let distances = [];
-		for (var i = 0; i < trip.places.length; i++) {
+		for (let i = 0; i < trip.places.length; i++) {
 			
-			var destination_index = ((i + 1) === trip.places.length) ? 0 : i + 1;
+			let destination_index = ((i + 1) === trip.places.length) ? 0 : i + 1;
 			
 			let formattedCoordsOrigin = this.props.formatCoordinates(
 				`${trip.places[i].latitude}, ${trip.places[i].longitude}`, null, true);
-			let formattedCoordsDestination = this.props.formatCoordinates(
-				`${trip.places[destination_index].latitude}, ${trip.places[destination_index].longitude}`, null, true);
+		//	let formattedCoordsDestination = this.props.formatCoordinates(
+		//		`${trip.places[destination_index].latitude}, ${trip.places[destination_index].longitude}`, null, true);
 			
 			places.push(
 				{
@@ -79,26 +78,11 @@ export default class FileInput extends Component {
 					longitude: formattedCoordsOrigin.longitude
 				});
 			
-			formattedDestinations.push(
-				{
-					origin: {
-						name: trip.places[i].name,
-						latitude: formattedCoordsOrigin.latitude,
-						longitude: formattedCoordsOrigin.longitude
-					},
-					destination: {
-						name: trip.places[destination_index].name,
-						latitude: formattedCoordsDestination.latitude,
-						longitude: formattedCoordsDestination.longitude
-					}
-				});
-			
 			distances.push((trip.distances != null) ? trip.distances[i] : "");
 		}
 		
 		itineraryData = {
 			places: places,
-			formattedDestinations: formattedDestinations,
 			distances: distances
 		};
 		

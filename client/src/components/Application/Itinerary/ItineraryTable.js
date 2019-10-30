@@ -13,7 +13,8 @@ export default class ItineraryTable extends React.Component {
 	}
 	
 	render() {
-		if (this.props.itineraryData.formattedDestinations.length > 0) {
+		
+		if (this.props.itineraryData.places.length > 0) {
 			return (
 				<Table striped>
 					<thead>
@@ -26,7 +27,7 @@ export default class ItineraryTable extends React.Component {
 					</thead>
 					
 					<tbody>
-						{this.props.itineraryData.formattedDestinations.length > 0 && this.props.itineraryData.formattedDestinations.map(this.renderTripItinerary)}
+						{this.props.itineraryData.places.length > 0 && this.formatItineraryDestinations().map(this.renderTripItinerary)}
 					</tbody>
 					
 					<tbody>
@@ -42,6 +43,33 @@ export default class ItineraryTable extends React.Component {
 			);
 		}
 		return null;
+	}
+	
+	formatItineraryDestinations() {
+		let formattedDestinations = [];
+		for (let i = 0; i < this.props.itineraryData.places.length; i++) {
+			let destination_index = ((i + 1) === this.props.itineraryData.places.length) ? 0 : i + 1;
+
+			let formattedCoordsOrigin = this.props.formatCoordinates(
+				`${this.props.itineraryData.places[i].latitude}, ${this.props.itineraryData.places[i].longitude}`, null, true);
+			let formattedCoordsDestination = this.props.formatCoordinates(
+				`${this.props.itineraryData.places[destination_index].latitude}, ${this.props.itineraryData.places[destination_index].longitude}`, null, true);
+
+			formattedDestinations.push(
+				{
+					origin: {
+						name: this.props.itineraryData.places[i].name,
+						latitude: formattedCoordsOrigin.latitude,
+						longitude: formattedCoordsOrigin.longitude
+					},
+					destination: {
+						name: this.props.itineraryData.places[destination_index].name,
+						latitude: formattedCoordsDestination.latitude,
+						longitude: formattedCoordsDestination.longitude
+					}
+				});
+		}
+		return formattedDestinations;
 	}
 	
 	renderTripItinerary(entry, index) {
