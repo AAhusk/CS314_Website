@@ -207,7 +207,7 @@ export default class Itinerary extends Component {
 	
 	getLastCSVEntry(TripArray, cumulativeDistance) {
 		let backToStartingLocation = TripArray[1].slice(0);
-		let lastItineraryEntry = this.props.itineraryData.distances[this.props.itineraryData.distances.length-1];
+		let lastItineraryEntry = this.props.itineraryData.places[this.props.itineraryData.places.length-1];
 		backToStartingLocation[backToStartingLocation.length-2] = lastItineraryEntry;
 		backToStartingLocation[backToStartingLocation.length-1] = lastItineraryEntry + cumulativeDistance;
 		return backToStartingLocation;
@@ -241,11 +241,11 @@ export default class Itinerary extends Component {
 	}
 	
 	createOutputJSON() {
-		if (this.state.trip == null) {
+		if (this.props.itineraryData.places.length === 0) {
 			this.errorHandler("No file to export", 201);
 		}
 		else {
-			let TIPTrip = this.state.trip;
+			let TIPTrip = this.props.itineraryData;
 			
 			if(TIPTrip.hasOwnProperty('distances')){}
 			
@@ -275,19 +275,19 @@ export default class Itinerary extends Component {
 			TripArray[0] = ["Name", "Latitude", "Longitude"];
 			let id = false, altitude = false, municipality = false, type = false;
 			
-			if (this.state.trip.places[0].hasOwnProperty('id')) {
+			if (this.props.itineraryData.places[0].hasOwnProperty('id')) {
 				TripArray[0].push("ID");
 				id = true;
 			}
-			if (this.state.trip.places[0].hasOwnProperty('altitude')) {
+			if (this.props.itineraryData.places[0].hasOwnProperty('altitude')) {
 				TripArray[0].push("Altitude");
 				altitude = true;
 			}
-			if (this.state.trip.places[0].hasOwnProperty('municipality')) {
+			if (this.props.itineraryData.places[0].hasOwnProperty('municipality')) {
 				TripArray[0].push("Municipality");
 				municipality = true;
 			}
-			if (this.state.trip.places[0].hasOwnProperty('type')) {
+			if (this.props.itineraryData.places[0].hasOwnProperty('type')) {
 				TripArray[0].push("Type");
 				type = true;
 			}
