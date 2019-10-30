@@ -106,21 +106,33 @@ class MicroServer {
 
   private String processTIPLocationRequest(Request request, Response response) {
     JSONObject LocationSchema = getSchema("/TIPLocationsRequestSchema.json");
-    performValidation(request.body(), LocationSchema);
-    return processTIPrequest(TIPLocation.class, request, response);
+    if (!performValidation(request.body(), LocationSchema)) {
+      response.status(400);
+      return request.body();
+    } else {
+      return processTIPrequest(TIPLocation.class, request, response);
+    }
   }
 
 
   private String processTIPdistanceRequest(Request request, Response response) {
     JSONObject DistanceSchema = getSchema("/TIPDistanceRequestSchema.json");
-    performValidation(request.body(), DistanceSchema);
-    return processTIPrequest(TIPDistance.class, request, response);
+    if (!performValidation(request.body(), DistanceSchema)) {
+      response.status(400);
+      return request.body();
+    } else {
+      return processTIPrequest(TIPDistance.class, request, response);
+    }
   }
 
   private String processTIPtripRequest(Request request, Response response) {
     JSONObject TripSchema = getSchema("/TIPTripRequestSchema.json");
-    performValidation(request.body(), TripSchema);
-    return processTIPrequest(TIPTrip.class, request, response);
+    if (!performValidation(request.body(), TripSchema)) {
+      response.status(400);
+      return request.body();
+    } else {
+      return processTIPrequest(TIPTrip.class, request, response);
+    }
   }
 
   private JSONObject getSchema(String SchemaFilePath) {
