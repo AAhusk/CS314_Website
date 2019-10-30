@@ -18,8 +18,8 @@ export default class Application extends Component {
 		super(props);
 		this.updatePlanOption = this.updatePlanOption.bind(this);
 		this.updateClientSetting = this.updateClientSetting.bind(this);
-		this.updateItineraryData = this.updateItineraryData.bind(this);
 		this.createApplicationPage = this.createApplicationPage.bind(this);
+		this.updateItineraryData = this.updateItineraryData.bind(this);
 		this.onLocationChange = this.onLocationChange.bind(this);
 		this.geolocation = this.geolocation.bind(this);
 		this.formatCoordinates = this.formatCoordinates.bind(this);
@@ -44,13 +44,22 @@ export default class Application extends Component {
 	
 	render() {
 		let pageToRender = this.state.serverConfig ? this.props.page : 'settings';
-		this.geolocation()
 		
 		return (
 			<div className='application-width'>
 				{this.state.errorMessage}{this.createApplicationPage(pageToRender)}
 			</div>
 		);
+	}
+	
+	onLocationChange(position, stateVar) {
+		let update = {
+			latitude: position.latitude,
+			longitude: position.longitude
+		};
+		this.setState({
+			[stateVar]: update
+		})
 	}
 	
 	updateItineraryData(data) {
@@ -87,21 +96,17 @@ export default class Application extends Component {
 		})
 	}
 	
-	onLocationChange(position, stateVar) {
-		let update = {
-			latitude: position.latitude,
-			longitude: position.longitude
-		};
-		this.setState({
-			[stateVar]: update
-		})
-	}
-	
-	geolocation() { // Add a try/catch here
+	geolocation(stateVar) { // Add a try/catch here
 		if (navigator.geolocation) {
-			navigator.geolocation.getCurrentPosition((position) =>
-				this.onLocationChange(position.coords, 'currentLocation'));
-		} else {
+			if(stateVar !== 'origin') {
+				navigator.geolocation.getCurrentPosition((position) =>
+					this.onLocationChange(position.coords, 'currentLocation'));
+			} else {
+				navigator.geolocation.getCurrentPosition((position) =>
+					this.onLocationChange(position.coords, 'origin'));
+			}
+		}
+		else {
 			return (
 				<Alert color="danger"> Geolocation not supported. </Alert>
 			)
@@ -261,7 +266,7 @@ export default class Application extends Component {
 				                   formatCoordinates={this.formatCoordinates}
 				                   updateItineraryData={this.updateItineraryData}
 				                   itineraryData={this.state.itineraryData}
-									/>;
+				/>;
 			
 			case 'options':
 				return <Options options={this.state.planOptions}

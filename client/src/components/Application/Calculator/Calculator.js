@@ -22,7 +22,8 @@ export default class Calculator extends Component {
 			rawStringD: null,
 			distance: 0,
 			errorMessage: this.props.errorMessage,
-			itineraryData: {}
+			itineraryData: {},
+			useLocation: false
 		};
 	}
 	
@@ -35,7 +36,7 @@ export default class Calculator extends Component {
 						<LMap currentLocation={this.props.currentLocation}
 						      locationOrigin={this.props.locationOrigin}
 						      locationDestination={this.props.locationDestination}
-						      itineraryData={this.props.itineraryData}
+						      itineraryData={this.state.itineraryData}
 						/>
 					</Col>
 					<Col xs={12} sm={12} md={3} lg={3}>
@@ -53,8 +54,7 @@ export default class Calculator extends Component {
 					           settings={this.props.settings}
 					           createErrorBanner={this.createErrorBanner}
 					           errorMessage={this.state.errorMessage}
-					           updateItineraryData={this.props.updateItineraryData}
-					           itineraryData={this.props.itineraryData}
+					           updateItineraryData={this.updateItineraryData}
 					           formatCoordinates={this.props.formatCoordinates}
 					           createInputField={this.createInputField}
 					/>
@@ -63,16 +63,38 @@ export default class Calculator extends Component {
 		);
 	}
 	
+	handleButtonClick() {
+		this.props.geolocation('origin');
+		this.setState({
+			rawStringO: {
+				latitude: this.props.locationOrigin.latitude,
+				longitude: this.props.locationOrigin.longitude
+			},
+			useLocation: true
+		});
+	}
+	
 	createInputField(stateVar, callback = null) {
 		let updateStateVarOnChange = (event) => {
+			if(this.state.useLocation === true) { this.setState({useLocation: false}); }
 			this.inputFieldCallback(stateVar, event.target.value); // origin / destination --- rawString
 		};
-		return (
-			<Input name={stateVar + "field"}
-			       placeholder={stateVar.charAt(0).toUpperCase() + stateVar.slice(1)}
-			       id={`${stateVar}field`}
-			       onChange={(e) => (callback == null ? updateStateVarOnChange(e) : callback)}/>
-		);
+		if(stateVar === 'origin' && this.state.useLocation === true) {
+			return (
+				<Input name={stateVar + "field"}
+				       placeholder={stateVar.charAt(0).toUpperCase() + stateVar.slice(1)}
+				       value={this.props.locationOrigin.latitude + ", " + this.props.locationOrigin.longitude}
+				       id={`${stateVar}field`}
+				       onChange={(e) => (callback == null ? updateStateVarOnChange(e) : callback)}/>
+			);
+		} else{
+			return (
+				<Input name={stateVar + "field"}
+				       placeholder={stateVar.charAt(0).toUpperCase() + stateVar.slice(1)}
+				       id={`${stateVar}field`}
+				       onChange={(e) => (callback == null ? updateStateVarOnChange(e) : callback)}/>
+			);
+		}
 	}
 	
 	updateItineraryData(data) {
@@ -84,6 +106,7 @@ export default class Calculator extends Component {
 		if (stateVar === "origin") {
 			rawStateName = "rawStringO"
 		}
+		if(!rawString) { rawString = "0N, 0W"}
 		
 		// rawString should look like "40N, 108W"
 		this.props.formatCoordinates(rawString, rawStateName);
