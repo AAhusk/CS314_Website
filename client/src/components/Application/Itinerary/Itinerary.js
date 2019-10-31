@@ -44,8 +44,6 @@ export default class Itinerary extends Component {
 				}});
 		};
 		
-		
-		
 		let addPlaceModal = (
 			<Modal isOpen={this.state.addModal.addModalToggle} toggle={toggleModal}>
 				<ModalHeader toggle={toggleModal}>Add a new place</ModalHeader>
@@ -89,6 +87,7 @@ export default class Itinerary extends Component {
 					           settings={this.props.settings}
 					           sumTotalDistance={this.sumTotalDistance}
 					           errorHandler={this.errorHandler}
+					           
 					/>
 				</Card>
 				<Card>
@@ -96,6 +95,10 @@ export default class Itinerary extends Component {
 					                totalDistance={this.state.totalDistance}
 					                updateItineraryData={this.props.updateItineraryData}
 					                formatCoordinates={this.props.formatCoordinates}
+					                settings={this.props.settings}
+					                options={this.props.options}
+					                sumTotalDistance={this.sumTotalDistance}
+					
 					/>
 				</Card>
 			</Container>
@@ -112,7 +115,6 @@ export default class Itinerary extends Component {
 	};
 	
 	createInputField(stateVar) {
-		
 		return (
 			<Input name={stateVar + "field"}
 			       placeholder={stateVar.charAt(0).toUpperCase() + stateVar.slice(1)}

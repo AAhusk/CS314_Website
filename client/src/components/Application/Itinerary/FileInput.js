@@ -44,7 +44,6 @@ export default class FileInput extends Component {
 	}
 	
 	serverRequest(trip) {
-		//console.log(trip);
 		sendServerRequestWithBody('trip', trip, this.props.settings.serverPort)
 		.then((response) => {
 			
@@ -54,6 +53,7 @@ export default class FileInput extends Component {
 				this.setState({backgroundColor: green});
 				this.props.onFileSelect(trip, itineraryData, totalDistance);
 			} else {
+				console.log("Error");
 				this.props.errorHandler(response.statusText, response.statusCode);
 			}
 		});
@@ -86,6 +86,7 @@ export default class FileInput extends Component {
 			places: places,
 			distances: distances
 		};
+		
 		
 		return itineraryData;
 	}
