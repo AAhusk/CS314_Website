@@ -15,16 +15,12 @@ export default class Itinerary extends Component {
 	  this.createOutputJSON = this.createOutputJSON.bind(this);
 	  this.createOutputCSV = this.createOutputCSV.bind(this);
 	  this.modalPlaceInputCallback = this.modalPlaceInputCallback.bind(this);
-	  this.addPlaceToItineraryData = this.addPlaceToItineraryData.bind(this);
-	  this.updatePlaces = this.updatePlaces.bind(this);
-	
-	
+	  this.addPlaceToItineraryDataFromModal = this.addPlaceToItineraryDataFromModal.bind(this);
 	
 	  this.state = {
 		  trip: null,
-		  itineraryData: [],
-		  totalDistance: null,
-		  points: null,
+		  itineraryData: {},
+		  totalDistance: "",
 		  places: [],
 		  errorMessage: this.props.errorMessage,
 		  addModal: {
@@ -60,7 +56,7 @@ export default class Itinerary extends Component {
 				
 				</ModalBody>
 				<ModalFooter>
-					<Button color="primary" onClick={this.addPlaceToItineraryData} disabled={!this.state.addModal.submitActive}>Submit</Button>{' '}
+					<Button color="primary" onClick={this.addPlaceToItineraryDataFromModal} disabled={!this.state.addModal.submitActive}>Submit</Button>{' '}
 				</ModalFooter>
 			</Modal>
 		);
@@ -89,20 +85,18 @@ export default class Itinerary extends Component {
 					</CardHeader>
 					<FileInput onFileSelect={this.onFileSelect}
 					           formatCoordinates={this.props.formatCoordinates}
+					           itineraryData={this.props.itineraryData}
 					           settings={this.props.settings}
-					           places={this.state.places}
-					           calculateTotalDistance={this.calculateTotalDistance}
+					           sumTotalDistance={this.sumTotalDistance}
 					           errorHandler={this.errorHandler}
 					/>
 				</Card>
 				<Card>
-					{(this.state.places != null || this.state.places.length !== 0) &&
-					<ItineraryTable itineraryData={this.state.itineraryData}
+					<ItineraryTable itineraryData={this.props.itineraryData}
 					                totalDistance={this.state.totalDistance}
-					                places={this.extractPlacesFromItineraryData()}
-					                updatePlaces={this.updatePlaces}
+					                updateItineraryData={this.props.updateItineraryData}
+					                formatCoordinates={this.props.formatCoordinates}
 					/>
-					}
 				</Card>
 			</Container>
 		);
@@ -127,13 +121,11 @@ export default class Itinerary extends Component {
 		);
 	}
 	
-	calculateTotalDistance(distances){
+	sumTotalDistance(distances){
 		var sum = 0;
-		
 		distances.map((distance) => {
 			sum =  sum + distance;
 		});
-		
 		return sum;
 	}
 	
@@ -146,18 +138,18 @@ export default class Itinerary extends Component {
                 "earthRadius": "1337", // Doesn't matter, we dont use this value
                 "optimization": "short"
             },
-            "places": this.extractPlacesFromItineraryData(),
+            "places": this.props.itineraryData.places,
         };
-
+        
         sendServerRequestWithBody('trip', tipObject, this.state.serverPort)
             .then((response) => {
                 if (response.statusCode >= 200 && response.statusCode <= 299) {
-                    this.setState({
-                        places: response.body.places,
-                        errorMessage: null
-                    }, () => {
-                        this.insertPlacesIntoItineraryData()
-                    });
+                	
+                    this.props.updateItineraryData(
+	                    {
+		                    places: response.body.places,
+		                    distances: this.props.itineraryData.distances
+	                    });
                 } else {
                     this.setState({errorMessage: response.statusCode + ": " + response.statusText})
                     //console.log(response.statusCode + response.statusText);
@@ -193,8 +185,8 @@ export default class Itinerary extends Component {
 		}
 	}
 	
-	addPlaceToItineraryData() {
-		let places = this.extractPlacesFromItineraryData();
+	addPlaceToItineraryDataFromModal() {
+		let places = this.props.itineraryData.places;
 		let joined = places.concat(
 			{
 				name: this.state.addModal.modalNameInput,
@@ -202,40 +194,32 @@ export default class Itinerary extends Component {
 				longitude: this.state.addModal.modalPlaceInput.longitude
 			}
 		);
-		this.setState({ places: joined }, () => {
-			this.insertPlacesIntoItineraryData();
-		})
-	}
-	
-	updatePlaces(places, index = -1) {
-		this.setState({places: places},
-			() => this.insertPlacesIntoItineraryData(index));
+		
+		this.props.updateItineraryData(
+			{
+				places: joined,
+				formattedDestinations: this.props.itineraryData.formattedDestinations,
+				distances: this.props.itineraryData.distances
+			}
+		);
 	}
 	
 	getLastCSVEntry(TripArray, cumulativeDistance) {
 		let backToStartingLocation = TripArray[1].slice(0);
-		let lastItineraryEntry = this.state.itineraryData[this.state.itineraryData.length-1];
-		backToStartingLocation[backToStartingLocation.length-2] = lastItineraryEntry.distance;
-		backToStartingLocation[backToStartingLocation.length-1] = lastItineraryEntry.distance + cumulativeDistance;
+		let lastItineraryEntry = this.props.itineraryData.places[this.props.itineraryData.places.length-1];
+		backToStartingLocation[backToStartingLocation.length-2] = lastItineraryEntry;
+		backToStartingLocation[backToStartingLocation.length-1] = lastItineraryEntry + cumulativeDistance;
 		return backToStartingLocation;
-	}
-	
-	extractPlacesFromItineraryData() {
-		let places = [];
-		for (let i = 0; i < this.state.itineraryData.length; i++) {
-			places.push(this.state.itineraryData[i].origin);
-		}
-		return places;
 	}
 	
 	createCSVArray(TripArray, id, altitude, municipality, type) {
 		let cumulativeDistance = 0;
-		for (let i = 0; i < this.state.itineraryData.length; ++i) {
-			let distance = (i===0) ? 0 : this.state.itineraryData[i-1].distance;
+		for (let i = 0; i < this.props.itineraryData.places.length; ++i) {
+			let distance = (i===0) ? 0 : this.props.itineraryData.distances[i-1];
 			cumulativeDistance += distance;
-			let TripLocation = [this.state.itineraryData[i].origin.name,
-				this.state.itineraryData[i].origin.latitude,
-				this.state.itineraryData[i].origin.longitude,
+			let TripLocation = [this.props.itineraryData.places[i].name,
+				this.props.itineraryData.places[i].latitude,
+				this.props.itineraryData.places[i].longitude,
 			];
 			if (id) {
 				TripLocation.push(this.state.trip.places[i].id);
@@ -255,51 +239,20 @@ export default class Itinerary extends Component {
 		return cumulativeDistance;
 	}
 	
-	insertPlacesIntoItineraryData(removeIndex = -1) {
-		let places = this.state.places;
-		let ItinData = [];
-		
-		for (let i = 0; i < places.length - 1; i++) {
-			let newObj = {
-				origin: places[i],
-				destination: places[i+1],
-				//distance: this.state.itineraryData[i].distance != null ? this.state.itineraryData[i].distance : null
-				distance: (removeIndex !== -1 && i >= removeIndex) ? this.state.itineraryData[i+1].distance : this.state.itineraryData[i].distance
-			};
-			ItinData = ItinData.concat(newObj);
-		}
-		
-		let a = 0;
-		if (this.state.itineraryData[this.state.itineraryData.length - 1] != null) {
-			a = this.state.itineraryData[this.state.itineraryData.length - 1].distance;
-		}
-		
-		let lastObj = {
-			origin: places[places.length - 1],
-			destination: places[0],
-			distance: a
-		};
-		ItinData = ItinData.concat(lastObj);
-		
-		this.setState({itineraryData: ItinData}); // Local data
-		this.props.updateItineraryData(ItinData);
-	}
-	
-	
 	createOutputJSON() {
-		if (this.state.trip == null) {
+		if (this.props.itineraryData.places.length === 0) {
 			this.errorHandler("No file to export", 201);
 		}
 		else {
-			let TIPTrip = this.state.trip;
+			let TIPTrip = this.props.itineraryData;
 			
 			if(TIPTrip.hasOwnProperty('distances')){}
 			
 			else {
-				let quantityPlaces = this.state.itineraryData.length;
+				let quantityPlaces = this.props.itineraryData.places.length;
 				let distancesArray = [];
 				for (let i=0; i<quantityPlaces; ++i) {
-					distancesArray.push(this.state.itineraryData[i].distance);
+					distancesArray.push(this.props.itineraryData.distances[i]);
 				}
 				TIPTrip.distances = distancesArray;
 			}
@@ -312,7 +265,7 @@ export default class Itinerary extends Component {
 	}
 	
 	createOutputCSV() {
-		if (this.state.itineraryData == null) {
+		if (this.props.itineraryData == null) {
 			this.errorHandler("No file to export", 202)
 		}
 		
@@ -321,19 +274,19 @@ export default class Itinerary extends Component {
 			TripArray[0] = ["Name", "Latitude", "Longitude"];
 			let id = false, altitude = false, municipality = false, type = false;
 			
-			if (this.state.trip.places[0].hasOwnProperty('id')) {
+			if (this.props.itineraryData.places[0].hasOwnProperty('id')) {
 				TripArray[0].push("ID");
 				id = true;
 			}
-			if (this.state.trip.places[0].hasOwnProperty('altitude')) {
+			if (this.props.itineraryData.places[0].hasOwnProperty('altitude')) {
 				TripArray[0].push("Altitude");
 				altitude = true;
 			}
-			if (this.state.trip.places[0].hasOwnProperty('municipality')) {
+			if (this.props.itineraryData.places[0].hasOwnProperty('municipality')) {
 				TripArray[0].push("Municipality");
 				municipality = true;
 			}
-			if (this.state.trip.places[0].hasOwnProperty('type')) {
+			if (this.props.itineraryData.places[0].hasOwnProperty('type')) {
 				TripArray[0].push("Type");
 				type = true;
 			}
@@ -358,9 +311,8 @@ export default class Itinerary extends Component {
 	}
 	
 	onFileSelect(trip, itineraryData, totalDistance) {
-		this.setState({trip: trip, itineraryData: itineraryData, totalDistance: totalDistance});
+		this.setState({totalDistance: totalDistance});
 		this.props.updateItineraryData(itineraryData);
-		
 	}
 
   errorHandler(statusText, statusCode){

@@ -34,24 +34,23 @@ export default class FileInput extends Component {
 		var read = new FileReader();
 		read.readAsBinaryString(file_selected);
 		read.onload = () => {
-			
 			try {
 				let trip = JSON.parse(read.result);
 				this.serverRequest(trip);
 			} catch (err) {
-				//console.log(err);
 				this.setState({backgroundColor: red});
 			}
 		}
 	}
 	
 	serverRequest(trip) {
+		//console.log(trip);
 		sendServerRequestWithBody('trip', trip, this.props.settings.serverPort)
 		.then((response) => {
 			
 			if (response.statusCode >= 200 && response.statusCode <= 299) {
 				var itineraryData = this.formatTripData(response.body);
-				var totalDistance = this.props.calculateTotalDistance(response.body.distances);
+				var totalDistance = this.props.sumTotalDistance(response.body.distances);
 				this.setState({backgroundColor: green});
 				this.props.onFileSelect(trip, itineraryData, totalDistance);
 			} else {
@@ -61,37 +60,33 @@ export default class FileInput extends Component {
 	}
 	
 	formatTripData(trip) {
-		var itineraryData = [];
-		for (var i = 0; i < trip.places.length; i++) {
+		let itineraryData;
+		let places = [];
+		let distances = [];
+		for (let i = 0; i < trip.places.length; i++) {
 			
-			var destination_index = ((i + 1) === trip.places.length) ? 0 : i + 1;
+		//	let destination_index = ((i + 1) === trip.places.length) ? 0 : i + 1;
 			
 			let formattedCoordsOrigin = this.props.formatCoordinates(
 				`${trip.places[i].latitude}, ${trip.places[i].longitude}`, null, true);
-			let formattedCoordsDestination = this.props.formatCoordinates(
-				`${trip.places[destination_index].latitude}, ${trip.places[destination_index].longitude}`, null, true);
+		//	let formattedCoordsDestination = this.props.formatCoordinates(
+		//		`${trip.places[destination_index].latitude}, ${trip.places[destination_index].longitude}`, null, true);
 			
-			itineraryData.push(
+			places.push(
 				{
-					origin: {
-						name: trip.places[i].name,
-						latitude: formattedCoordsOrigin.latitude,
-						longitude: formattedCoordsOrigin.longitude
-					},
-					destination: {
-						name: trip.places[destination_index].name,
-						latitude: formattedCoordsDestination.latitude,
-						longitude: formattedCoordsDestination.longitude
-					},
-					distance: (trip.distances != null) ? trip.distances[i] : null,
-				}
-				);
+					name: trip.places[i].name,
+					latitude: formattedCoordsOrigin.latitude,
+					longitude: formattedCoordsOrigin.longitude
+				});
+			
+			distances.push((trip.distances != null) ? trip.distances[i] : "");
 		}
+		
+		itineraryData = {
+			places: places,
+			distances: distances
+		};
 		
 		return itineraryData;
 	}
-	
-
-	
-	
 }
