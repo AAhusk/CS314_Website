@@ -20,8 +20,7 @@ export default class Itinerary extends Component {
 	  this.state = {
 		  trip: null,
 		  itineraryData: {},
-		  totalDistance: null,
-		  points: null,
+		  totalDistance: "",
 		  places: [],
 		  errorMessage: this.props.errorMessage,
 		  addModal: {
@@ -88,7 +87,7 @@ export default class Itinerary extends Component {
 					           formatCoordinates={this.props.formatCoordinates}
 					           itineraryData={this.props.itineraryData}
 					           settings={this.props.settings}
-					           calculateTotalDistance={this.calculateTotalDistance}
+					           sumTotalDistance={this.sumTotalDistance}
 					           errorHandler={this.errorHandler}
 					/>
 				</Card>
@@ -122,7 +121,7 @@ export default class Itinerary extends Component {
 		);
 	}
 	
-	calculateTotalDistance(distances){
+	sumTotalDistance(distances){
 		var sum = 0;
 		distances.map((distance) => {
 			sum =  sum + distance;
@@ -312,9 +311,8 @@ export default class Itinerary extends Component {
 	}
 	
 	onFileSelect(trip, itineraryData, totalDistance) {
-		//this.setState({trip: trip, itineraryData: itineraryData, totalDistance: totalDistance});
+		this.setState({totalDistance: totalDistance});
 		this.props.updateItineraryData(itineraryData);
-		
 	}
 
   errorHandler(statusText, statusCode){

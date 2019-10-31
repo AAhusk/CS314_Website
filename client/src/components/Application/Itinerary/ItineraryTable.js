@@ -80,7 +80,7 @@ export default class ItineraryTable extends React.Component {
 				<tr key={index}>
 					<td key={"name" + index}>{entry.origin != null && entry.origin.name}</td>
 					<td key={"dest" + index}>{entry.destination != null && entry.destination.name}</td>
-					<td key={"dist" + index}>{entry.distance != null && entry.distance}</td>
+					<td key={"dist" + index}>{this.props.itineraryData != null && this.props.itineraryData.distances[index]}</td>
 					<td key={"minus" + index}><Button color="danger" className={"float-right"} onClick={() => this.removePlaceFromItineraryData(index)}>-</Button></td>
 				</tr>}
 			</React.Fragment>

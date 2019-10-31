@@ -52,6 +52,21 @@ export default class Application extends Component {
 		);
 	}
 	
+	// calculateDistances() {
+	// 	sendServerRequestWithBody('trip', trip, this.props.settings.serverPort)
+	// 	.then((response) => {
+	//
+	// 		if (response.statusCode >= 200 && response.statusCode <= 299) {
+	// 			var itineraryData = this.formatTripData(response.body);
+	// 			var totalDistance = this.props.sumTotalDistance(response.body.distances);
+	// 			this.setState({backgroundColor: green});
+	// 			this.props.onFileSelect(trip, itineraryData, totalDistance);
+	// 		} else {
+	// 			this.props.errorHandler(response.statusText, response.statusCode);
+	// 		}
+	// 	});
+	// }
+	
 	onLocationChange(position, stateVar) {
 		let update = {
 			latitude: position.latitude,

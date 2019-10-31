@@ -44,12 +44,13 @@ export default class FileInput extends Component {
 	}
 	
 	serverRequest(trip) {
+		//console.log(trip);
 		sendServerRequestWithBody('trip', trip, this.props.settings.serverPort)
 		.then((response) => {
 			
 			if (response.statusCode >= 200 && response.statusCode <= 299) {
 				var itineraryData = this.formatTripData(response.body);
-				var totalDistance = this.props.calculateTotalDistance(response.body.distances);
+				var totalDistance = this.props.sumTotalDistance(response.body.distances);
 				this.setState({backgroundColor: green});
 				this.props.onFileSelect(trip, itineraryData, totalDistance);
 			} else {
@@ -64,7 +65,7 @@ export default class FileInput extends Component {
 		let distances = [];
 		for (let i = 0; i < trip.places.length; i++) {
 			
-			let destination_index = ((i + 1) === trip.places.length) ? 0 : i + 1;
+		//	let destination_index = ((i + 1) === trip.places.length) ? 0 : i + 1;
 			
 			let formattedCoordsOrigin = this.props.formatCoordinates(
 				`${trip.places[i].latitude}, ${trip.places[i].longitude}`, null, true);
