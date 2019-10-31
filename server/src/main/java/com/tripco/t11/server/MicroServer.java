@@ -8,18 +8,18 @@ import com.tripco.t11.TIP.TIPHeader;
 import com.tripco.t11.TIP.TIPTrip;
 import com.tripco.t11.TIP.TIPLocation;
 
-import java.lang.reflect.Type;
-import java.lang.String;
-import java.io.InputStream;
 import java.io.File;
+import java.io.InputStream;
+import java.lang.String;
+import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Scanner;
 
 import org.everit.json.schema.Schema;
 import org.everit.json.schema.ValidationException;
-import org.everit.json.schema.loader.SchemaLoader;
 import org.everit.json.schema.SchemaException;
 import org.everit.json.schema.Validator;
+import org.everit.json.schema.loader.SchemaLoader;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
