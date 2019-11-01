@@ -40,10 +40,7 @@ public class TIPTrip extends TIPHeader {
   } 
 
   private List<Integer> getDistances(){
-    if(this.distances == null){
-      return createDistances();
-    }
-    return this.distances;
+    return this.createDistances();
   }
 
   private List<Integer> createDistances() {

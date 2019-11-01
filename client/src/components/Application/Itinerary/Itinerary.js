@@ -28,10 +28,8 @@ export default class Itinerary extends Component {
 			  modalPlaceInput: null,
 			  modalNameInput: null,
 			  submitActive: false
-			
 		  }
 	  }
-  
   }
 	
 	render() {
@@ -43,8 +41,6 @@ export default class Itinerary extends Component {
 					submitActive: this.state.addModal.submitActive
 				}});
 		};
-		
-		
 		
 		let addPlaceModal = (
 			<Modal isOpen={this.state.addModal.addModalToggle} toggle={toggleModal}>
@@ -89,6 +85,7 @@ export default class Itinerary extends Component {
 					           settings={this.props.settings}
 					           sumTotalDistance={this.sumTotalDistance}
 					           errorHandler={this.errorHandler}
+					           
 					/>
 				</Card>
 				<Card>
@@ -96,6 +93,10 @@ export default class Itinerary extends Component {
 					                totalDistance={this.state.totalDistance}
 					                updateItineraryData={this.props.updateItineraryData}
 					                formatCoordinates={this.props.formatCoordinates}
+					                settings={this.props.settings}
+					                options={this.props.options}
+					                sumTotalDistance={this.sumTotalDistance}
+					
 					/>
 				</Card>
 			</Container>
@@ -112,7 +113,6 @@ export default class Itinerary extends Component {
 	};
 	
 	createInputField(stateVar) {
-		
 		return (
 			<Input name={stateVar + "field"}
 			       placeholder={stateVar.charAt(0).toUpperCase() + stateVar.slice(1)}
@@ -195,13 +195,10 @@ export default class Itinerary extends Component {
 			}
 		);
 		
-		this.props.updateItineraryData(
-			{
-				places: joined,
-				formattedDestinations: this.props.itineraryData.formattedDestinations,
-				distances: this.props.itineraryData.distances
-			}
-		);
+		let data = this.props.itineraryData;
+		data.places = joined;
+		
+		this.props.updateItineraryData(data);
 	}
 	
 	getLastCSVEntry(TripArray, cumulativeDistance) {
@@ -314,8 +311,8 @@ export default class Itinerary extends Component {
 		this.setState({totalDistance: totalDistance});
 		this.props.updateItineraryData(itineraryData);
 	}
-
-  errorHandler(statusText, statusCode){
+	
+	errorHandler(statusText, statusCode){
     this.setState({
       errorMessage: this.props.createErrorBanner(
         statusText,
