@@ -90,7 +90,7 @@ export default class Application extends Component {
 					});
 					
 				} else {
-					console.log(response.statusText, response.statusCode);
+					//console.log(response.statusText, response.statusCode);
 				}
 			});
 			

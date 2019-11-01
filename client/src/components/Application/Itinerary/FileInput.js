@@ -53,7 +53,7 @@ export default class FileInput extends Component {
 				this.setState({backgroundColor: green});
 				this.props.onFileSelect(trip, itineraryData, totalDistance);
 			} else {
-				console.log("Error");
+				//console.log("Error");
 				this.props.errorHandler(response.statusText, response.statusCode);
 			}
 		});

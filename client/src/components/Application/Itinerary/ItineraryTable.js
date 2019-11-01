@@ -1,6 +1,10 @@
 import React from 'react';
-import {Button, Table} from 'reactstrap';
+import {Button, ButtonGroup, Table, Input, Media} from 'reactstrap';
 import {sendServerRequestWithBody} from "../../../api/restfulAPI";
+import iconflower from '../images/iconflower.png'
+import iconred from '../images/iconred.png'
+
+
 export default class ItineraryTable extends React.Component {
 	constructor(props) {
 		super(props);
@@ -19,6 +23,7 @@ export default class ItineraryTable extends React.Component {
 				<Table striped>
 					<thead>
 					<tr>
+						<th><Media object src={iconred} alt="Generic placeholder image" /></th>
 						<th>Origin</th>
 						<th>Destination</th>
 						<th>Distance</th>
@@ -34,7 +39,8 @@ export default class ItineraryTable extends React.Component {
 					
 					{this.props.itineraryData.places.length > 0 &&
 					<tr>
-						<th></th>
+						<th/>
+						<th/>
 						<th>Total Distance</th>
 						<th>{this.props.sumTotalDistance(this.props.itineraryData.distances)
 						}</th>
@@ -83,10 +89,17 @@ export default class ItineraryTable extends React.Component {
 			<React.Fragment key={"cont" + index}>
 				{entry.origin != null &&
 				<tr key={index}>
+					<td style={{width: 0.1 + "em"}} key={"checkbox" + index}><Input addon type="checkbox"/></td>
 					<td key={"name" + index}>{entry.origin != null && entry.origin.name}</td>
 					<td key={"dest" + index}>{entry.destination != null && entry.destination.name}</td>
 					<td key={"dist" + index}>{this.props.itineraryData != null && this.props.itineraryData.distances[index]}</td>
-					<td key={"minus" + index}><Button color="danger" className={"float-right"} onClick={() => this.removePlaceFromItineraryData(index)}>-</Button></td>
+					<td style={{width: 0.1 + "em"}} key={"buttons" + index}>
+						<ButtonGroup>
+							<Button outline color="secondary" className={"float-right"} onClick={() => this.movePlace("UP", index)}>↑</Button>
+							<Button outline color="secondary" className={"float-right"} onClick={() => this.movePlace("DN", index)}>↓</Button>
+							<Button color="danger" className={"float-right"} onClick={() => this.removePlaceFromItineraryData(index)}>-</Button>
+						</ButtonGroup>
+					</td>
 				</tr>}
 			</React.Fragment>
 		);
@@ -96,5 +109,28 @@ export default class ItineraryTable extends React.Component {
 		let data = this.props.itineraryData;
 		data.places.splice(index, 1);
 		this.props.updateItineraryData(data);
+	}
+	
+	movePlace(str, index) {
+		let itinData = this.props.itineraryData;
+		let temp;
+		
+		if ((str === "UP" && index === 0) || (str === "DN" && index === itinData.places.length - 1)) {
+			return;
+		}
+		else if (str === "DN") {
+			
+			temp = itinData.places[index+1];
+			itinData.places[index+1] = itinData.places[index];
+			itinData.places[index] = temp;
+		}
+		else if (str === "UP") {
+			temp = itinData.places[index-1];
+			itinData.places[index-1] = itinData.places[index];
+			itinData.places[index] = temp;
+		}
+		
+		this.props.updateItineraryData(itinData);
+		
 	}
 }

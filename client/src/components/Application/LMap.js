@@ -20,9 +20,9 @@ export default class LMap extends Component {
 	
 	render() {
 		return (
-			<Container>
+			<React.Fragment>
 				{this.renderMap()}
-			</Container>
+			</React.Fragment>
 		);
 	}
 	
