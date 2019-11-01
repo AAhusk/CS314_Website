@@ -28,10 +28,8 @@ export default class Itinerary extends Component {
 			  modalPlaceInput: null,
 			  modalNameInput: null,
 			  submitActive: false
-			
 		  }
 	  }
-  
   }
 	
 	render() {
@@ -197,13 +195,10 @@ export default class Itinerary extends Component {
 			}
 		);
 		
-		this.props.updateItineraryData(
-			{
-				places: joined,
-				formattedDestinations: this.props.itineraryData.formattedDestinations,
-				distances: this.props.itineraryData.distances
-			}
-		);
+		let data = this.props.itineraryData;
+		data.places = joined;
+		
+		this.props.updateItineraryData(data);
 	}
 	
 	getLastCSVEntry(TripArray, cumulativeDistance) {
@@ -316,8 +311,8 @@ export default class Itinerary extends Component {
 		this.setState({totalDistance: totalDistance});
 		this.props.updateItineraryData(itineraryData);
 	}
-
-  errorHandler(statusText, statusCode){
+	
+	errorHandler(statusText, statusCode){
     this.setState({
       errorMessage: this.props.createErrorBanner(
         statusText,
