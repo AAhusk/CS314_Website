@@ -23,7 +23,7 @@ export default class ItineraryTable extends React.Component {
 				<Table striped>
 					<thead>
 					<tr>
-						<th><Media object src={iconred} alt="Generic placeholder image" /></th>
+						<th><img src={iconred} onmouseover="" style={{cursor: "pointer"}} onClick={() => this.flipCheckBoxes()} alt="Marker" /></th>
 						<th>Origin</th>
 						<th>Destination</th>
 						<th>Distance</th>
@@ -50,6 +50,15 @@ export default class ItineraryTable extends React.Component {
 			);
 		}
 		return null;
+	}
+	
+	flipCheckBoxes() {
+		let data = this.props.itineraryData;
+		
+		data.checked = !data.checked;
+		let checkBoxes = Array(data.places.length).fill(data.checked);
+		data.checkBoxes = checkBoxes;
+		this.props.updateItineraryData(data);
 	}
 	
 	formatItineraryDestinations() {
@@ -89,7 +98,7 @@ export default class ItineraryTable extends React.Component {
 			<React.Fragment key={"cont" + index}>
 				{entry.origin != null &&
 				<tr key={index}>
-					<td style={{width: 0.1 + "em"}} key={"checkbox" + index}><Input addon type="checkbox"/></td>
+					<td style={{width: 0.1 + "em"}} key={"checkbox" + index}><Input addon type="checkbox" checked={this.props.itineraryData.checkBoxes[index]} onChange={() => this.checkBoxCallback(index)}/></td>
 					<td key={"name" + index}>{entry.origin != null && entry.origin.name}</td>
 					<td key={"dest" + index}>{entry.destination != null && entry.destination.name}</td>
 					<td key={"dist" + index}>{this.props.itineraryData != null && this.props.itineraryData.distances[index]}</td>
@@ -103,6 +112,12 @@ export default class ItineraryTable extends React.Component {
 				</tr>}
 			</React.Fragment>
 		);
+	}
+	
+	checkBoxCallback(index) {
+		let data = this.props.itineraryData;
+		data.checkBoxes[index] = !data.checkBoxes[index];
+		this.props.updateItineraryData(data);
 	}
 	
 	removePlaceFromItineraryData(index) {

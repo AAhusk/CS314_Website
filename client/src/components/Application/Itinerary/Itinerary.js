@@ -86,7 +86,6 @@ export default class Itinerary extends Component {
 						           settings={this.props.settings}
 						           sumTotalDistance={this.sumTotalDistance}
 						           errorHandler={this.errorHandler}
-						
 						/>
 					</Card>
 					<Card>
@@ -146,12 +145,10 @@ export default class Itinerary extends Component {
 		sendServerRequestWithBody('trip', tipObject, this.state.serverPort)
 		.then((response) => {
 			if (response.statusCode >= 200 && response.statusCode <= 299) {
+				let data = this.props.itineraryData;
+				data.places = response.body.places;
+				this.props.updateItineraryData(data);
 				
-				this.props.updateItineraryData(
-					{
-						places: response.body.places,
-						distances: this.props.itineraryData.distances
-					});
 			} else {
 				this.setState({errorMessage: response.statusCode + ": " + response.statusText})
 				//console.log(response.statusCode + response.statusText);

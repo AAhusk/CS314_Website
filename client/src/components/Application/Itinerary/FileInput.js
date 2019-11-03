@@ -63,6 +63,7 @@ export default class FileInput extends Component {
 		let itineraryData;
 		let places = [];
 		let distances = [];
+		let checkBoxes = new Array(trip.places.length).fill(true);
 		for (let i = 0; i < trip.places.length; i++) {
 			
 		//	let destination_index = ((i + 1) === trip.places.length) ? 0 : i + 1;
@@ -84,7 +85,9 @@ export default class FileInput extends Component {
 		
 		itineraryData = {
 			places: places,
-			distances: distances
+			distances: distances,
+			checkBoxes: checkBoxes,
+			checked: true
 		};
 		
 		
