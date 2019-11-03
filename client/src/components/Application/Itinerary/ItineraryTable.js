@@ -23,7 +23,7 @@ export default class ItineraryTable extends React.Component {
 				<Table striped>
 					<thead>
 					<tr>
-						<th><img src={iconred} onmouseover="" style={{cursor: "pointer"}} onClick={() => this.flipCheckBoxes()} alt="Marker" /></th>
+						<th><img src={iconred} style={{cursor: "pointer"}} onClick={() => this.flipCheckBoxes()} alt="Marker" /></th>
 						<th>Origin</th>
 						<th>Destination</th>
 						<th>Distance</th>
@@ -63,9 +63,8 @@ export default class ItineraryTable extends React.Component {
 	
 	formatItineraryDestinations() {
 		
-		// Recalculate distances array
-		
 		let formattedDestinations = [];
+		
 		for (let i = 0; i < this.props.itineraryData.places.length; i++) {
 			let destination_index = ((i + 1) === this.props.itineraryData.places.length) ? 0 : i + 1;
 
@@ -87,6 +86,7 @@ export default class ItineraryTable extends React.Component {
 						longitude: formattedCoordsDestination.longitude
 					}
 				});
+
 		}
 		
 		return formattedDestinations;
