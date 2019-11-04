@@ -53,7 +53,7 @@ export default class FileInput extends Component {
 				this.setState({backgroundColor: green});
 				this.props.onFileSelect(trip, itineraryData, totalDistance);
 			} else {
-				console.log("Error");
+				//console.log("Error");
 				this.props.errorHandler(response.statusText, response.statusCode);
 			}
 		});
@@ -63,6 +63,8 @@ export default class FileInput extends Component {
 		let itineraryData;
 		let places = trip.places;
 		let distances = [];
+		let checkBoxes = new Array(trip.places.length).fill(true);
+		
 		for (let i = 0; i < trip.places.length; i++) {
 			
 			let formattedCoordsOrigin = this.props.formatCoordinates(
@@ -70,13 +72,18 @@ export default class FileInput extends Component {
 
 			places[i].latitude = formattedCoordsOrigin.latitude;
 			places[i].longitude = formattedCoordsOrigin.longitude;
+			places[i].checked = true;
+
 
 			distances.push((trip.distances != null) ? trip.distances[i] : "");
 		}
 		
 		itineraryData = {
+			originalPlaces: places, // Dont edit
 			places: places,
-			distances: distances
+			distances: distances,
+			checkBoxes: checkBoxes,
+			checked: true
 		};
 		
 		

@@ -6,31 +6,31 @@ import ItineraryTable from './ItineraryTable'
 import {sendServerRequestWithBody} from "../../../api/restfulAPI";
 
 export default class Itinerary extends Component {
-  
-  constructor(props) {
-    super(props);
 	
-	  this.onFileSelect = this.onFileSelect.bind(this);
-	  this.errorHandler = this.errorHandler.bind(this);
-	  this.createOutputJSON = this.createOutputJSON.bind(this);
-	  this.createOutputCSV = this.createOutputCSV.bind(this);
-	  this.modalPlaceInputCallback = this.modalPlaceInputCallback.bind(this);
-	  this.addPlaceToItineraryDataFromModal = this.addPlaceToItineraryDataFromModal.bind(this);
-	
-	  this.state = {
-		  trip: null,
-		  itineraryData: {},
-		  totalDistance: "",
-		  places: [],
-		  errorMessage: this.props.errorMessage,
-		  addModal: {
-			  addModalToggle: false,
-			  modalPlaceInput: null,
-			  modalNameInput: null,
-			  submitActive: false
-		  }
-	  }
-  }
+	constructor(props) {
+		super(props);
+		
+		this.onFileSelect = this.onFileSelect.bind(this);
+		this.errorHandler = this.errorHandler.bind(this);
+		this.createOutputJSON = this.createOutputJSON.bind(this);
+		this.createOutputCSV = this.createOutputCSV.bind(this);
+		this.modalPlaceInputCallback = this.modalPlaceInputCallback.bind(this);
+		this.addPlaceToItineraryDataFromModal = this.addPlaceToItineraryDataFromModal.bind(this);
+		
+		this.state = {
+			trip: null,
+			itineraryData: {},
+			totalDistance: "",
+			places: [],
+			errorMessage: this.props.errorMessage,
+			addModal: {
+				addModalToggle: false,
+				modalPlaceInput: null,
+				modalNameInput: null,
+				submitActive: false
+			}
+		}
+	}
 	
 	render() {
 		let toggleModal = () => {
@@ -58,48 +58,49 @@ export default class Itinerary extends Component {
 		);
 		
 		return (
-			<Container>
-				<Card>
-					<CardHeader>
-						<Row>
-							<Col>
-								Itinerary
-							</Col>
-							<Col>
-								{addPlaceModal}
-								
-								<Button id="ShortTrip" color='primary'
-								        onClick={() => this.shortTripOptimization()}>Shorten Trip</Button>{'  '}
-								<Button id="TripJSON" className='bg-csu-gold text-white'
-								        onClick={() => this.createOutputJSON()}>Export JSON</Button>{'  '}
-								<Button id="TripCSV" className='bg-csu-gold text-white'
-								        onClick={() => this.createOutputCSV()}>Export CSV</Button>{'  '}
-								
-								<Button onClick={toggleModal} className="float-right">+</Button>
-							</Col>
-						</Row>
-					</CardHeader>
-					<FileInput onFileSelect={this.onFileSelect}
-					           formatCoordinates={this.props.formatCoordinates}
-					           itineraryData={this.props.itineraryData}
-					           settings={this.props.settings}
-					           sumTotalDistance={this.sumTotalDistance}
-					           errorHandler={this.errorHandler}
-					           
-					/>
-				</Card>
-				<Card>
-					<ItineraryTable itineraryData={this.props.itineraryData}
-					                totalDistance={this.state.totalDistance}
-					                updateItineraryData={this.props.updateItineraryData}
-					                formatCoordinates={this.props.formatCoordinates}
-					                settings={this.props.settings}
-					                options={this.props.options}
-					                sumTotalDistance={this.sumTotalDistance}
-					
-					/>
-				</Card>
-			</Container>
+			<React.Fragment>
+				<Col>
+					<Card>
+						<CardHeader>
+							<Row>
+								<Col>
+									Itinerary
+								</Col>
+								<Col>
+									{addPlaceModal}
+									
+									<Button id="ShortTrip" color='primary'
+									        onClick={() => this.shortTripOptimization()}>Shorten Trip</Button>{'  '}
+									<Button id="TripJSON" className='bg-csu-gold text-white'
+									        onClick={() => this.createOutputJSON()}>Export JSON</Button>{'  '}
+									<Button id="TripCSV" className='bg-csu-gold text-white'
+									        onClick={() => this.createOutputCSV()}>Export CSV</Button>{'  '}
+									
+									<Button onClick={toggleModal} className="float-right">+</Button>
+								</Col>
+							</Row>
+						</CardHeader>
+						<FileInput onFileSelect={this.onFileSelect}
+						           formatCoordinates={this.props.formatCoordinates}
+						           itineraryData={this.props.itineraryData}
+						           settings={this.props.settings}
+						           sumTotalDistance={this.sumTotalDistance}
+						           errorHandler={this.errorHandler}
+						/>
+					</Card>
+					<Card>
+						<ItineraryTable itineraryData={this.props.itineraryData}
+						                totalDistance={this.state.totalDistance}
+						                updateItineraryData={this.props.updateItineraryData}
+						                formatCoordinates={this.props.formatCoordinates}
+						                settings={this.props.settings}
+						                options={this.props.options}
+						                sumTotalDistance={this.sumTotalDistance}
+						
+						/>
+					</Card>
+				</Col>
+			</React.Fragment>
 		);
 	}
 	
@@ -128,33 +129,60 @@ export default class Itinerary extends Component {
 		});
 		return sum;
 	}
-	
-    shortTripOptimization() {
-        let tipObject = {
-            "requestType": "trip",
-            "requestVersion": 2,
-            "options": {    //  Required in request & response
-                "title": "Short Trip",
-                "earthRadius": "1337", // Doesn't matter, we dont use this value
-                "optimization": "short"
-            },
-            "places": this.props.itineraryData.places,
-        };
-        
-        sendServerRequestWithBody('trip', tipObject, this.state.serverPort)
-            .then((response) => {
-                if (response.statusCode >= 200 && response.statusCode <= 299) {
-                	
-                    this.props.updateItineraryData(
-	                    {
-		                    places: response.body.places,
-		                    distances: this.props.itineraryData.distances
-	                    });
-                } else {
-                    this.setState({errorMessage: response.statusCode + ": " + response.statusText})
-                }
-            });
-    }
+
+	shortTripOptimization() {
+		
+		const tipObject = {
+			'requestType': 'trip',
+			'requestVersion': 3,
+			'distances': [],
+			'options': {
+				'title': "Short Trip",
+				'earthRadius': this.props.options.units[this.props.options.activeUnit],
+				'optimization': 'short'
+			},
+			'places': this.props.itineraryData.places
+		};
+		
+		sendServerRequestWithBody('trip', tipObject, this.state.serverPort)
+		.then((response) => {
+			if (response.statusCode >= 200 && response.statusCode <= 299) {
+				let data = this.props.itineraryData;
+				data.places = response.body.places;
+				
+				// Swap all the required things around
+				let placeNames = [];
+				for (let i = 0; i < data.places.length; i++) {
+					placeNames.push(data.places[i].name);
+				}
+				
+				let index = [];
+				for (let i = 0; i < data.originalPlaces.length; i++) {
+					index.push(placeNames.indexOf(data.originalPlaces[i].name));
+				}
+				
+				let checkBoxes = []; // This is what is actually added to itineraryData
+				for (let i = 0; i < index.length; i++) {
+					checkBoxes.push(data.checkBoxes[index[i]]);
+				}
+				
+				data.checkBoxes = checkBoxes;
+				
+				this.props.updateItineraryData(data);
+				
+			} else {
+				this.setState({errorMessage: response.statusCode + ": " + response.statusText})
+				console.log(response.statusCode + response.statusText);
+				// this.setState({
+				//     errorMessage: this.props.createErrorBanner(
+				//         response.statusText,
+				//         response.statusCode,
+				//         `Request to ${this.props.serverPort} failed.`
+				//     )
+				// });
+			}
+		});
+	}
 	
 	modalPlaceInputCallback(event) {
 		let output = this.props.formatCoordinates(event.target.value, null, true);
@@ -221,6 +249,7 @@ export default class Itinerary extends Component {
 			const TripArray = [[]];
 			let names = this.props.itineraryData.places[0]
 			TripArray[0] = Object.keys(names);
+			TripArray[0].splice(TripArray[0].length-1);  									// get rid of "checked" key
 			TripArray[0].push("distance", "cumulative distance");
 			this.createCSVArray(TripArray);
 			
@@ -241,9 +270,10 @@ export default class Itinerary extends Component {
 		let cumulativeDistance = 0;
 		for (let i = 0; i < this.props.itineraryData.places.length; ++i) {
 			let PlaceEntry = this.props.itineraryData.places[i];
-			let TripLocation = []
+			let TripLocation = [];
 			for (let key in PlaceEntry) {
-				TripLocation.push(PlaceEntry[key])
+				TripLocation.push(PlaceEntry[key]);
+				TripLocation.splice(TripLocation.length-1, 1);
 			}
 			let distance = (i===0) ? 0 : this.props.itineraryData.distances[i-1];
 			cumulativeDistance += distance;
@@ -264,12 +294,12 @@ export default class Itinerary extends Component {
 	}
 	
 	errorHandler(statusText, statusCode){
-    this.setState({
-      errorMessage: this.props.createErrorBanner(
-        statusText,
-        statusCode,
-        `Request to ${this.props.settings.serverPort} failed.`
-      )
-    });
-  }
+		this.setState({
+			errorMessage: this.props.createErrorBanner(
+				statusText,
+				statusCode,
+				`Request to ${this.props.settings.serverPort} failed.`
+			)
+		});
+	}
 }

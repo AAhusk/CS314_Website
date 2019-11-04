@@ -20,9 +20,9 @@ export default class LMap extends Component {
 	
 	render() {
 		return (
-			<Container>
+			<React.Fragment>
 				{this.renderMap()}
-			</Container>
+			</React.Fragment>
 		);
 	}
 	
@@ -41,17 +41,19 @@ export default class LMap extends Component {
 		let pointArr = this.props.itineraryData.places;
 		if (pointArr.length !== 0) {
 			for (let i = 0; i < pointArr.length; i++) {
-				MarkerArr.push(
-					<Marker key={"Marker" + i}
-					        position={L.latLng(pointArr[i].latitude, pointArr[i].longitude)}
-					        icon={this.markerIcon(iconred)}>
-						<Popup className="font-weight-extrabold">
-							Destination:<br/>
-							{pointArr[i].latitude} Latitude<br/>
-							{pointArr[i].longitude} Longitude
-						</Popup>
-					</Marker>
-				);
+				if (this.props.itineraryData.places[i].checked === true) {
+					MarkerArr.push(
+						<Marker key={"Marker" + i}
+						        position={L.latLng(pointArr[i].latitude, pointArr[i].longitude)}
+						        icon={this.markerIcon(iconred)}>
+							<Popup className="font-weight-extrabold">
+								Destination:<br/>
+								{pointArr[i].latitude} Latitude<br/>
+								{pointArr[i].longitude} Longitude
+							</Popup>
+						</Marker>
+					);
+				}
 				ItinPolylinepts.push(
 					[pointArr[i].latitude, pointArr[i].longitude]
 				);
