@@ -12,7 +12,7 @@
 | ---- | ---- | ---- |
 | Calvin Davis |  | 1D |
 | Sean Boyd |  |  |
-| Aaron Huskerson |  |  |
+| Aaron Huskerson |  | 1D |
 | Chandler Day |  | 1D |
 
 ### Problems found
@@ -23,4 +23,4 @@
 | 247 | Too many props / reduce prop load | Calvin | low | #197 |
 
 | 75 | NearestNeighborOptimization is O(n^3) | Calvin | med | #198 |
-
+| Application.js:117 | formatCoordinates function is 98 lines | low | Aaron | #199 | 
