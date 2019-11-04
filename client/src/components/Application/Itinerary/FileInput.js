@@ -61,24 +61,33 @@ export default class FileInput extends Component {
 	
 	formatTripData(trip) {
 		let itineraryData;
-		let places = [];
+		let places = trip.places;
 		let distances = [];
 		for (let i = 0; i < trip.places.length; i++) {
-			
+
 		//	let destination_index = ((i + 1) === trip.places.length) ? 0 : i + 1;
 			
 			let formattedCoordsOrigin = this.props.formatCoordinates(
 				`${trip.places[i].latitude}, ${trip.places[i].longitude}`, null, true);
 		//	let formattedCoordsDestination = this.props.formatCoordinates(
 		//		`${trip.places[destination_index].latitude}, ${trip.places[destination_index].longitude}`, null, true);
-			
-			places.push(
-				{
-					name: trip.places[i].name,
-					latitude: formattedCoordsOrigin.latitude,
-					longitude: formattedCoordsOrigin.longitude
-				});
-			
+
+			/*let JSONObject = {
+				name: trip.places[i].name,
+				latitude: formattedCoordsOrigin.latitude,
+				longitude: formattedCoordsOrigin.longitude
+			};
+			/!*let currentEntry = trip.places[i];*!/
+			for (let j = 3; j < trip.places[i].names().length; ++j) {
+				JSONObject[trip.places[i].names().getString(j)] = trip.places[i].get(trip.places[i].names().getString(j));
+			}
+
+			places.push(JSONObject);
+*/
+			places[i].latitude = formattedCoordsOrigin.latitude ;
+			places[i].longitude = formattedCoordsOrigin.longitude;
+
+
 			distances.push((trip.distances != null) ? trip.distances[i] : "");
 		}
 		
