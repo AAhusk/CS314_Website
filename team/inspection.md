@@ -9,7 +9,7 @@
 ### Roles
 
 | Name | Role |Preparation Time |
-| ---- | ---- |
+| ---- | ---- | ---- |
 | Calvin Davis |  | 1D |
 | Sean Boyd |  |  |
 | Aaron Huskerson |  |  |
