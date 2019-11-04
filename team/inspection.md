@@ -4,16 +4,16 @@
 | ----- | ----- |
 | Subject | *Application.js 117 - 306, TIPTrip.java nearestNeighbor()* |
 | Meeting | *4 Nov 2019* |
-| Checklist | *reference, URL, etc.* |
+| Checklist | *tripco/guides/client-testing, tripco/guides/debugging* |
 
 ### Roles
 
-| Name | Preparation Time |
+| Name | Role |Preparation Time |
 | ---- | ---- |
-| Calvin Davis | 1D |
-| Sean Boyd |  |
-| Aaron Huskerson |  |
-| Chandler Day |  |
+| Calvin Davis |  | 1D |
+| Sean Boyd |  |  |
+| Aaron Huskerson |  |  |
+| Chandler Day |  | 1D |
 
 ### Problems found
 
