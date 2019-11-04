@@ -27,4 +27,6 @@
 
 | N/A | Error banners aren't dealt with properly in most files | med | Calvin | #196 |
 
-| Application.js:117 | formatCoordinates function is 98 lines | low | Aaron | #199 | 
+| Application.js:117 | formatCoordinates function is 98 lines | low | AAhusk | #199 | 
+
+| Application.test.js | No testing for formatCoordinates function | low | AAhusk | #200 |
