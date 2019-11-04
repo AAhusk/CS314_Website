@@ -50,7 +50,7 @@ export default class Calculator extends Component {
 				<Row>
 					<Itinerary options={this.props.options}
 					           settings={this.props.settings}
-					           createErrorBanner={this.createErrorBanner}
+					           createErrorBanner={this.props.createErrorBanner}
 					           errorMessage={this.state.errorMessage}
 					           updateItineraryData={this.props.updateItineraryData}
 					           formatCoordinates={this.props.formatCoordinates}

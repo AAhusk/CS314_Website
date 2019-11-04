@@ -6,7 +6,7 @@ import About from './About/About';
 import Calculator from './Calculator/Calculator';
 import Options from './Options/Options';
 import Settings from './Settings/Settings';
-import {getOriginalServerPort, sendServerRequest} from '../../api/restfulAPI';
+import {getOriginalServerPort, sendServerRequest, sendServerRequestWithBody} from '../../api/restfulAPI';
 import ErrorBanner from './ErrorBanner';
 
 
@@ -52,21 +52,6 @@ export default class Application extends Component {
 		);
 	}
 	
-	// calculateDistances() {
-	// 	sendServerRequestWithBody('trip', trip, this.props.settings.serverPort)
-	// 	.then((response) => {
-	//
-	// 		if (response.statusCode >= 200 && response.statusCode <= 299) {
-	// 			var itineraryData = this.formatTripData(response.body);
-	// 			var totalDistance = this.props.sumTotalDistance(response.body.distances);
-	// 			this.setState({backgroundColor: green});
-	// 			this.props.onFileSelect(trip, itineraryData, totalDistance);
-	// 		} else {
-	// 			this.props.errorHandler(response.statusText, response.statusCode);
-	// 		}
-	// 	});
-	// }
-	
 	onLocationChange(position, stateVar) {
 		let update = {
 			latitude: position.latitude,
@@ -78,9 +63,38 @@ export default class Application extends Component {
 	}
 	
 	updateItineraryData(data) {
+		
+		const serverObject = {
+			'requestType': 'trip',
+			'requestVersion': 3,
+			'distances': [],
+			'options': {
+				'title': "Update Distances",
+				'earthRadius': this.state.planOptions.units[this.state.planOptions.activeUnit],
+				'optimization': 'none'
+			},
+			'places': this.state.itineraryData.places
+		};
+		
 		this.setState({
 			itineraryData: data
-		})
+		}, () => {
+			
+			sendServerRequestWithBody('trip', serverObject, this.state.clientSettings.serverPort)
+			.then((response) => {
+				if (response.statusCode >= 200 && response.statusCode <= 299) {
+					data.distances = response.body.distances;
+					
+					this.setState({
+						itineraryData: data
+					});
+					
+				} else {
+					console.log(response.statusText, response.statusCode);
+				}
+			});
+			
+		});
 	}
 	
 	geolocation(stateVar) { // Add a try/catch here
