@@ -8,8 +8,7 @@ import Interop from '../src/components/Application/Settings/Interop';
 
 const startProperties = {
   'serverPort': 'black-bottle.cs.colostate.edu:31400',
-  'updateSetting': () => {
-  }
+  'updateSetting': () => {}
 };
 
 function testInputExists() {
@@ -44,7 +43,7 @@ test('Testing that the onChange event for Input updates the inputText field in'
     + 'state', testUpdateInputText);
 
 function testUpdateServerPort() {
-  mockConfigResponse();
+  //mockConfigResponse();
 
   const application = mount(<Application/>);
 
@@ -68,9 +67,9 @@ function mockConfigResponse() {
         status: 200,
         statusText: 'OK',
         body: {
-          'placeAttributes': ["latitude", "longitude", "serverName"],
+          'placeAttributes': ["name","latitude","longitude","id","altitude","municipality","type"],
           'requestType': "config",
-          'requestVersion': 1,
+          'requestVersion': 3,
           'serverName': "t11"
         },
         type: 'basic',

@@ -18,20 +18,20 @@ function testCreateInputFields() {
   const calculator = mount((
       <Calculator options={startProperties.options}
                   formatCoordinates={Application.formatCoordinates}
+                  itineraryData={{places: [], distances: []}}
+
       />
   ));
 
   let numberOfInputs = calculator.find('Input').length;
-  expect(numberOfInputs).toEqual(4);
+  expect(numberOfInputs).toEqual(2);
 
   let actualInputs = [];
   calculator.find('Input').map((input) => actualInputs.push(input.prop('name')));
 
   let expectedInputs = [
-    'latitude',
-    'longitude',
-    'latitude',
-    'longitude'
+      "originfield",
+      "destinationfield"
   ];
 
   expect(actualInputs).toEqual(expectedInputs);

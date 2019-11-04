@@ -5,8 +5,23 @@ import com.google.gson.Gson;
 import com.tripco.t11.TIP.TIPConfig;
 import com.tripco.t11.TIP.TIPDistance;
 import com.tripco.t11.TIP.TIPHeader;
+import com.tripco.t11.TIP.TIPTrip;
+import com.tripco.t11.TIP.TIPLocation;
 
+import java.io.File;
+import java.io.InputStream;
+import java.lang.String;
 import java.lang.reflect.Type;
+import java.util.List;
+import java.util.Scanner;
+
+import org.everit.json.schema.Schema;
+import org.everit.json.schema.ValidationException;
+import org.everit.json.schema.SchemaException;
+import org.everit.json.schema.Validator;
+import org.everit.json.schema.loader.SchemaLoader;
+import org.json.JSONObject;
+import org.json.JSONTokener;
 
 import spark.Request;
 import spark.Response;
@@ -22,7 +37,7 @@ import org.slf4j.LoggerFactory;
  */
 class MicroServer {
 
-  private final Logger log = LoggerFactory.getLogger(MicroServer.class);
+  private static final Logger log = LoggerFactory.getLogger(MicroServer.class);
 
 
   MicroServer(int serverPort) {
@@ -61,7 +76,10 @@ class MicroServer {
   private void processRestfulAPIrequests() {
     Spark.get("/api/config", this::processTIPconfigRequest);
     Spark.post("/api/distance", this::processTIPdistanceRequest);
+    Spark.post("/api/trip", this::processTIPtripRequest);
     Spark.get("/api/echo", this::echoHTTPrequest);
+    Spark.post("/api/location", this::processTIPLocationRequest);
+    
     log.trace("Restful configuration complete");
   }
 
@@ -86,12 +104,84 @@ class MicroServer {
   }
 
 
+  private String processTIPLocationRequest(Request request, Response response) {
+    JSONObject LocationSchema = getSchema("/TIPLocationsRequestSchema.json");
+    if (!performValidation(request.body(), LocationSchema)) {
+      response.status(400);
+      return request.body();
+    } else {
+      return processTIPrequest(TIPLocation.class, request, response);
+    }
+  }
 
 
   private String processTIPdistanceRequest(Request request, Response response) {
-    return processTIPrequest(TIPDistance.class, request, response);
+    JSONObject DistanceSchema = getSchema("/TIPDistanceRequestSchema.json");
+    if (!performValidation(request.body(), DistanceSchema)) {
+      response.status(400);
+      return request.body();
+    } else {
+      return processTIPrequest(TIPDistance.class, request, response);
+    }
   }
 
+  private String processTIPtripRequest(Request request, Response response) {
+    JSONObject TripSchema = getSchema("/TIPTripRequestSchema.json");
+    if (!performValidation(request.body(), TripSchema)) {
+      response.status(400);
+      return request.body();
+    } else {
+      return processTIPrequest(TIPTrip.class, request, response);
+    }
+  }
+
+  private JSONObject getSchema(String SchemaFilePath) {
+    JSONObject JSONSchema = null;
+    try {
+      InputStream JSONinputStream = getClass().getResourceAsStream(SchemaFilePath);
+      JSONSchema = new JSONObject(new JSONTokener(JSONinputStream));
+    }
+    catch (Exception e) {
+      log.error("Error retrieving schema file from resources!");
+    }
+    return JSONSchema;
+  }
+
+  public static boolean performValidation(String TripRequest, JSONObject JSONSchema) {
+    boolean validationResult = true;
+    JSONObject JSONrequest = null;
+    try {
+      JSONrequest = new JSONObject(TripRequest);
+      log.info("This is the JSONrequestBody: {}\n", JSONrequest);
+      log.info("This is the JSON schema: {}\n", JSONSchema);
+      Schema schema = SchemaLoader.load(JSONSchema);
+      schema.validate(JSONrequest);    // This is the line that will throw a ValidationException if anything doesn't conform to the schema!
+    }
+    catch (SchemaException e) {
+      log.error("Caught a schema exception!");
+      e.printStackTrace();
+      validationResult = false;
+    }
+    catch (ValidationException e) {
+      outputValidationExceptions(e.getErrorMessage(), e.getAllMessages());
+      validationResult = false;
+    }
+    catch (Exception e) {
+      log.error("General Exception caught: check creation of JSON object from request body");
+    }
+    finally {
+      log.info("VALIDATION: {}", validationResult);
+      return validationResult;
+    }
+  }
+
+  private static void outputValidationExceptions(String ValidationError, List<String> ValidationMessages) {
+    log.error("Caught validation exception when validating schema! Root message: {}", ValidationError);
+    log.error("All messages from errors (including nested):");
+    for (String message: ValidationMessages) {
+      log.error(message);
+    }
+  }
 
   private String processTIPrequest(Type tipType, Request request, Response response) {
     log.info("TIP Request: {}", HTTPrequestToJson(request));

@@ -30,7 +30,7 @@ function mockConfigResponse() {
         body: {
           'placeAttributes': ["latitude", "longitude", "serverName"],
           'requestType': "config",
-          'requestVersion': 1,
+          'requestVersion': 3,
           'serverName': "t11"
         },
         type: 'basic',
@@ -53,3 +53,15 @@ function testUpdateOption() {
 }
 
 test("Testing Application's updatePlanOption function", testUpdateOption);
+
+/*function testFormatCoordinates() {
+    let rawString = {latitude: -190, longitude: 200};
+    let stateVar = 'origin';
+    let returnFormattedCoordinates = true;
+
+    let actual = Application.formatCoordinates(rawString, stateVar, returnFormattedCoordinates);
+    let expected = {latitude: 10, longitude: 20};
+    expect(actual).toEqual(expected);
+}
+
+test("Testing Application's formatCoordinates function", testFormatCoordinates);*/
