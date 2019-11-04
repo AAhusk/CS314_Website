@@ -2,7 +2,7 @@
  
 | Inspection | Details |
 | ----- | ----- |
-| Subject | *Application.js formatCoordinates(), TIPTrip.java nearestNeighborOptimization()* |
+| Subject | *Application.js 117 - 306, TIPTrip.java nearestNeighbor()* |
 | Meeting | *4 Nov 2019* |
 | Checklist | *reference, URL, etc.* |
 
@@ -18,6 +18,9 @@
 ### Problems found
 
 | file:line | problem | hi/med/low | who found | github#  |
-| --- | --- | :---: | :---: | --- |
-|  | | | | |
-|  | | | | |
+| 117 | No database entry in params | low | Chandler | #195 |
+| N/A | Error banners aren't dealt with properly in most files | med | Calvin | #196 |
+| 247 | Too many props / reduce prop load | Calvin | low | #197 |
+
+| 75 | NearestNeighborOptimization is O(n^3) | Calvin | med | #198 |
+
