@@ -34,8 +34,8 @@ export default class Application extends Component {
 			errorMessage: null,
 			currentLocation: null,
 			
-			origin: {latitude: 1, longitude: 1},
-			destination: {latitude: 1, longitude: 1},
+			origin: {latitude: "1", longitude: "1"},
+			destination: {latitude: "1", longitude: "1"},
 			itineraryData: {places: [], distances: []}
 		};
 		
@@ -203,7 +203,7 @@ export default class Application extends Component {
 			if (returnFormattedCoords === true) {
 				return {latitude: lat, longitude: long};
 			} else {
-				let dict = {latitude: lat, longitude: long};
+				let dict = {latitude: lat.toString(), longitude: long.toString()};
 				this.setState({[finalState]: dict});
 			}
 		} catch (err) {
