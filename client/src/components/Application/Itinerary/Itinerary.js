@@ -152,14 +152,6 @@ export default class Itinerary extends Component {
 	                    });
                 } else {
                     this.setState({errorMessage: response.statusCode + ": " + response.statusText})
-                    //console.log(response.statusCode + response.statusText);
-                    // this.setState({
-                    //     errorMessage: this.props.createErrorBanner(
-                    //         response.statusText,
-                    //         response.statusCode,
-                    //         `Request to ${this.props.serverPort} failed.`
-                    //     )
-                    // });
                 }
             });
     }
@@ -201,27 +193,6 @@ export default class Itinerary extends Component {
 		this.props.updateItineraryData(data);
 	}
 
-	
-	createCSVArray(TripArray) {
-		let cumulativeDistance = 0;
-		for (let i = 0; i < this.props.itineraryData.places.length; ++i) {
-			let PlaceEntry = this.props.itineraryData.places[i];
-			let TripLocation = []
-			for (let key in PlaceEntry) {
-				TripLocation.push(PlaceEntry[key])
-			}
-			let distance = (i===0) ? 0 : this.props.itineraryData.distances[i-1];
-			cumulativeDistance += distance;
-			TripLocation.push(distance, cumulativeDistance);
-			TripArray[i+1] = TripLocation;
-		}
-		let backToOrigin = TripArray[1].slice(0);
-		let distToOrigin = this.props.itineraryData.distances[this.props.itineraryData.distances.length-1];
-		backToOrigin[backToOrigin.length-2] = distToOrigin;
-		backToOrigin[backToOrigin.length-1] = cumulativeDistance + distToOrigin;
-		TripArray.push(backToOrigin);
-	}
-	
 	createOutputJSON() {
 		if (this.props.itineraryData.places.length === 0) {
 			this.errorHandler("No file to export", 201);
@@ -266,7 +237,26 @@ export default class Itinerary extends Component {
 			FileSaver.saveAs(file, "TIPTrip.csv");
 		}
 	}
-	
+	createCSVArray(TripArray) {
+		let cumulativeDistance = 0;
+		for (let i = 0; i < this.props.itineraryData.places.length; ++i) {
+			let PlaceEntry = this.props.itineraryData.places[i];
+			let TripLocation = []
+			for (let key in PlaceEntry) {
+				TripLocation.push(PlaceEntry[key])
+			}
+			let distance = (i===0) ? 0 : this.props.itineraryData.distances[i-1];
+			cumulativeDistance += distance;
+			TripLocation.push(distance, cumulativeDistance);
+			TripArray[i+1] = TripLocation;
+		}
+		let backToOrigin = TripArray[1].slice(0);
+		let distToOrigin = this.props.itineraryData.distances[this.props.itineraryData.distances.length-1];
+		backToOrigin[backToOrigin.length-2] = distToOrigin;
+		backToOrigin[backToOrigin.length-1] = cumulativeDistance + distToOrigin;
+		TripArray.push(backToOrigin);
+	}
+
 	onFileSelect(trip, itineraryData, totalDistance) {
 		this.setState({totalDistance: totalDistance});
 		this.props.updateItineraryData(itineraryData);
