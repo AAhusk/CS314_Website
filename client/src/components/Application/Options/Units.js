@@ -83,8 +83,9 @@ export default class Units extends Component {
   }
 
   renderEnterButton(){
+
     return (
-        <Button className='bg-csu-gold text-white' onClick={this.createOption}>Create Custom Unit</Button>
+        <Button className='bg-csu-gold text-white' onClick={(event) => this.createOption()}>Create Custom Unit</Button>
     )
   }
 
@@ -115,7 +116,11 @@ export default class Units extends Component {
   }
 
   createOption() {
-    // create new button for custom Unit. Create new unit in Application.js for custom unit.
+    let currentUnits = this.props.options.units;
+    currentUnits[this.state.customUnitName] = this.state.customUnitRadius;
+    this.props.updateOption('units', currentUnits);
+    this.render();
+     // create new button for custom Unit. Create new unit in Application.js for custom unit.
   }
 
 
