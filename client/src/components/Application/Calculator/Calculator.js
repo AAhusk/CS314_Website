@@ -27,7 +27,7 @@ export default class Calculator extends Component {
 	
 	render() {
 		return (
-			<div>
+			<React.Fragment>
 				<Row>
 					{this.state.errorMessage}
 					<Col xs={12} sm={12} md={9} lg={9}>
@@ -47,6 +47,8 @@ export default class Calculator extends Component {
 						</ListGroup>
 					</Col>
 				</Row>
+				<hr/>
+					{' '}
 				<Row>
 					<Itinerary options={this.props.options}
 					           settings={this.props.settings}
@@ -58,7 +60,7 @@ export default class Calculator extends Component {
 					           itineraryData={this.props.itineraryData}
 					/>
 				</Row>
-			</div>
+			</React.Fragment>
 		);
 	}
 	
