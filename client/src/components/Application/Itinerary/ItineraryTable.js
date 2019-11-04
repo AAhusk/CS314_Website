@@ -1,6 +1,10 @@
 import React from 'react';
-import {Button, Table} from 'reactstrap';
+import {Button, ButtonGroup, Table, Input, Media} from 'reactstrap';
 import {sendServerRequestWithBody} from "../../../api/restfulAPI";
+import iconflower from '../images/iconflower.png'
+import iconred from '../images/iconred.png'
+
+
 export default class ItineraryTable extends React.Component {
 	constructor(props) {
 		super(props);
@@ -19,6 +23,7 @@ export default class ItineraryTable extends React.Component {
 				<Table striped>
 					<thead>
 					<tr>
+						<th><img src={iconred} style={{cursor: "pointer"}} onClick={() => this.flipCheckBoxes()} alt="Marker" /></th>
 						<th>Origin</th>
 						<th>Destination</th>
 						<th>Distance</th>
@@ -27,14 +32,15 @@ export default class ItineraryTable extends React.Component {
 					</thead>
 					
 					<tbody>
-						{this.props.itineraryData.places.length > 0 && this.formatItineraryDestinations().map(this.renderTripItinerary)}
+						{this.props.itineraryData && this.props.itineraryData.places.length > 0 && this.formatItineraryDestinations().map(this.renderTripItinerary)}
 					</tbody>
 					
 					<tbody>
 					
 					{this.props.itineraryData.places.length > 0 &&
 					<tr>
-						<th></th>
+						<th/>
+						<th/>
 						<th>Total Distance</th>
 						<th>{this.props.sumTotalDistance(this.props.itineraryData.distances)
 						}</th>
@@ -46,11 +52,34 @@ export default class ItineraryTable extends React.Component {
 		return null;
 	}
 	
+	flipCheckBoxes() {
+		let data = this.props.itineraryData;
+		
+		data.checked = !data.checked;
+		let checkBoxes = Array(data.places.length).fill(data.checked);
+		data.checkBoxes = checkBoxes;
+		this.props.updateItineraryData(data);
+	}
+	
 	formatItineraryDestinations() {
 		
-		// Recalculate distances array
-		
 		let formattedDestinations = [];
+		
+		let placeNames = [];
+		for (let i = 0; i < this.props.itineraryData.places.length; i++) {
+			placeNames.push(this.props.itineraryData.places[i].name);
+		}
+		
+		let index = [];
+		for (let i = 0; i < this.props.itineraryData.originalPlaces.length; i++) {
+			index.push(placeNames.indexOf(this.props.itineraryData.originalPlaces[i].name));
+		}
+		
+		let checkBoxes = [];
+		for (let i = 0; i < index.length; i++) {
+			checkBoxes.push(this.props.itineraryData.checkBoxes[index[i]]);
+		}
+		
 		for (let i = 0; i < this.props.itineraryData.places.length; i++) {
 			let destination_index = ((i + 1) === this.props.itineraryData.places.length) ? 0 : i + 1;
 
@@ -70,7 +99,9 @@ export default class ItineraryTable extends React.Component {
 						name: this.props.itineraryData.places[destination_index].name,
 						latitude: formattedCoordsDestination.latitude,
 						longitude: formattedCoordsDestination.longitude
-					}
+					},
+					index: index[i], // New places relative to the original list
+					checked: this.props.itineraryData.checkBoxes[i]
 				});
 		}
 		
@@ -78,23 +109,93 @@ export default class ItineraryTable extends React.Component {
 	}
 	
 	renderTripItinerary(entry, index) {
+		
+		
+		
+		// console.log("Placenames ");
+		// console.log(placeNames);
+		// console.log("Finding: ");
+		// console.log(entry.origin.name);
+		// console.log("at index");
+		// console.log(placeNames.indexOf(entry.origin.name));
+		
 		return (
 			
 			<React.Fragment key={"cont" + index}>
 				{entry.origin != null &&
 				<tr key={index}>
+					<td style={{width: 0.1 + "em"}} key={"checkbox" + index}><Input addon type="checkbox" checked={entry.checked} onChange={() => this.checkBoxCallback(entry.index, index)}/></td>
 					<td key={"name" + index}>{entry.origin != null && entry.origin.name}</td>
 					<td key={"dest" + index}>{entry.destination != null && entry.destination.name}</td>
 					<td key={"dist" + index}>{this.props.itineraryData != null && this.props.itineraryData.distances[index]}</td>
-					<td key={"minus" + index}><Button color="danger" className={"float-right"} onClick={() => this.removePlaceFromItineraryData(index)}>-</Button></td>
+					<td style={{width: 0.1 + "em"}} key={"buttons" + index}>
+						<ButtonGroup>
+							<Button outline color="secondary" className={"float-right"} onClick={() => this.movePlace("UP", index)}>↑</Button>
+							<Button outline color="secondary" className={"float-right"} onClick={() => this.movePlace("DN", index)}>↓</Button>
+							<Button color="danger" className={"float-right"} onClick={() => this.removePlaceFromItineraryData(index)}>-</Button>
+						</ButtonGroup>
+					</td>
 				</tr>}
 			</React.Fragment>
 		);
+	}
+	
+	checkBoxCallback(placeIndex, checkBoxIndex) {
+		let data = this.props.itineraryData;
+		
+		data.places[placeIndex].checked = !data.places[placeIndex].checked;
+		
+		data.checkBoxes[checkBoxIndex] = !data.checkBoxes[checkBoxIndex];
+		this.props.updateItineraryData(data);
+		//this.renderTripItinerary();
 	}
 	
 	removePlaceFromItineraryData(index) {
 		let data = this.props.itineraryData;
 		data.places.splice(index, 1);
 		this.props.updateItineraryData(data);
+	}
+	
+	movePlace(str, index) {
+		let itinData = this.props.itineraryData;
+		let temp;
+		
+		if ((str === "UP" && index === 0) || (str === "DN" && index === itinData.places.length - 1)) {
+		
+		}
+		else if (str === "DN") {
+			
+			temp = itinData.places[index+1];
+			itinData.places[index+1] = itinData.places[index];
+			itinData.places[index] = temp;
+			
+		}
+		else if (str === "UP") {
+			temp = itinData.places[index-1];
+			itinData.places[index-1] = itinData.places[index];
+			itinData.places[index] = temp;
+		}
+		
+		// Regenerate props
+		let placeNames = [];
+		for (let i = 0; i < itinData.places.length; i++) {
+			placeNames.push(itinData.places[i].name);
+		}
+		
+		let indexList = [];
+		for (let i = 0; i < itinData.originalPlaces.length; i++) {
+			indexList.push(placeNames.indexOf(itinData.originalPlaces[i].name));
+		}
+		
+		let checkBoxes = []; // This is what is actually added to itineraryData
+		for (let i = 0; i < indexList.length; i++) {
+			checkBoxes.push(itinData.checkBoxes[indexList[i]]);
+		}
+		
+		itinData.checkBoxes = checkBoxes;
+		
+		this.props.updateItineraryData(itinData);
+		
+		
 	}
 }
