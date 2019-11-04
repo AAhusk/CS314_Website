@@ -64,21 +64,21 @@ export default class Application extends Component {
 	
 	updateItineraryData(data) {
 		
-		const serverObject = {
-			'requestType': 'trip',
-			'requestVersion': 3,
-			'distances': [],
-			'options': {
-				'title': "Update Distances",
-				'earthRadius': this.state.planOptions.units[this.state.planOptions.activeUnit],
-				'optimization': 'none'
-			},
-			'places': this.state.itineraryData.places
-		};
-		
 		this.setState({
 			itineraryData: data
 		}, () => {
+			
+			const serverObject = {
+				'requestType': 'trip',
+				'requestVersion': 3,
+				'distances': [],
+				'options': {
+					'title': "Update Distances",
+					'earthRadius': this.state.planOptions.units[this.state.planOptions.activeUnit],
+					'optimization': 'none'
+				},
+				'places': this.state.itineraryData.places
+			};
 			
 			sendServerRequestWithBody('trip', serverObject, this.state.clientSettings.serverPort)
 			.then((response) => {

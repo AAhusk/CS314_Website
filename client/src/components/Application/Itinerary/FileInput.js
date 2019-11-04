@@ -64,6 +64,7 @@ export default class FileInput extends Component {
 		let places = [];
 		let distances = [];
 		let checkBoxes = new Array(trip.places.length).fill(true);
+		
 		for (let i = 0; i < trip.places.length; i++) {
 			
 		//	let destination_index = ((i + 1) === trip.places.length) ? 0 : i + 1;
@@ -77,13 +78,15 @@ export default class FileInput extends Component {
 				{
 					name: trip.places[i].name,
 					latitude: formattedCoordsOrigin.latitude,
-					longitude: formattedCoordsOrigin.longitude
+					longitude: formattedCoordsOrigin.longitude,
+					checked: true
 				});
 			
 			distances.push((trip.distances != null) ? trip.distances[i] : "");
 		}
 		
 		itineraryData = {
+			originalPlaces: places, // Dont edit
 			places: places,
 			distances: distances,
 			checkBoxes: checkBoxes,

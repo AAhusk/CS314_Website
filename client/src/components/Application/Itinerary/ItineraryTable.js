@@ -32,7 +32,7 @@ export default class ItineraryTable extends React.Component {
 					</thead>
 					
 					<tbody>
-						{this.props.itineraryData.places.length > 0 && this.formatItineraryDestinations().map(this.renderTripItinerary)}
+						{this.props.itineraryData && this.props.itineraryData.places.length > 0 && this.formatItineraryDestinations().map(this.renderTripItinerary)}
 					</tbody>
 					
 					<tbody>
@@ -65,6 +65,21 @@ export default class ItineraryTable extends React.Component {
 		
 		let formattedDestinations = [];
 		
+		let placeNames = [];
+		for (let i = 0; i < this.props.itineraryData.places.length; i++) {
+			placeNames.push(this.props.itineraryData.places[i].name);
+		}
+		
+		let index = [];
+		for (let i = 0; i < this.props.itineraryData.originalPlaces.length; i++) {
+			index.push(placeNames.indexOf(this.props.itineraryData.originalPlaces[i].name));
+		}
+		
+		let checkBoxes = [];
+		for (let i = 0; i < index.length; i++) {
+			checkBoxes.push(this.props.itineraryData.checkBoxes[index[i]]);
+		}
+		
 		for (let i = 0; i < this.props.itineraryData.places.length; i++) {
 			let destination_index = ((i + 1) === this.props.itineraryData.places.length) ? 0 : i + 1;
 
@@ -84,21 +99,32 @@ export default class ItineraryTable extends React.Component {
 						name: this.props.itineraryData.places[destination_index].name,
 						latitude: formattedCoordsDestination.latitude,
 						longitude: formattedCoordsDestination.longitude
-					}
+					},
+					index: index[i], // New places relative to the original list
+					checked: this.props.itineraryData.checkBoxes[i]
 				});
-
 		}
 		
 		return formattedDestinations;
 	}
 	
 	renderTripItinerary(entry, index) {
+		
+		
+		
+		// console.log("Placenames ");
+		// console.log(placeNames);
+		// console.log("Finding: ");
+		// console.log(entry.origin.name);
+		// console.log("at index");
+		// console.log(placeNames.indexOf(entry.origin.name));
+		
 		return (
 			
 			<React.Fragment key={"cont" + index}>
 				{entry.origin != null &&
 				<tr key={index}>
-					<td style={{width: 0.1 + "em"}} key={"checkbox" + index}><Input addon type="checkbox" checked={this.props.itineraryData.checkBoxes[index]} onChange={() => this.checkBoxCallback(index)}/></td>
+					<td style={{width: 0.1 + "em"}} key={"checkbox" + index}><Input addon type="checkbox" checked={entry.checked} onChange={() => this.checkBoxCallback(entry.index, index)}/></td>
 					<td key={"name" + index}>{entry.origin != null && entry.origin.name}</td>
 					<td key={"dest" + index}>{entry.destination != null && entry.destination.name}</td>
 					<td key={"dist" + index}>{this.props.itineraryData != null && this.props.itineraryData.distances[index]}</td>
@@ -114,10 +140,14 @@ export default class ItineraryTable extends React.Component {
 		);
 	}
 	
-	checkBoxCallback(index) {
+	checkBoxCallback(placeIndex, checkBoxIndex) {
 		let data = this.props.itineraryData;
-		data.checkBoxes[index] = !data.checkBoxes[index];
+		
+		data.places[placeIndex].checked = !data.places[placeIndex].checked;
+		
+		data.checkBoxes[checkBoxIndex] = !data.checkBoxes[checkBoxIndex];
 		this.props.updateItineraryData(data);
+		//this.renderTripItinerary();
 	}
 	
 	removePlaceFromItineraryData(index) {
@@ -131,13 +161,14 @@ export default class ItineraryTable extends React.Component {
 		let temp;
 		
 		if ((str === "UP" && index === 0) || (str === "DN" && index === itinData.places.length - 1)) {
-			return;
+		
 		}
 		else if (str === "DN") {
 			
 			temp = itinData.places[index+1];
 			itinData.places[index+1] = itinData.places[index];
 			itinData.places[index] = temp;
+			
 		}
 		else if (str === "UP") {
 			temp = itinData.places[index-1];
@@ -145,7 +176,26 @@ export default class ItineraryTable extends React.Component {
 			itinData.places[index] = temp;
 		}
 		
+		// Regenerate props
+		let placeNames = [];
+		for (let i = 0; i < itinData.places.length; i++) {
+			placeNames.push(itinData.places[i].name);
+		}
+		
+		let indexList = [];
+		for (let i = 0; i < itinData.originalPlaces.length; i++) {
+			indexList.push(placeNames.indexOf(itinData.originalPlaces[i].name));
+		}
+		
+		let checkBoxes = []; // This is what is actually added to itineraryData
+		for (let i = 0; i < indexList.length; i++) {
+			checkBoxes.push(itinData.checkBoxes[indexList[i]]);
+		}
+		
+		itinData.checkBoxes = checkBoxes;
+		
 		this.props.updateItineraryData(itinData);
+		
 		
 	}
 }

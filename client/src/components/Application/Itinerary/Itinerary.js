@@ -131,15 +131,17 @@ export default class Itinerary extends Component {
 	}
 	
 	shortTripOptimization() {
-		let tipObject = {
-			"requestType": "trip",
-			"requestVersion": 2,
-			"options": {    //  Required in request & response
-				"title": "Short Trip",
-				"earthRadius": "1337", // Doesn't matter, we dont use this value
-				"optimization": "short"
+		
+		const tipObject = {
+			'requestType': 'trip',
+			'requestVersion': 3,
+			'distances': [],
+			'options': {
+				'title': "Short Trip",
+				'earthRadius': this.props.options.units[this.props.options.activeUnit],
+				'optimization': 'short'
 			},
-			"places": this.props.itineraryData.places,
+			'places': this.props.itineraryData.places
 		};
 		
 		sendServerRequestWithBody('trip', tipObject, this.state.serverPort)
@@ -147,11 +149,30 @@ export default class Itinerary extends Component {
 			if (response.statusCode >= 200 && response.statusCode <= 299) {
 				let data = this.props.itineraryData;
 				data.places = response.body.places;
+				
+				// Swap all the required things around
+				let placeNames = [];
+				for (let i = 0; i < data.places.length; i++) {
+					placeNames.push(data.places[i].name);
+				}
+				
+				let index = [];
+				for (let i = 0; i < data.originalPlaces.length; i++) {
+					index.push(placeNames.indexOf(data.originalPlaces[i].name));
+				}
+				
+				let checkBoxes = []; // This is what is actually added to itineraryData
+				for (let i = 0; i < index.length; i++) {
+					checkBoxes.push(data.checkBoxes[index[i]]);
+				}
+				
+				data.checkBoxes = checkBoxes;
+				
 				this.props.updateItineraryData(data);
 				
 			} else {
 				this.setState({errorMessage: response.statusCode + ": " + response.statusText})
-				//console.log(response.statusCode + response.statusText);
+				console.log(response.statusCode + response.statusText);
 				// this.setState({
 				//     errorMessage: this.props.createErrorBanner(
 				//         response.statusText,

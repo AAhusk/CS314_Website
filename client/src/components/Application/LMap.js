@@ -41,7 +41,7 @@ export default class LMap extends Component {
 		let pointArr = this.props.itineraryData.places;
 		if (pointArr.length !== 0) {
 			for (let i = 0; i < pointArr.length; i++) {
-				if (this.props.itineraryData.checkBoxes[i] === true) {
+				if (this.props.itineraryData.places[i].checked === true) {
 					MarkerArr.push(
 						<Marker key={"Marker" + i}
 						        position={L.latLng(pointArr[i].latitude, pointArr[i].longitude)}
