@@ -23,6 +23,7 @@ export default class Itinerary extends Component {
 			totalDistance: "",
 			places: [],
 			errorMessage: this.props.errorMessage,
+			forceUpdate: false,
 			addModal: {
 				addModalToggle: false,
 				modalPlaceInput: null,
@@ -96,6 +97,7 @@ export default class Itinerary extends Component {
 						                settings={this.props.settings}
 						                options={this.props.options}
 						                sumTotalDistance={this.sumTotalDistance}
+						                forceUpdate={this.state.forceUpdate}
 						
 						/>
 					</Card>
@@ -150,23 +152,7 @@ export default class Itinerary extends Component {
 				let data = this.props.itineraryData;
 				data.places = response.body.places;
 				
-				// Swap all the required things around
-				let placeNames = [];
-				for (let i = 0; i < data.places.length; i++) {
-					placeNames.push(data.places[i].name);
-				}
-				
-				let index = [];
-				for (let i = 0; i < data.originalPlaces.length; i++) {
-					index.push(placeNames.indexOf(data.originalPlaces[i].name));
-				}
-				
-				let checkBoxes = []; // This is what is actually added to itineraryData
-				for (let i = 0; i < index.length; i++) {
-					checkBoxes.push(data.checkBoxes[index[i]]);
-				}
-				
-				data.checkBoxes = checkBoxes;
+				this.setState({forceUpdate: !this.state.forceUpdate});
 				
 				this.props.updateItineraryData(data);
 				
