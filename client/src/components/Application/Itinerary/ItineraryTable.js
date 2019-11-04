@@ -1,5 +1,6 @@
 import React from 'react';
 import {Button, Table} from 'reactstrap';
+import {sendServerRequestWithBody} from "../../../api/restfulAPI";
 export default class ItineraryTable extends React.Component {
 	constructor(props) {
 		super(props);
@@ -8,12 +9,11 @@ export default class ItineraryTable extends React.Component {
 		this.renderTripItinerary = this.renderTripItinerary.bind(this);
 		
 		this.state = {
-			totalDistance: null
+			totalDistance: 0
 		};
 	}
 	
 	render() {
-		
 		if (this.props.itineraryData.places.length > 0) {
 			return (
 				<Table striped>
@@ -36,7 +36,8 @@ export default class ItineraryTable extends React.Component {
 					<tr>
 						<th></th>
 						<th>Total Distance</th>
-						<th>{this.props.totalDistance}</th>
+						<th>{this.props.sumTotalDistance(this.props.itineraryData.distances)
+						}</th>
 					</tr>}
 					</tbody>
 				</Table>
@@ -46,6 +47,9 @@ export default class ItineraryTable extends React.Component {
 	}
 	
 	formatItineraryDestinations() {
+		
+		// Recalculate distances array
+		
 		let formattedDestinations = [];
 		for (let i = 0; i < this.props.itineraryData.places.length; i++) {
 			let destination_index = ((i + 1) === this.props.itineraryData.places.length) ? 0 : i + 1;
@@ -69,6 +73,7 @@ export default class ItineraryTable extends React.Component {
 					}
 				});
 		}
+		
 		return formattedDestinations;
 	}
 	

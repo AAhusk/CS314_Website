@@ -44,7 +44,6 @@ export default class FileInput extends Component {
 	}
 	
 	serverRequest(trip) {
-		//console.log(trip);
 		sendServerRequestWithBody('trip', trip, this.props.settings.serverPort)
 		.then((response) => {
 			
@@ -54,6 +53,7 @@ export default class FileInput extends Component {
 				this.setState({backgroundColor: green});
 				this.props.onFileSelect(trip, itineraryData, totalDistance);
 			} else {
+				console.log("Error");
 				this.props.errorHandler(response.statusText, response.statusCode);
 			}
 		});
@@ -61,24 +61,16 @@ export default class FileInput extends Component {
 	
 	formatTripData(trip) {
 		let itineraryData;
-		let places = [];
+		let places = trip.places;
 		let distances = [];
 		for (let i = 0; i < trip.places.length; i++) {
 			
-		//	let destination_index = ((i + 1) === trip.places.length) ? 0 : i + 1;
-			
 			let formattedCoordsOrigin = this.props.formatCoordinates(
 				`${trip.places[i].latitude}, ${trip.places[i].longitude}`, null, true);
-		//	let formattedCoordsDestination = this.props.formatCoordinates(
-		//		`${trip.places[destination_index].latitude}, ${trip.places[destination_index].longitude}`, null, true);
-			
-			places.push(
-				{
-					name: trip.places[i].name,
-					latitude: formattedCoordsOrigin.latitude,
-					longitude: formattedCoordsOrigin.longitude
-				});
-			
+
+			places[i].latitude = formattedCoordsOrigin.latitude;
+			places[i].longitude = formattedCoordsOrigin.longitude;
+
 			distances.push((trip.distances != null) ? trip.distances[i] : "");
 		}
 		
@@ -86,6 +78,7 @@ export default class FileInput extends Component {
 			places: places,
 			distances: distances
 		};
+		
 		
 		return itineraryData;
 	}
