@@ -74,7 +74,7 @@ export default class Application extends Component {
 				'distances': [],
 				'options': {
 					'title': "Update Distances",
-					'earthRadius': this.state.planOptions.units[this.state.planOptions.activeUnit],
+					'earthRadius': this.state.planOptions.units[this.state.planOptions.activeUnit].toString(),
 					'optimization': 'none'
 				},
 				'places': this.state.itineraryData.places
