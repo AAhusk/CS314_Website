@@ -30,3 +30,5 @@
 | Application.js:117 | formatCoordinates function is 98 lines | low | AAhusk | #199 | 
 
 | Application.test.js | No testing for formatCoordinates function | low | AAhusk | #200 |
+
+| TestTIPTrip.java:0 | No testing in place for TIPTrip | med | sboyd17 | #204
