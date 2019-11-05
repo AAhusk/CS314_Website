@@ -86,7 +86,7 @@ export default class FileInput extends Component {
 		}
 		
 		itineraryData = {
-			originalPlaces: places, // Dont edit
+			originalPlaces: places.slice(), // Dont edit
 			places: places,
 			distances: distances,
 			checkBoxes: checkBoxes,

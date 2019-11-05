@@ -135,7 +135,6 @@ export default class Application extends Component {
 			let latNew = lat;
 			let longNew = long;
 			
-			
 			// Compute Latitude & Longitude
 			{
 				if (lat > 180 || lat < -180) {

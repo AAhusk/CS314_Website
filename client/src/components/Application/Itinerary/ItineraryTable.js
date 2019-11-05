@@ -13,7 +13,8 @@ export default class ItineraryTable extends React.Component {
 		this.renderTripItinerary = this.renderTripItinerary.bind(this);
 		
 		this.state = {
-			totalDistance: 0
+			totalDistance: 0,
+			forceUpdate: this.props.forceUpdate
 		};
 	}
 	
@@ -58,10 +59,17 @@ export default class ItineraryTable extends React.Component {
 		data.checked = !data.checked;
 		let checkBoxes = Array(data.places.length).fill(data.checked);
 		data.checkBoxes = checkBoxes;
+		
+		for (let i = 0; i < data.places.length; i++) {
+			data.places[i].checked = data.checked;
+		}
+		
 		this.props.updateItineraryData(data);
 	}
 	
 	formatItineraryDestinations() {
+		
+
 		
 		let formattedDestinations = [];
 		
@@ -70,14 +78,19 @@ export default class ItineraryTable extends React.Component {
 			placeNames.push(this.props.itineraryData.places[i].name);
 		}
 		
+		let oldPlaceNames = [];
+		for (let i = 0; i < this.props.itineraryData.originalPlaces.length; i++) {
+			oldPlaceNames.push(this.props.itineraryData.originalPlaces[i].name);
+		}
+		
 		let index = [];
 		for (let i = 0; i < this.props.itineraryData.originalPlaces.length; i++) {
-			index.push(placeNames.indexOf(this.props.itineraryData.originalPlaces[i].name));
+			index.push(oldPlaceNames.indexOf(placeNames[i]));
 		}
 		
 		let checkBoxes = [];
 		for (let i = 0; i < index.length; i++) {
-			checkBoxes.push(this.props.itineraryData.checkBoxes[index[i]]);
+			checkBoxes.push(this.props.itineraryData.checkBoxes[i]);
 		}
 		
 		for (let i = 0; i < this.props.itineraryData.places.length; i++) {
@@ -101,7 +114,9 @@ export default class ItineraryTable extends React.Component {
 						longitude: formattedCoordsDestination.longitude
 					},
 					index: index[i], // New places relative to the original list
-					checked: this.props.itineraryData.checkBoxes[i]
+					oindex: i,
+					// Location of 4 within original array
+					checked: this.props.itineraryData.checkBoxes[index[i]]
 				});
 		}
 		
@@ -110,28 +125,19 @@ export default class ItineraryTable extends React.Component {
 	
 	renderTripItinerary(entry, index) {
 		
-		
-		
-		// console.log("Placenames ");
-		// console.log(placeNames);
-		// console.log("Finding: ");
-		// console.log(entry.origin.name);
-		// console.log("at index");
-		// console.log(placeNames.indexOf(entry.origin.name));
-		
 		return (
 			
 			<React.Fragment key={"cont" + index}>
 				{entry.origin != null &&
 				<tr key={index}>
-					<td style={{width: 0.1 + "em"}} key={"checkbox" + index}><Input addon type="checkbox" checked={entry.checked} onChange={() => this.checkBoxCallback(entry.index, index)}/></td>
+					<td style={{width: 0.1 + "em"}} key={"checkbox" + index}><Input addon type="checkbox" id={"Input" + this.state.forceUpdate} checked={entry.checked} onChange={() => this.checkBoxCallback(entry, index)}/></td>
 					<td key={"name" + index}>{entry.origin != null && entry.origin.name}</td>
 					<td key={"dest" + index}>{entry.destination != null && entry.destination.name}</td>
 					<td key={"dist" + index}>{this.props.itineraryData != null && this.props.itineraryData.distances[index]}</td>
 					<td style={{width: 0.1 + "em"}} key={"buttons" + index}>
 						<ButtonGroup>
-							<Button outline color="secondary" className={"float-right"} onClick={() => this.movePlace("UP", index)}>↑</Button>
-							<Button outline color="secondary" className={"float-right"} onClick={() => this.movePlace("DN", index)}>↓</Button>
+							<Button outline color="secondary" className={"float-right"} onClick={() => this.movePlace("UP", entry, index)}>↑</Button>
+							<Button outline color="secondary" className={"float-right"} onClick={() => this.movePlace("DN", entry, index)}>↓</Button>
 							<Button color="danger" className={"float-right"} onClick={() => this.removePlaceFromItineraryData(index)}>-</Button>
 						</ButtonGroup>
 					</td>
@@ -140,14 +146,15 @@ export default class ItineraryTable extends React.Component {
 		);
 	}
 	
-	checkBoxCallback(placeIndex, checkBoxIndex) {
+	checkBoxCallback(entry, index) {
 		let data = this.props.itineraryData;
 		
-		data.places[placeIndex].checked = !data.places[placeIndex].checked;
+		let checkBoxIndex = index;
 		
-		data.checkBoxes[checkBoxIndex] = !data.checkBoxes[checkBoxIndex];
+		data.places[checkBoxIndex].checked = !data.places[checkBoxIndex].checked;
+		data.checkBoxes[entry.index] = !data.checkBoxes[entry.index];
+		
 		this.props.updateItineraryData(data);
-		//this.renderTripItinerary();
 	}
 	
 	removePlaceFromItineraryData(index) {
@@ -156,7 +163,7 @@ export default class ItineraryTable extends React.Component {
 		this.props.updateItineraryData(data);
 	}
 	
-	movePlace(str, index) {
+	movePlace(str, entry, index) {
 		let itinData = this.props.itineraryData;
 		let temp;
 		
@@ -175,24 +182,6 @@ export default class ItineraryTable extends React.Component {
 			itinData.places[index-1] = itinData.places[index];
 			itinData.places[index] = temp;
 		}
-		
-		// Regenerate props
-		let placeNames = [];
-		for (let i = 0; i < itinData.places.length; i++) {
-			placeNames.push(itinData.places[i].name);
-		}
-		
-		let indexList = [];
-		for (let i = 0; i < itinData.originalPlaces.length; i++) {
-			indexList.push(placeNames.indexOf(itinData.originalPlaces[i].name));
-		}
-		
-		let checkBoxes = []; // This is what is actually added to itineraryData
-		for (let i = 0; i < indexList.length; i++) {
-			checkBoxes.push(itinData.checkBoxes[indexList[i]]);
-		}
-		
-		itinData.checkBoxes = checkBoxes;
 		
 		this.props.updateItineraryData(itinData);
 		
