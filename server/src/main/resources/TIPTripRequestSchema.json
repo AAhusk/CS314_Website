@@ -20,7 +20,7 @@
       "type":"object",
       "properties": {
         "title": {"type":"string"},
-        "earthRadius": {"type":"string", "pattern":"^[0-9]+(\\.[0-9]+)?$"},
+        "earthRadius": {"type":"string", "pattern":"(^\\+?[0-9]*[1-9][0-9]*(\\.[0-9]+)?$)|(^\\+?[0]+\\.[0-9]*[1-9][0-9]*$)"},
         "optimization": {"type":"string"}
       },
       "required":["earthRadius"]

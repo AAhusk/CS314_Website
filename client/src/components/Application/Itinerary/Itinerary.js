@@ -138,7 +138,7 @@ export default class Itinerary extends Component {
 			'distances': [],
 			'options': {
 				'title': "Short Trip",
-				'earthRadius': this.props.options.units[this.props.options.activeUnit],
+				'earthRadius': (this.props.options.units[this.props.options.activeUnit]).toString(),
 				'optimization': 'short'
 			},
 			'places': this.props.itineraryData.places
