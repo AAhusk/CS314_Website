@@ -11,16 +11,24 @@
 | Name | Role |Preparation Time |
 | ---- | ---- | ---- |
 | Calvin Davis |  | 1D |
-| Sean Boyd |  |  |
-| Aaron Huskerson |  |  |
+| Sean Boyd |  | 0D |
+| Aaron Huskerson |  | 1D |
 | Chandler Day |  | 1D |
 
 ### Problems found
 
 | file:line | problem | hi/med/low | who found | github#  |
+
 | 117 | No database entry in params | low | Chandler | #195 |
-| N/A | Error banners aren't dealt with properly in most files | med | Calvin | #196 |
+
 | 247 | Too many props / reduce prop load | Calvin | low | #197 |
 
 | 75 | NearestNeighborOptimization is O(n^3) | Calvin | med | #198 |
 
+| N/A | Error banners aren't dealt with properly in most files | med | Calvin | #196 |
+
+| Application.js:117 | formatCoordinates function is 98 lines | low | AAhusk | #199 | 
+
+| Application.test.js | No testing for formatCoordinates function | low | AAhusk | #200 |
+
+| TestTIPTrip.java:0 | No testing in place for TIPTrip | med | sboyd17 | #204
