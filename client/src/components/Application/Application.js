@@ -201,7 +201,7 @@ export default class Application extends Component {
 			}
 			
 			if (returnFormattedCoords === true) {
-				return {latitude: lat, longitude: long};
+				return {latitude: lat.toString(), longitude: long.toString()};
 			} else {
 				let dict = {latitude: lat.toString(), longitude: long.toString()};
 				this.setState({[finalState]: dict});
