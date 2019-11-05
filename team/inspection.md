@@ -11,7 +11,7 @@
 | Name | Role |Preparation Time |
 | ---- | ---- | ---- |
 | Calvin Davis |  | 1D |
-| Sean Boyd |  |  |
+| Sean Boyd |  | 0D |
 | Aaron Huskerson |  | 1D |
 | Chandler Day |  | 1D |
 
