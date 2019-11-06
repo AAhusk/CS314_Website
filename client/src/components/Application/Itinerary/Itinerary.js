@@ -236,7 +236,7 @@ export default class Itinerary extends Component {
 			let names = this.props.itineraryData.places[0]
 			TripArray[0] = Object.keys(names);
 			TripArray[0].splice(TripArray[0].length-1);  									// get rid of "checked" key
-			TripArray[0].push("distance", "cumulative distance");
+			TripArray[0].push("distance", "cumulative");
 			this.createCSVArray(TripArray);
 			
 			let TripCSV = "";
@@ -257,15 +257,16 @@ export default class Itinerary extends Component {
 		for (let i = 0; i < this.props.itineraryData.places.length; ++i) {
 			let PlaceEntry = this.props.itineraryData.places[i];
 			let TripLocation = [];
-			for (let key in PlaceEntry) {
+			for (var key of Object.keys(PlaceEntry)) {
 				TripLocation.push(PlaceEntry[key]);
-				TripLocation.splice(TripLocation.length-1, 1);
 			}
+			TripLocation.splice(TripLocation.length-1, 1);
 			let distance = (i===0) ? 0 : this.props.itineraryData.distances[i-1];
 			cumulativeDistance += distance;
 			TripLocation.push(distance, cumulativeDistance);
-			TripArray[i+1] = TripLocation;
+			TripArray.push(TripLocation);
 		}
+		console.log(TripArray);
 		let backToOrigin = TripArray[1].slice(0);
 		let distToOrigin = this.props.itineraryData.distances[this.props.itineraryData.distances.length-1];
 		backToOrigin[backToOrigin.length-2] = distToOrigin;
