@@ -48,6 +48,7 @@ export default class FileInput extends Component {
 		.then((response) => {
 			
 			if (response.statusCode >= 200 && response.statusCode <= 299) {
+				this.props.validateApiResponse(response);
 				var itineraryData = this.formatTripData(response.body);
 				var totalDistance = this.props.sumTotalDistance(response.body.distances);
 				this.setState({backgroundColor: green});

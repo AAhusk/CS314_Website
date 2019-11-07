@@ -87,7 +87,8 @@ export default class Application extends Component {
 			
 			sendServerRequestWithBody('trip', serverObject, this.state.clientSettings.serverPort)
 			.then((response) => {
-				if (response.statusCode >= 200 && response.statusCode <= 299) {
+				if (response.statusCode >= 200 && response.statusCode <= 299) {							
+					this.validateApiResponse(response)
 					data.distances = response.body.distances;
 					
 					this.setState({
@@ -237,7 +238,7 @@ export default class Application extends Component {
 	updateServerConfig() {
 		sendServerRequest('config', this.state.clientSettings.serverPort).then(config => {
 			console.log(config);
-			this.validateApiResponse(config.body);
+			this.validateApiResponse(config);
 			this.processConfigResponse(config);
 		});
 	}
@@ -269,7 +270,8 @@ export default class Application extends Component {
 				                   geolocation={this.geolocation}
 				                   formatCoordinates={this.formatCoordinates}
 				                   updateItineraryData={this.updateItineraryData}
-				                   itineraryData={this.state.itineraryData}
+								   itineraryData={this.state.itineraryData}
+								   validateApiResponse={this.validateApiResponse}
 				/>;
 			
 			case 'options':
@@ -295,11 +297,11 @@ export default class Application extends Component {
 		var Ajv = require('ajv');
 		var ajv = new Ajv(); // options can be passed, e.g. {allErrors: true}
 
-		switch(response.requestType){
-			case 'config': var valid = ajv.validate(configSchema, response); break;
-			case 'distance': var valid = ajv.validate(distanceSchema, response); break;
-			case 'locations': var valid = ajv.validate(locationsSchema, response); break;
-			case 'trip': var valid = ajv.validate(tripSchema, response); break;
+		switch(response.body.requestType){
+			case 'config': var valid = ajv.validate(configSchema, response.body); break;
+			case 'distance': var valid = ajv.validate(distanceSchema, response.body); break;
+			case 'locations': var valid = ajv.validate(locationsSchema, response.body); break;
+			case 'trip': var valid = ajv.validate(tripSchema, response.body); break;
 		}
 
 		if (!valid) console.log(ajv.errors);
