@@ -9,6 +9,11 @@ import Settings from './Settings/Settings';
 import {getOriginalServerPort, sendServerRequest, sendServerRequestWithBody} from '../../api/restfulAPI';
 import ErrorBanner from './ErrorBanner';
 
+import configSchema from '../../api/schemas/TIPConfigResponseSchema.json';
+import distanceSchema from '../../api/schemas/TIPDistanceResponseSchema.json';
+import locationsSchema from '../../api/schemas/TIPLocationsResponseSchema.json';
+import tripSchema from '../../api/schemas/TIPTripResponseSchema';
+
 
 /* Renders the application.
  * Holds the destinations and options state shared with the trip.
@@ -232,6 +237,7 @@ export default class Application extends Component {
 	updateServerConfig() {
 		sendServerRequest('config', this.state.clientSettings.serverPort).then(config => {
 			console.log(config);
+			this.validateApiResponse(config.body);
 			this.processConfigResponse(config);
 		});
 	}
@@ -283,7 +289,24 @@ export default class Application extends Component {
 				/>;
 		}
 	}
+
 	
+	validateApiResponse(response) {
+		var Ajv = require('ajv');
+		var ajv = new Ajv(); // options can be passed, e.g. {allErrors: true}
+
+		switch(response.requestType){
+			case 'config': var valid = ajv.validate(configSchema, response); break;
+			case 'distance': var valid = ajv.validate(distanceSchema, response); break;
+			case 'locations': var valid = ajv.validate(locationsSchema, response); break;
+			case 'trip': var valid = ajv.validate(tripSchema, response); break;
+		}
+
+		if (!valid) console.log(ajv.errors);
+	}
+
+
+
 	processConfigResponse(config) {
 		if (config.statusCode >= 200 && config.statusCode <= 299) {
 			console.log("Switching to server ", this.state.clientSettings.serverPort);
