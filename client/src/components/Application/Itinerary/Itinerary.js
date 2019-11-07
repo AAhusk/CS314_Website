@@ -86,7 +86,8 @@ export default class Itinerary extends Component {
 						           itineraryData={this.props.itineraryData}
 						           settings={this.props.settings}
 						           sumTotalDistance={this.sumTotalDistance}
-						           errorHandler={this.errorHandler}
+								   errorHandler={this.errorHandler}
+								   validateApiResponse={this.props.validateApiResponse}
 						/>
 					</Card>
 					<Card>
@@ -149,6 +150,8 @@ export default class Itinerary extends Component {
 		sendServerRequestWithBody('trip', tipObject, this.state.serverPort)
 		.then((response) => {
 			if (response.statusCode >= 200 && response.statusCode <= 299) {
+				this.props.validateApiResponse(response);
+
 				let data = this.props.itineraryData;
 				data.places = response.body.places;
 				

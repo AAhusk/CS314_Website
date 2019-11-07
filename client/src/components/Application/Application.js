@@ -9,6 +9,11 @@ import Settings from './Settings/Settings';
 import {getOriginalServerPort, sendServerRequest, sendServerRequestWithBody} from '../../api/restfulAPI';
 import ErrorBanner from './ErrorBanner';
 
+import configSchema from '../../api/schemas/TIPConfigResponseSchema.json';
+import distanceSchema from '../../api/schemas/TIPDistanceResponseSchema.json';
+import locationsSchema from '../../api/schemas/TIPLocationsResponseSchema.json';
+import tripSchema from '../../api/schemas/TIPTripResponseSchema';
+
 
 /* Renders the application.
  * Holds the destinations and options state shared with the trip.
@@ -82,7 +87,8 @@ export default class Application extends Component {
 			
 			sendServerRequestWithBody('trip', serverObject, this.state.clientSettings.serverPort)
 			.then((response) => {
-				if (response.statusCode >= 200 && response.statusCode <= 299) {
+				if (response.statusCode >= 200 && response.statusCode <= 299) {							
+					this.validateApiResponse(response)
 					data.distances = response.body.distances;
 					
 					this.setState({
@@ -232,6 +238,7 @@ export default class Application extends Component {
 	updateServerConfig() {
 		sendServerRequest('config', this.state.clientSettings.serverPort).then(config => {
 			console.log(config);
+			this.validateApiResponse(config);
 			this.processConfigResponse(config);
 		});
 	}
@@ -263,7 +270,8 @@ export default class Application extends Component {
 				                   geolocation={this.geolocation}
 				                   formatCoordinates={this.formatCoordinates}
 				                   updateItineraryData={this.updateItineraryData}
-				                   itineraryData={this.state.itineraryData}
+								   itineraryData={this.state.itineraryData}
+								   validateApiResponse={this.validateApiResponse}
 				/>;
 			
 			case 'options':
@@ -283,7 +291,24 @@ export default class Application extends Component {
 				/>;
 		}
 	}
+
 	
+	validateApiResponse(response) {
+		var Ajv = require('ajv');
+		var ajv = new Ajv(); // options can be passed, e.g. {allErrors: true}
+
+		switch(response.body.requestType){
+			case 'config': var valid = ajv.validate(configSchema, response.body); break;
+			case 'distance': var valid = ajv.validate(distanceSchema, response.body); break;
+			case 'locations': var valid = ajv.validate(locationsSchema, response.body); break;
+			case 'trip': var valid = ajv.validate(tripSchema, response.body); break;
+		}
+
+		if (!valid) console.log(ajv.errors);
+	}
+
+
+
 	processConfigResponse(config) {
 		if (config.statusCode >= 200 && config.statusCode <= 299) {
 			console.log("Switching to server ", this.state.clientSettings.serverPort);

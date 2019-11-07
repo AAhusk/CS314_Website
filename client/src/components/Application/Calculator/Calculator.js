@@ -57,7 +57,8 @@ export default class Calculator extends Component {
 					           updateItineraryData={this.props.updateItineraryData}
 					           formatCoordinates={this.props.formatCoordinates}
 					           createInputField={this.createInputField}
-					           itineraryData={this.props.itineraryData}
+							   itineraryData={this.props.itineraryData}
+							   validateApiResponse={this.props.validateApiResponse}
 					/>
 				</Row>
 			</React.Fragment>
@@ -137,6 +138,7 @@ export default class Calculator extends Component {
 		sendServerRequestWithBody('distance', tipConfigRequest, this.props.settings.serverPort)
 		.then((response) => {
 			if (response.statusCode >= 200 && response.statusCode <= 299) {
+				this.props.validateApiResponse(response);
 				this.setState({
 					distance: response.body.distance,
 					errorMessage: null
