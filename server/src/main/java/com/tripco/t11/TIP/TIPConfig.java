@@ -41,10 +41,13 @@ public class TIPConfig extends TIPHeader {
   @Override
   public void buildResponse() {
     this.serverName = "t11 Team America";
-    this.placeAttributes = Arrays.asList("name", "latitude","longitude","id","altitude","municipality", "region", "country","continent", "type");
+    this.placeAttributes = Arrays.asList("name", "latitude","longitude","id","altitude","municipality", 
+                                         "region", "country","continent", "type");
     this.optimizations = Arrays.asList("none", "short", "shorter");
 
-    /*This code adds the "filters" part to the config JSON object. Will include this if we include filters in our database query.
+    /*This code adds the "filters" part to the config JSON object. 
+    Will include this if we include filters in our database query.
+    
     this.filters = new ArrayList<Map<String, Object>>();
     Map<String, Object> typeFilter = new HashMap<String, Object>() {{
       put("name", "type");
