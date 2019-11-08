@@ -20,6 +20,10 @@
       "type":"string",
       "pattern":"^[a-zA-z0-9 ]+$"
     },
+    "narrow": {
+      "description": "optional, helps narrow the search by using configuration values supplied by the server",
+      "type": "array"
+    },
     "limit": {
       "description":"the maximum number of matching places that may be returned.",
       "type":"integer",
@@ -43,7 +47,10 @@
             "pattern":"^[-+]?(?:180(?:(?:\\.0+)?)|(?:[0-9]|[1-9][0-9]|1[0-7][0-9])(?:(?:\\.[0-9]+)?))$"},
           "id": {"type":"string"},
           "municipality": {"type":"string"},
-          "altitude": {"type":"string", "pattern":"^[0-9]+(\\.[0-9]+)?$"}
+          "altitude": {"type":"string", "pattern":"^[0-9]+(\\.[0-9]+)?$"},
+          "region": {"type":"string"},
+          "country": {"type":"string"},
+          "continent": {"type":"string"}
         },
         "required": ["latitude","longitude"],
         "additionalProperties": true

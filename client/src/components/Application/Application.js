@@ -59,8 +59,8 @@ export default class Application extends Component {
 	
 	onLocationChange(position, stateVar) {
 		let update = {
-			latitude: position.latitude,
-			longitude: position.longitude
+			latitude: position.latitude.toString(),
+			longitude: position.longitude.toString()
 		};
 		this.setState({
 			[stateVar]: update
@@ -75,7 +75,7 @@ export default class Application extends Component {
 			
 			const serverObject = {
 				'requestType': 'trip',
-				'requestVersion': 3,
+				'requestVersion': 4,
 				'distances': [],
 				'options': {
 					'title': "Update Distances",

@@ -137,7 +137,7 @@ export default class Itinerary extends Component {
 		
 		const tipObject = {
 			'requestType': 'trip',
-			'requestVersion': 3,
+			'requestVersion': 4,
 			'distances': [],
 			'options': {
 				'title': "Short Trip",

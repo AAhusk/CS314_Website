@@ -1,5 +1,9 @@
 package com.tripco.t11.TIP;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,30 +27,45 @@ public class TIPConfig extends TIPHeader {
   private String serverName;
   private List<String> placeAttributes;
   private List<String> optimizations;
+  //private List<Map<String, Object>> filters;
 
   private final transient Logger log = LoggerFactory.getLogger(TIPConfig.class);
 
 
   public TIPConfig() {
     this.requestType = "config";
-    this.requestVersion = 3;
+    this.requestVersion = 4;
   }
 
 
   @Override
   public void buildResponse() {
     this.serverName = "t11 Team America";
-    this.placeAttributes = Arrays.asList("name","latitude","longitude","id","altitude","municipality","type");
-    this.optimizations = Arrays.asList("none", "short");
-    log.trace("buildResponse -> {}", this);
+    this.placeAttributes = Arrays.asList("name", "latitude","longitude","id","altitude","municipality", 
+                                         "region", "country","continent", "type");
+    this.optimizations = Arrays.asList("none", "short", "shorter");
+
+    /*This code adds the "filters" part to the config JSON object. 
+    Will include this if we include filters in our database query.
+    
+    this.filters = new ArrayList<Map<String, Object>>();
+    Map<String, Object> typeFilter = new HashMap<String, Object>() {{
+      put("name", "type");
+      put("values", new String[] {"airport", "heliport", "balloonport", "closed"});
+    }};
+    Map<String, Object> countryFilter = new HashMap<String, Object>() {{
+      put("name", "country");
+      put("values", new String[] {});
+    }};
+    this.filters.add(typeFilter);
+    this.filters.add(countryFilter);
+    log.trace("buildResponse -> {}", this);*/
   }
 
 
   String getServerName() {
     return this.serverName;
   }
-
-
   List<String> getPlaceAttributes() {
     return this.placeAttributes;
   }
