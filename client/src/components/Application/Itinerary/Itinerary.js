@@ -3,7 +3,10 @@ import {Container, Card, CardHeader, Modal, ModalFooter, ModalBody, ModalHeader,
 import {Row, Button} from 'reactstrap'
 import FileInput from './FileInput'
 import ItineraryTable from './ItineraryTable'
-import {sendServerRequestWithBody} from "../../../api/restfulAPI";
+import {
+	sendServerRequest,
+	sendServerRequestWithBody
+} from "../../../api/restfulAPI";
 
 export default class Itinerary extends Component {
 	
@@ -70,8 +73,10 @@ export default class Itinerary extends Component {
 								<Col>
 									{addPlaceModal}
 									
-									<Button id="ShortTrip" color='primary'
-									        onClick={() => this.shortTripOptimization()}>Shorten Trip</Button>{'  '}
+									<Button id="ShortTrip" className='bg-csu-green text-white'
+									        onClick={() => this.shortTripOptimization()}>Create Short Trip</Button>{'  '}
+									<Button id="ShorterTrip" className='bg-csu-green text-white'
+													onClick={() => this.shorterTripOptimization()}>Create Shorter Trip</Button>{'  '}
 									<Button id="TripJSON" className='bg-csu-gold text-white'
 									        onClick={() => this.createOutputJSON()}>Export JSON</Button>{'  '}
 									<Button id="TripCSV" className='bg-csu-gold text-white'
@@ -146,29 +151,40 @@ export default class Itinerary extends Component {
 			},
 			'places': this.props.itineraryData.places
 		};
-		
-		sendServerRequestWithBody('trip', tipObject, this.state.serverPort)
+		this.sendServerRequest('trip', tipObject);
+	}
+
+	shorterTripOptimization() {
+		const TIPrequest = {
+			'requestType' : 'trip',
+			'requestVersion' : 4,
+			'distances': this.state.itineraryData.distances,
+			'options': {
+				'title': "Shorter Trip",
+				'earthRadius': this.props.options.units[this.props.options.activeUnit].toString(),
+				'optimization': 'shorter'
+			},
+			'places': this.props.itineraryData.places
+		};
+		this.sendServerRequest('trip', TIPrequest);
+	}
+
+	sendServerRequest(requestType, TIPrequest) {
+		sendServerRequestWithBody(requestType, TIPrequest, this.state.serverPort)
 		.then((response) => {
 			if (response.statusCode >= 200 && response.statusCode <= 299) {
 				this.props.validateApiResponse(response);
 
 				let data = this.props.itineraryData;
 				data.places = response.body.places;
-				
+
 				this.setState({forceUpdate: !this.state.forceUpdate});
-				
+
 				this.props.updateItineraryData(data);
-				
+
 			} else {
 				this.setState({errorMessage: response.statusCode + ": " + response.statusText})
 				console.log(response.statusCode + response.statusText);
-				// this.setState({
-				//     errorMessage: this.props.createErrorBanner(
-				//         response.statusText,
-				//         response.statusCode,
-				//         `Request to ${this.props.serverPort} failed.`
-				//     )
-				// });
 			}
 		});
 	}

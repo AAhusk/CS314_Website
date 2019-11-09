@@ -2,6 +2,7 @@ package com.tripco.t11.TIP;
 
 import com.tripco.t11.misc.GreatCircleDistance;
 
+import com.tripco.t11.optimizations.TwoOPT;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -35,6 +36,11 @@ public class TIPTrip extends TIPHeader {
     this.distances = this.getDistances();
     if (options.get("optimization") != null && options.get("optimization").toString().equals("short") ) {
       this.places = this.nearestNeighborOptimization();
+    }
+    else if (options.get("optimization").toString().equals("shorter")) {
+      String earthRadius = this.options.get("earthRadius").toString();
+      TwoOPT shorterRoute = new TwoOPT(this.places, this.distances, Double.parseDouble(earthRadius));
+      this.places = shorterRoute.shorterRoute();
     }
     log.trace("buildResponse -> {}", this);
   } 
