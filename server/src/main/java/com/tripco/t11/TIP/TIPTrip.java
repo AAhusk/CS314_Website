@@ -2,6 +2,7 @@ package com.tripco.t11.TIP;
 
 import com.tripco.t11.misc.GreatCircleDistance;
 
+import com.tripco.t11.optimizations.TwoOPT;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -14,6 +15,7 @@ public class TIPTrip extends TIPHeader {
   private Map options;
   private List<Map> places;
   private List<Integer> distances;
+  private Double earthRadius;
 
   private final transient Logger log = LoggerFactory.getLogger(TIPTrip.class);
 
@@ -32,16 +34,24 @@ public class TIPTrip extends TIPHeader {
 
   @Override
   public void buildResponse() {
-    this.distances = this.getDistances();
-    if (options.get("optimization") != null && options.get("optimization").toString().equals("short") ) {
-      this.places = this.nearestNeighborOptimization();
+    if (options.get("optimization") == null || options.get("optimization").toString().equals("none")) {
+      this.distances = this.createDistances();
+    }
+    else if (options.get("optimization") != null && options.get("optimization").toString().equals("short") ) {
+      int[][] distancesTable = this.createDistTable(this.places.size());
+      int[] tourSequence = this.nearestNeighborOptimization(distancesTable);
+      this.places = this.getItinerary(tourSequence);
+    }
+    else if (options.get("optimization").toString().equals("shorter")) {
+      int[][] distancesTable = this.createDistTable(this.places.size()+1);
+      int[] nearestRoute = this.nearestNeighborOptimization(distancesTable);
+      TwoOPT shorterRoute = new TwoOPT(nearestRoute, distancesTable);
+      int[] tourSequence = shorterRoute.shorterRoute();
+      this.places = this.getItinerary(tourSequence);
     }
     log.trace("buildResponse -> {}", this);
   } 
 
-  private List<Integer> getDistances(){
-    return this.createDistances();
-  }
 
   private List<Integer> createDistances() {
     Integer[] distances = new Integer[this.places.size()];
@@ -59,10 +69,35 @@ public class TIPTrip extends TIPHeader {
     return Arrays.asList(distances);
   }
 
+  private int[][] createDistTable(int tableSize) {
+    int[][] distanceMatrix = new int[tableSize][tableSize];
+    this.earthRadius = Double.parseDouble(options.get("earthRadius").toString());
+
+    for (int i = 0; i < this.places.size(); i++) {
+      distanceMatrix[i][i] = 0;
+      for (int j = i+1; j < this.places.size(); j++) {
+        GreatCircleDistance distBetween = new GreatCircleDistance(places.get(i), places.get(j), this.earthRadius);
+
+        int distance = distBetween.CalculateDistance();
+        distanceMatrix[i][j] = distance;
+        distanceMatrix[j][i] = distance;
+      }
+    }
+    if(tableSize == this.places.size()+1) {
+      for (int i=1; i<this.places.size(); ++i) {
+        distanceMatrix[i][tableSize-1] = distanceMatrix[i][0];
+      }
+      int[] startLocation = distanceMatrix[0];
+      distanceMatrix[tableSize-1] = startLocation;
+    }
+
+    return distanceMatrix;
+  }
+
   private int findClosestNeighbor(int[] distances, boolean[] unvisitedCities) {
     int smallest = Integer.MAX_VALUE;
     int smallestIndex = 0;
-    for (int i = 0; i < distances.length; i++) {
+    for (int i = 0; i < this.places.size(); i++) {
       if (smallest > distances[i] && distances[i] != 0 && unvisitedCities[i]) {
         smallest = distances[i];
         smallestIndex = i;
@@ -72,22 +107,7 @@ public class TIPTrip extends TIPHeader {
     return smallestIndex;
   }
 
-  private List<Map> nearestNeighborOptimization() {
-    int[][] distanceMatrix = new int[this.places.size()][this.places.size()];
-    double earthRadius = Double.parseDouble(options.get("earthRadius").toString());
-
-    // Set up the distance matrix
-    for (int i = 0; i < this.places.size(); i++) {
-      distanceMatrix[i][i] = 0;
-      for (int j = i+1; j < this.places.size(); j++) {
-        // Hopefully garbage collection does its job!
-        GreatCircleDistance distBetween = new GreatCircleDistance(places.get(i), places.get(j), earthRadius);
-
-        int distance = distBetween.CalculateDistance();
-        distanceMatrix[i][j] = distance;
-        distanceMatrix[j][i] = distance;
-      }
-    }
+  private int[] nearestNeighborOptimization(int[][] distanceMatrix) {
 
     int[] bestTour = new int[this.places.size()];
     int bestDistance = Integer.MAX_VALUE;
@@ -116,14 +136,15 @@ public class TIPTrip extends TIPHeader {
         bestDistance = tourDistance;
       }
     }
-
-    List<Map> results = new ArrayList<>(this.places.size());
-
-    for (int i = 0; i < this.places.size(); i++) {
-      results.add(this.places.get(bestTour[i]));
+      return bestTour;
     }
 
-    return results;
+    private List<Map> getItinerary(int[] tourSequence) {
+      List<Map> results = new ArrayList<>(this.places.size());
+      for (int i = 0; i < this.places.size(); i++) {
+        results.add(this.places.get(tourSequence[i]));
+      }
+      return results;
     }
 }
 
