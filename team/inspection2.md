@@ -12,7 +12,7 @@
 | ---- | ---- | ---- |
 | Calvin Davis |  | 1D |
 | Sean Boyd |  | 0D |
-| Aaron Huskerson |  | 1D |
+| Aaron Huskerson |  | 30 min |
 | Chandler Day |  | 1D |
 
 ### Problems found
