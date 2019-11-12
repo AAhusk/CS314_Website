@@ -62,27 +62,20 @@ export default class FileInput extends Component {
 	
 	formatTripData(trip) {
 		let itineraryData;
-		let places = [];
+		let places = trip.places;
 		let distances = [];
 		let checkBoxes = new Array(trip.places.length).fill(true);
 		
 		for (let i = 0; i < trip.places.length; i++) {
 			
-		//	let destination_index = ((i + 1) === trip.places.length) ? 0 : i + 1;
-			
 			let formattedCoordsOrigin = this.props.formatCoordinates(
 				`${trip.places[i].latitude}, ${trip.places[i].longitude}`, null, true);
-		//	let formattedCoordsDestination = this.props.formatCoordinates(
-		//		`${trip.places[destination_index].latitude}, ${trip.places[destination_index].longitude}`, null, true);
-			
-			places.push(
-				{
-					name: trip.places[i].name,
-					latitude: formattedCoordsOrigin.latitude,
-					longitude: formattedCoordsOrigin.longitude,
-					checked: true
-				});
-			
+
+			places[i].latitude = formattedCoordsOrigin.latitude;
+			places[i].longitude = formattedCoordsOrigin.longitude;
+			places[i].checked = true;
+
+
 			distances.push((trip.distances != null) ? trip.distances[i] : "");
 		}
 		
