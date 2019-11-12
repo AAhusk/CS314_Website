@@ -33,7 +33,9 @@ export default class Application extends Component {
 			serverConfig: null,
 			planOptions: {
 				units: {'miles': 3959, 'kilometers': 6371, 'nautical miles': 3440},
-				activeUnit: 'miles'
+				activeUnit: 'miles',
+				size: [30, 41],
+				colorURL: './images/iconred.png'
 			},
 			clientSettings: {serverPort: getOriginalServerPort()},
 			errorMessage: null,
@@ -241,6 +243,7 @@ export default class Application extends Component {
 					locationDestination={this.state.destination}
 					currentLocation={this.state.currentLocation}
 					geolocation={this.geolocation}
+					options={this.state.planOptions}
 				/>;
 		}
 	}

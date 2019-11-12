@@ -35,6 +35,7 @@ export default class Calculator extends Component {
 						      locationOrigin={this.props.locationOrigin}
 						      locationDestination={this.props.locationDestination}
 						      itineraryData={this.props.itineraryData}
+									options={this.props.options}
 						/>
 					</Col>
 					<Col xs={12} sm={12} md={3} lg={3}>

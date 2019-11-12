@@ -7,7 +7,7 @@ import {Map, Marker, Popup, TileLayer, Polyline} from 'react-leaflet';
 import iconblue from './images/iconblue.png';
 import iconblueD from './images/iconblueD.png';
 import iconred from './images/iconred.png';
-//import icongreen from './images/icongreen.png'
+import icongreen from './images/icongreen.png'
 import iconhappy from './images/iconhappy.png'
 //import iconflower from './images/iconflower.png'
 
@@ -169,9 +169,10 @@ export default class LMap extends Component {
 	markerIcon(url = icon) {
 		// react-leaflet does not currently handle default marker icons correctly,
 		// so we must create our own
+		let colorURL = this.props.options.colorURL
 		return L.icon({
-			iconUrl: url,
-			iconSize: [30, 41],
+			iconUrl: require(colorURL),
+			iconSize: this.props.options.size,
 			shadowUrl: iconShadow,
 			iconAnchor: [15, 41]  // for proper placement
 		})
