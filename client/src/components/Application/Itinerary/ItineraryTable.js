@@ -37,20 +37,25 @@ export default class ItineraryTable extends React.Component {
 					</tbody>
 					
 					<tbody>
-					
-					{this.props.itineraryData.places.length > 0 &&
-					<tr>
-						<th/>
-						<th/>
-						<th>Total Distance</th>
-						<th>{this.props.sumTotalDistance(this.props.itineraryData.distances)
-						}</th>
-					</tr>}
+						{this.renderTotalDistance()}
 					</tbody>
 				</Table>
 			);
 		}
 		return null;
+	}
+
+	renderTotalDistance() {
+		return (
+			this.props.itineraryData.places.length > 0 &&
+			<tr>
+				<th/>
+				<th/>
+				<th>Total Distance</th>
+				<th>{this.props.sumTotalDistance(this.props.itineraryData.distances)
+				}</th>
+			</tr>
+		);
 	}
 	
 	flipCheckBoxes() {

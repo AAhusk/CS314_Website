@@ -66,24 +66,29 @@ export default class Application extends Component {
 			[stateVar]: update
 		})
 	}
-	
+
+	createServerObject() {
+		const serverObject = {
+			'requestType': 'trip',
+			'requestVersion': 4,
+			'distances': [],
+			'options': {
+				'title': "Update Distances",
+				'earthRadius': this.state.planOptions.units[this.state.planOptions.activeUnit].toString(),
+				'optimization': 'none'
+			},
+			'places': this.state.itineraryData.places
+		};
+		return serverObject;
+	}
+
 	updateItineraryData(data) {
 		
 		this.setState({
 			itineraryData: data
 		}, () => {
 			
-			const serverObject = {
-				'requestType': 'trip',
-				'requestVersion': 4,
-				'distances': [],
-				'options': {
-					'title': "Update Distances",
-					'earthRadius': this.state.planOptions.units[this.state.planOptions.activeUnit].toString(),
-					'optimization': 'none'
-				},
-				'places': this.state.itineraryData.places
-			};
+			const serverObject = this.createServerObject();
 			
 			sendServerRequestWithBody('trip', serverObject, this.state.clientSettings.serverPort)
 			.then((response) => {
@@ -94,12 +99,11 @@ export default class Application extends Component {
 					this.setState({
 						itineraryData: data
 					});
-					
-				} else {
+				}
+				else {
 					//console.log(response.statusText, response.statusCode);
 				}
 			});
-			
 		});
 	}
 	
