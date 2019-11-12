@@ -37,20 +37,25 @@ export default class ItineraryTable extends React.Component {
 					</tbody>
 					
 					<tbody>
-					
-					{this.props.itineraryData.places.length > 0 &&
-					<tr>
-						<th/>
-						<th/>
-						<th>Total Distance</th>
-						<th>{this.props.sumTotalDistance(this.props.itineraryData.distances)
-						}</th>
-					</tr>}
+						{this.renderTotalDistance()}
 					</tbody>
 				</Table>
 			);
 		}
 		return null;
+	}
+
+	renderTotalDistance() {
+		return (
+			this.props.itineraryData.places.length > 0 &&
+			<tr>
+				<th/>
+				<th/>
+				<th>Total Distance</th>
+				<th>{this.props.sumTotalDistance(this.props.itineraryData.distances)
+				}</th>
+			</tr>
+		);
 	}
 	
 	flipCheckBoxes() {
@@ -68,30 +73,8 @@ export default class ItineraryTable extends React.Component {
 	}
 	
 	formatItineraryDestinations() {
-		
-
-		
 		let formattedDestinations = [];
-		
-		let placeNames = [];
-		for (let i = 0; i < this.props.itineraryData.places.length; i++) {
-			placeNames.push(this.props.itineraryData.places[i].name);
-		}
-		
-		let oldPlaceNames = [];
-		for (let i = 0; i < this.props.itineraryData.originalPlaces.length; i++) {
-			oldPlaceNames.push(this.props.itineraryData.originalPlaces[i].name);
-		}
-		
-		let index = [];
-		for (let i = 0; i < this.props.itineraryData.originalPlaces.length; i++) {
-			index.push(oldPlaceNames.indexOf(placeNames[i]));
-		}
-		
-		let checkBoxes = [];
-		for (let i = 0; i < index.length; i++) {
-			checkBoxes.push(this.props.itineraryData.checkBoxes[i]);
-		}
+		let index = this.getPlacesIndices();
 		
 		for (let i = 0; i < this.props.itineraryData.places.length; i++) {
 			let destination_index = ((i + 1) === this.props.itineraryData.places.length) ? 0 : i + 1;
@@ -115,14 +98,31 @@ export default class ItineraryTable extends React.Component {
 					},
 					index: index[i], // New places relative to the original list
 					oindex: i,
-					// Location of 4 within original array
 					checked: this.props.itineraryData.checkBoxes[index[i]]
 				});
 		}
-		
 		return formattedDestinations;
 	}
-	
+
+	getPlacesIndices() {
+		let placeNames = [];
+		for (let i = 0; i < this.props.itineraryData.places.length; i++) {
+			placeNames.push(this.props.itineraryData.places[i].name);
+		}
+
+		let oldPlaceNames = [];
+		for (let i = 0; i < this.props.itineraryData.originalPlaces.length; i++) {
+			oldPlaceNames.push(this.props.itineraryData.originalPlaces[i].name);
+		}
+
+		let index = [];
+		for (let i = 0; i < this.props.itineraryData.originalPlaces.length; i++) {
+			index.push(oldPlaceNames.indexOf(placeNames[i]));
+		}
+
+		return index;
+	}
+
 	renderTripItinerary(entry, index) {
 		
 		return (

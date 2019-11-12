@@ -66,24 +66,29 @@ export default class Application extends Component {
 			[stateVar]: update
 		})
 	}
-	
+
+	createServerObject() {
+		const serverObject = {
+			'requestType': 'trip',
+			'requestVersion': 4,
+			'distances': [],
+			'options': {
+				'title': "Update Distances",
+				'earthRadius': this.state.planOptions.units[this.state.planOptions.activeUnit].toString(),
+				'optimization': 'none'
+			},
+			'places': this.state.itineraryData.places
+		};
+		return serverObject;
+	}
+
 	updateItineraryData(data) {
 		
 		this.setState({
 			itineraryData: data
 		}, () => {
 			
-			const serverObject = {
-				'requestType': 'trip',
-				'requestVersion': 4,
-				'distances': [],
-				'options': {
-					'title': "Update Distances",
-					'earthRadius': this.state.planOptions.units[this.state.planOptions.activeUnit].toString(),
-					'optimization': 'none'
-				},
-				'places': this.state.itineraryData.places
-			};
+			const serverObject = this.createServerObject();
 			
 			sendServerRequestWithBody('trip', serverObject, this.state.clientSettings.serverPort)
 			.then((response) => {
@@ -94,12 +99,11 @@ export default class Application extends Component {
 					this.setState({
 						itineraryData: data
 					});
-					
-				} else {
+				}
+				else {
 					//console.log(response.statusText, response.statusCode);
 				}
 			});
-			
 		});
 	}
 	
@@ -119,104 +123,53 @@ export default class Application extends Component {
 			)
 		}
 	}
-	
+
 	formatCoordinates(rawString, stateVar, returnFormattedCoords = false) {
-		// Input would look like "40N, 100W", "rawStringO"
-		// If returnFormattedCoords is false, it just updates the state
-		
 		if (returnFormattedCoords === false) {
 			this.setState({errorMessage: null});
 		}
 		const Coordinates = require('coordinate-parser');
+
 		try {
 			let coords = new Coordinates(rawString);
 			let finalState = "destination";
-			
+
 			if (stateVar === 'rawStringO') {
 				finalState = 'origin';
 			}
-			
+
 			let lat = coords.getLatitude();
 			let long = coords.getLongitude();
-			let latNew = lat;
-			let longNew = long;
-			
-			// Compute Latitude & Longitude
-			{
-				if (lat > 180 || lat < -180) {
-					lat = lat % 180;
-				}
-				if (lat > 90) {
-					latNew = 0;
-					if (lat % 180 === 0) {
-						latNew = 0;
-					} else if (lat % 180 > 90) {
-						latNew = ((lat % 180) % 90) + -90;
-					} else if (lat % 180 < 90) {
-						latNew = (lat % 180) + -90;
-					} else {
-						latNew = 0;
-					}
-					lat = latNew;
-				} else if (lat < -90) {
-					lat = -1 * lat;
-					latNew = 0;
-					if (lat % 180 === 0) {
-						latNew = 0;
-					} else if (lat % 180 > 90) {
-						latNew = -1 * (((lat % 180) % 90) + -90);
-					} else if (lat % 180 < 90) {
-						latNew = -1 * ((lat % 180) + -90);
-					} else {
-						latNew = 0;
-					}
-					lat = latNew;
-				}
-				
-				// Compute Longitude
-				if (long > 360 || long < -360) {
-					long = long % 360;
-				}
-				if (long > 180) {
-					longNew = 0;
-					if (long % 360 === 0) {
-						longNew = 0;
-					} else if (long % 360 > 180) {
-						longNew = (((long % 360) % 180) + -180);
-					} else if (long % 360 < 180) {
-						longNew = ((long % 360) + -180);
-					} else {
-						longNew = 0;
-					}
-					long = longNew;
-				} else if (long < -180) {
-					long = -1 * long;
-					longNew = 0;
-					if (long % 360 === 0) {
-						longNew = 0;
-					} else if (long % 360 > 180) {
-						longNew = -1 * (((long % 360) % 180) + -180);
-					} else if (long % 360 < 180) {
-						longNew = -1 * ((long % 360) + -180);
-					} else {
-						longNew = 0;
-					}
-					long = longNew;
-				}
-			}
+			let latFinal = this.formatLatLong(lat, 90);
+			let longFinal = this.formatLatLong(long, 180);
 			
 			if (returnFormattedCoords === true) {
-				return {latitude: lat.toString(), longitude: long.toString()};
+				return {latitude: latFinal.toString(), longitude: longFinal.toString()};
 			} else {
-				let dict = {latitude: lat.toString(), longitude: long.toString()};
+				let dict = {latitude: latFinal.toString(), longitude: longFinal.toString()};
 				this.setState({[finalState]: dict});
 			}
-		} catch (err) {
+		}
+		catch (err) {
 			if (!(err.message.includes("Uneven") || err.message.includes("null"))) {
 				this.setState({errorMessage: <ErrorBanner statusText="Error with input" message={err.message}/>})
 			}
 			return 1;
 		}
+	}
+
+	formatLatLong(coordinate, maxDegrees) {
+		let returnCoord = coordinate;
+		if (coordinate > 2*maxDegrees || coordinate < -2*maxDegrees) {
+			coordinate = coordinate % (2*maxDegrees);
+		}
+		if (coordinate > maxDegrees) {
+			returnCoord = coordinate - (2*maxDegrees);
+		}
+		if (coordinate < -maxDegrees) {
+			returnCoord = coordinate + (2*maxDegrees);
+		}
+		return returnCoord;
 	}
 	
 	updateClientSetting(field, value) {

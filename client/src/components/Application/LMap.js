@@ -35,8 +35,7 @@ export default class LMap extends Component {
 	}
 	
 	itineraryComponentSetup() {
-		let MarkerArr = [];
-		let ItinPolylinepts = [];
+		let MarkerArr = [];	let ItinPolylinepts = [];
 		
 		let pointArr = this.props.itineraryData.places;
 		if (pointArr.length !== 0) {
@@ -82,9 +81,13 @@ export default class LMap extends Component {
 			</Marker>
 		);
 		
-		let destinationMarker = (
+		let destinationMarker = this.createDestinationMarker();
+		return {ODPolyline: ODPolyline, originMarker: originMarker, destinationMarker: destinationMarker};
+	}
+	createDestinationMarker() {
+		return (
 			<Marker position={this.currentDestination()}
-			        icon={this.markerIcon(iconblueD)}>
+							icon={this.markerIcon(iconblueD)}>
 				<Popup className="font-weight-extrabold">
 					Destination:<br/>
 					{this.props.locationDestination.latitude} Latitude<br/>
@@ -92,9 +95,8 @@ export default class LMap extends Component {
 				</Popup>
 			</Marker>
 		);
-		return {ODPolyline: ODPolyline, originMarker: originMarker, destinationMarker: destinationMarker};
 	}
-	
+
 	renderLeafletMap() {
 		
 		let calculatorComponents = {ODPolyline: null, originMarker: null, destinationMarker: null};
