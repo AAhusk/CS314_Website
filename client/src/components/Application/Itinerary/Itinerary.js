@@ -35,7 +35,7 @@ export default class Itinerary extends Component {
 			}
 		}
 	}
-	
+
 	render() {
 		let toggleModal = () => {
 			this.setState({addModal: {
@@ -45,22 +45,22 @@ export default class Itinerary extends Component {
 					submitActive: this.state.addModal.submitActive
 				}});
 		};
-		
+
 		let addPlaceModal = (
 			<Modal isOpen={this.state.addModal.addModalToggle} toggle={toggleModal}>
 				<ModalHeader toggle={toggleModal}>Add a new place</ModalHeader>
 				<ModalBody>
-					
+
 					{this.createInputField("name", this.modalNameInputCallback)}
 					{this.createInputField("place", this.modalPlaceInputCallback)}
-				
+
 				</ModalBody>
 				<ModalFooter>
 					<Button color="primary" onClick={this.addPlaceToItineraryDataFromModal} disabled={!this.state.addModal.submitActive}>Submit</Button>{' '}
 				</ModalFooter>
 			</Modal>
 		);
-		
+
 		return (
 			<React.Fragment>
 				<Col>
@@ -96,19 +96,22 @@ export default class Itinerary extends Component {
 						/>
 					</Card>
 					<Card>
-						<ItineraryTable itineraryData={this.props.itineraryData}
-						                totalDistance={this.state.totalDistance}
-						                updateItineraryData={this.props.updateItineraryData}
-						                formatCoordinates={this.props.formatCoordinates}
-						                settings={this.props.settings}
-						                options={this.props.options}
-						                sumTotalDistance={this.sumTotalDistance}
-						                forceUpdate={this.state.forceUpdate}
-						
-						/>
+						{this.renderTable()}
 					</Card>
 				</Col>
 			</React.Fragment>
+		);
+	}
+	renderTable() {
+		return(
+			<ItineraryTable itineraryData={this.props.itineraryData}
+										totalDistance={this.state.totalDistance}
+										updateItineraryData={this.props.updateItineraryData}
+										formatCoordinates={this.props.formatCoordinates}
+										settings={this.props.settings}
+										options={this.props.options}
+										sumTotalDistance={this.sumTotalDistance}
+										forceUpdate={this.state.forceUpdate}/>
 		);
 	}
 	
