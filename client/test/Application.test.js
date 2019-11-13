@@ -42,6 +42,8 @@ function mockConfigResponse() {
 
 test("Testing Application's initial state", testInitialState);
 
+
+
 function testUpdateOption() {
   const app = shallow(<Application/>);
 
@@ -53,6 +55,32 @@ function testUpdateOption() {
 }
 
 test("Testing Application's updatePlanOption function", testUpdateOption);
+
+function testFormatLatLong() {
+  const application = mount(<Application/>);
+  let actualResult = application.instance().formatLatLong(181, 180);
+  expect(actualResult).toEqual(-179);
+}
+
+function testFormatCoordinates(){
+  const application = mount(<Application/>);
+  let actualResult = application.instance().formatCoordinates('91,181', 'rawString0', true);
+  // console.log('Result = ', actualResult);
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
 
 /*function testFormatCoordinates() {
     let rawString = {latitude: -190, longitude: 200};
