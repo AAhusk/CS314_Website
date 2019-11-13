@@ -72,6 +72,37 @@ function testFormatCoordinates(){
   expect(actualResult.longitude).toEqual('-179');
 }
 
+function testValidateApiResponse(){
+  body = {
+    "serverName":"t11 Team America",
+    "placeAttributes":
+      ["name",
+      "latitude",
+      "longitude",
+      "id","altitude",
+      "municipality",
+      "region",
+      "country",
+      "continent",
+      "type"
+    ],
+    "optimizations":["none","short","shorter"],
+    "requestVersion":4,
+    "requestType":"config"
+  }
+  
+  response = {
+    'body': body,
+  }
+
+  // const application = mount(<Application/>);
+  // let actualResult = application.instance().vaildateApiResponse(181, 180);
+  // expect(actualResult).toEqual(true);
+  
+
+
+}
+
 /*function testFormatCoordinates() {
     let rawString = {latitude: -190, longitude: 200};
     let stateVar = 'origin';
