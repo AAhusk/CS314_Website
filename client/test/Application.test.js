@@ -95,12 +95,9 @@ function testValidateApiResponse(){
     'body': body,
   }
 
-  // const application = mount(<Application/>);
-  // let actualResult = application.instance().vaildateApiResponse(181, 180);
-  // expect(actualResult).toEqual(true);
-  
-
-
+  const application = mount(<Application/>);
+  let actualResult = application.instance().vaildateApiResponse(181, 180);
+  expect(actualResult).toEqual(true);
 }
 
 /*function testFormatCoordinates() {
