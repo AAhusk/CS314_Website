@@ -64,23 +64,13 @@ function testFormatLatLong() {
 
 function testFormatCoordinates(){
   const application = mount(<Application/>);
-  let actualResult = application.instance().formatCoordinates('91,181', 'rawString0', true);
-  // console.log('Result = ', actualResult);
 
-
+  let rawString = '91N,181E';
+  let stateVar = 'rawStringO';
+  let actualResult = application.instance().formatCoordinates(rawString, stateVar, true);
+  expect(actualResult.latitude).toEqual('-89');
+  expect(actualResult.longitude).toEqual('-179');
 }
-
-
-
-
-
-
-
-
-
-
-
-
 
 /*function testFormatCoordinates() {
     let rawString = {latitude: -190, longitude: 200};
