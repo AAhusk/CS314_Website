@@ -121,6 +121,7 @@ export default class Itinerary extends Component {
                       {downloadDropdownMenu}{'  '}
                     </Col>
                     <Col>
+                      <Button id="reverseTrip" className='bg-csu-green text-white' onclick = {() => this.reverseItinerary()}>Reverse Trip</Button>
                       <Button onClick={toggleModal} style={{float: "right"}} >+</Button>
                     </Col>
 
@@ -266,6 +267,15 @@ export default class Itinerary extends Component {
     let data = this.props.itineraryData;
     data.places = joined;
 
+    this.props.updateItineraryData(data);
+  }
+  reverseItinerary() {
+    let data = this.props.itineraryData;
+    let origin = data.places[0];
+    let placesData = data.places.slice(1);
+    placesData.reverse();
+    placesData.unshift(origin);
+    data.places = placesData;
     this.props.updateItineraryData(data);
   }
 
