@@ -170,11 +170,12 @@ export default class LMap extends Component {
 		// react-leaflet does not currently handle default marker icons correctly,
 		// so we must create our own
 		console.log(this.props.options.colorURL)
+		const iconAnchorValue = [this.props.options.markerSize[0]/2, this.props.options.markerSize[1]]
 		return L.icon({
 			iconUrl: this.props.options.colorURL,
 			iconSize: this.props.options.markerSize,
 			shadowUrl: iconShadow,
-			iconAnchor: [15, 41]  // for proper placement
+			iconAnchor: iconAnchorValue  // for proper placement
 		})
 	}
 }

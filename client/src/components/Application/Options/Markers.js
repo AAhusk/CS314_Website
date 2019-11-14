@@ -13,7 +13,7 @@ export default class Markers extends Component {
   render() {
     return(
         <Card className='text-left'>
-          <CardHeader className='bg-csu-green text-white font-weight-semibold'>Marker Color</CardHeader>
+          <CardHeader className='bg-csu-green text-white font-weight-semibold'>Marker Color & Size</CardHeader>
           <CardBody>
             <ButtonGroup horizontal={"true"} className='w100'>
               {this.renderUnitButtons(['Red', 'Blue', 'Green'], [iconred, iconblue, icongreen], 'colorURL')}
@@ -34,7 +34,7 @@ export default class Markers extends Component {
                 <Button
                     className='btn-csu w-100 text-left'
                     key={"button_" + colors[i]}
-                    active={option==='markerSize' ? this.props[option][0]===colorURL[i]: this.props[option]===colorURL[i]}
+                    active={option==='markerSize' ? this.props[option][0]===colorURL[i][0]: this.props[option]===colorURL[i]}
                     value={colors[i]}
                     onClick={() => this.props.updateOption(option,
                         colorURL[i])}
