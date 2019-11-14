@@ -59,7 +59,7 @@ export default class Itinerary extends Component {
 
     let optimizationDropdownMenu = (
           <Dropdown isOpen={this.state.buttonDropdown.optimizationDropdownToggle} toggle={toggleOptDropdown} className="float-left">
-            <DropdownToggle caret>
+            <DropdownToggle caret className='bg-csu-gold text-white'>
               Optimize
             </DropdownToggle>
             <DropdownMenu>
@@ -72,7 +72,7 @@ export default class Itinerary extends Component {
 
     let downloadDropdownMenu = (
           <Dropdown isOpen={this.state.buttonDropdown.downloadDropdownToggle} toggle={toggleDwnDropdown} className="float-left">
-            <DropdownToggle caret>
+            <DropdownToggle caret className='bg-csu-gold text-white'>
               Export as
             </DropdownToggle>
             <DropdownMenu>
@@ -101,7 +101,7 @@ export default class Itinerary extends Component {
 
             </ModalBody>
             <ModalFooter>
-              <Button color="primary" onClick={this.addPlaceToItineraryDataFromModal} disabled={!this.state.addModal.submitActive}>Submit</Button>{' '}
+              <Button className='bg-csu-green text-white' onClick={this.addPlaceToItineraryDataFromModal} disabled={!this.state.addModal.submitActive}>Submit</Button>{' '}
             </ModalFooter>
           </Modal>
     );
@@ -116,13 +116,14 @@ export default class Itinerary extends Component {
                     <Col sm={{size: "auto"}}>
                       Itinerary
                     </Col>
-                    <Col sm={{size: "auto", offset: 2}}>
+                    <Col sm={{size: "auto", offset: 6}}>
                       {optimizationDropdownMenu}{'  '}
                       {downloadDropdownMenu}{'  '}
                     </Col>
                     <Col>
-                      <Button id="reverseTrip" className='bg-csu-green text-white' onclick = {() => this.reverseItinerary()}>Reverse Trip</Button>
-                      <Button onClick={toggleModal} style={{float: "right"}} >+</Button>
+                      <Button id="reverseTrip" className='bg-csu-green text-white'
+                              onClick={() => this.reverseItinerary()}>Reverse Trip</Button>
+                      <Button className='bg-csu-green text-white' onClick={toggleModal} style={{float: "right"}} >+</Button>
                     </Col>
 
                   </Row>

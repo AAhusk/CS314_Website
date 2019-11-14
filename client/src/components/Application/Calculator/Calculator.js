@@ -39,7 +39,7 @@ export default class Calculator extends Component {
 					</Col>
 					<Col xs={12} sm={12} md={3} lg={3}>
 						<ListGroup>
-							<ListGroupItem> <Button color='primary' onClick={() => this.handleButtonClick()}>Use My
+							<ListGroupItem> <Button className='bg-csu-green text-white' onClick={() => this.handleButtonClick()}>Use My
 								Location</Button> </ListGroupItem>
 							<ListGroupItem> {this.createInputField("origin")}</ListGroupItem>
 							<ListGroupItem> {this.createInputField("destination")}</ListGroupItem>
@@ -116,7 +116,7 @@ export default class Calculator extends Component {
 			<Container>
 				<Row>
 					<Col>
-						<Button color='primary' onClick={this.calculateDistance}>Calculate</Button>
+						<Button className='bg-csu-green text-white' onClick={this.calculateDistance}>Calculate</Button>
 					</Col>
 					<Col>
 						<h5>{`${this.state.distance} ${this.props.options.activeUnit}`}</h5>
