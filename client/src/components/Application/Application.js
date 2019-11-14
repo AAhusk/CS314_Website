@@ -259,6 +259,7 @@ export default class Application extends Component {
 		}
 
 		if (!valid) console.log(ajv.errors);
+		else return true;
 	}
 
 

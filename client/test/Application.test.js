@@ -45,6 +45,8 @@ function mockConfigResponse() {
 
 test("Testing Application's initial state", testInitialState);
 
+
+
 function testUpdateOption() {
   const app = shallow(<Application/>);
 
@@ -56,6 +58,56 @@ function testUpdateOption() {
 }
 
 test("Testing Application's updatePlanOption function", testUpdateOption);
+
+function testFormatLatLong() {
+  const application = shallow(<Application/>);
+  let actualResult = application.instance().formatLatLong(181, 180);
+  expect(actualResult).toEqual(-179);
+}
+
+test("Test Application's formatLatLong function", testFormatLatLong);
+
+function testFormatCoordinates(){
+  const application = shallow(<Application/>);
+
+  let rawString = '91N,181E';
+  let stateVar = 'rawStringO';
+  let actualResult = application.instance().formatCoordinates(rawString, stateVar, true);
+  expect(actualResult.latitude).toEqual('-89');
+  expect(actualResult.longitude).toEqual('-179');
+}
+
+test("Test Application's formatCoordinates function", testFormatCoordinates);
+
+function testValidateApiResponse(){
+  const body = {
+    "serverName":"t11 Team America",
+    "placeAttributes":
+      ["name",
+      "latitude",
+      "longitude",
+      "id","altitude",
+      "municipality",
+      "region",
+      "country",
+      "continent",
+      "type"
+    ],
+    "optimizations":["none","short","shorter"],
+    "requestVersion":4,
+    "requestType":"config"
+  }
+  
+  const response = {
+    'body': body,
+  }
+
+  const application = shallow(<Application/>);
+  let actualResult = application.instance().validateApiResponse(response);
+  expect(actualResult).toEqual(true);
+}
+
+test("Test Application's validateApiResponse function", testValidateApiResponse);
 
 /*function testFormatCoordinates() {
     let rawString = {latitude: -190, longitude: 200};
