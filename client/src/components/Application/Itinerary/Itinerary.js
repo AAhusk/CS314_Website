@@ -184,34 +184,28 @@ export default class Itinerary extends Component {
   }
 
   shortTripOptimization() {
-
-    const tipObject = {
-      'requestType': 'trip',
-      'requestVersion': 4,
-      'distances': [],
-      'options': {
-        'title': "Short Trip",
-        'earthRadius': this.props.options.units[this.props.options.activeUnit].toString(),
-        'optimization': 'short'
-      },
-      'places': this.props.itineraryData.places
-    };
-    this.sendServerRequest('trip', tipObject);
+    const TIPObject = this.createTIPObject("Short Trip", 'short');
+    this.sendServerRequest('trip', TIPObject);
   }
 
   shorterTripOptimization() {
-    const TIPrequest = {
-      'requestType' : 'trip',
-      'requestVersion' : 4,
-      'distances': [],
-      'options': {
-        'title': "Shorter Trip",
-        'earthRadius': this.props.options.units[this.props.options.activeUnit].toString(),
-        'optimization': 'shorter'
-      },
-      'places': this.props.itineraryData.places
-    };
+    const TIPrequest = this.createTIPObject("Shorter Trip", 'shorter');
     this.sendServerRequest('trip', TIPrequest);
+  }
+
+  createTIPObject(title, optimization) {
+    const TIPrequest = {
+        'requestType': 'trip',
+        'requestVersion': 4,
+        'distances': [],
+        'options': {
+          'title': title,
+          'earthRadius': this.props.options.units[this.props.options.activeUnit].toString(),
+          'optimization': optimization
+        },
+        'places': this.props.itineraryData.places
+    };
+    return TIPrequest;
   }
 
   sendServerRequest(requestType, TIPrequest) {
