@@ -13,7 +13,7 @@ import configSchema from '../../api/schemas/TIPConfigResponseSchema.json';
 import distanceSchema from '../../api/schemas/TIPDistanceResponseSchema.json';
 import locationsSchema from '../../api/schemas/TIPLocationsResponseSchema.json';
 import tripSchema from '../../api/schemas/TIPTripResponseSchema';
-
+import iconred from './images/iconred.png';
 
 /* Renders the application.
  * Holds the destinations and options state shared with the trip.
@@ -34,8 +34,8 @@ export default class Application extends Component {
 			planOptions: {
 				units: {'miles': 3959, 'kilometers': 6371, 'nautical miles': 3440},
 				activeUnit: 'miles',
-				size: [30, 41],
-				colorURL: './images/iconred.png'
+				markerSize: [30, 41],
+				colorURL: iconred
 			},
 			clientSettings: {serverPort: getOriginalServerPort()},
 			errorMessage: null,

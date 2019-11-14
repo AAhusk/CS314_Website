@@ -30,7 +30,7 @@ export default class Options extends Component{
               <Col xs="12" sm="9" md="6" lg="4" xl="4">
                 <Markers updateOption={this.props.updateOption}
                          colorURL={this.props.options.colorURL}
-                         activeSize={this.props.options.size}
+                         markerSize={this.props.options.markerSize}
                 />
               </Col>
             </Row>

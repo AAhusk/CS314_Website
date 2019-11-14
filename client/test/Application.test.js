@@ -2,6 +2,7 @@ import './enzyme.config.js'
 import React from 'react'
 import {shallow} from 'enzyme'
 import Application from '../src/components/Application/Application'
+import iconred from '../src/componenets/Application/images/iconred.png';
 
 
 function testInitialState() {
@@ -16,7 +17,9 @@ function testInitialState() {
   let actualOptions = app.state().planOptions;
   let expectedOptions = {
     units:  {"kilometers": 6371, "miles": 3959, "nautical miles": 3440},
-    activeUnit: 'miles'
+    activeUnit: 'miles',
+    colorURL: iconred,
+    size: [30, 41]
   };
 
   expect(actualOptions).toEqual(expectedOptions);
