@@ -57,13 +57,15 @@ function testUpdateOption() {
 test("Testing Application's updatePlanOption function", testUpdateOption);
 
 function testFormatLatLong() {
-  const application = mount(<Application/>);
+  const application = shallow(<Application/>);
   let actualResult = application.instance().formatLatLong(181, 180);
   expect(actualResult).toEqual(-179);
 }
 
+test("Test Application's formatLatLong function", testFormatLatLong);
+
 function testFormatCoordinates(){
-  const application = mount(<Application/>);
+  const application = shallow(<Application/>);
 
   let rawString = '91N,181E';
   let stateVar = 'rawStringO';
@@ -72,8 +74,10 @@ function testFormatCoordinates(){
   expect(actualResult.longitude).toEqual('-179');
 }
 
+test("Test Application's formatCoordinates function", testFormatCoordinates);
+
 function testValidateApiResponse(){
-  body = {
+  const body = {
     "serverName":"t11 Team America",
     "placeAttributes":
       ["name",
@@ -91,14 +95,16 @@ function testValidateApiResponse(){
     "requestType":"config"
   }
   
-  response = {
+  const response = {
     'body': body,
   }
 
-  const application = mount(<Application/>);
-  let actualResult = application.instance().vaildateApiResponse(181, 180);
+  const application = shallow(<Application/>);
+  let actualResult = application.instance().validateApiResponse(response);
   expect(actualResult).toEqual(true);
 }
+
+test("Test Application's validateApiResponse function", testValidateApiResponse);
 
 /*function testFormatCoordinates() {
     let rawString = {latitude: -190, longitude: 200};
