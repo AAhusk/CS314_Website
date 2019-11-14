@@ -216,10 +216,11 @@ export default class Itinerary extends Component {
 
               let data = this.props.itineraryData;
               data.places = response.body.places;
+              data.distances = response.body.distances;
 
               this.setState({forceUpdate: !this.state.forceUpdate});
 
-              this.props.updateItineraryData(data);
+              this.props.updateItineraryData(data, false);
 
             } else {
               this.setState({errorMessage: response.statusCode + ": " + response.statusText})

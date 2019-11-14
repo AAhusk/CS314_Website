@@ -84,29 +84,31 @@ export default class Application extends Component {
 		return serverObject;
 	}
 
-	updateItineraryData(data) {
-		
-		this.setState({
-			itineraryData: data
-		}, () => {
-			
-			const serverObject = this.createServerObject();
-			
-			sendServerRequestWithBody('trip', serverObject, this.state.clientSettings.serverPort)
-			.then((response) => {
-				if (response.statusCode >= 200 && response.statusCode <= 299) {							
-					this.validateApiResponse(response)
-					data.distances = response.body.distances;
-					
-					this.setState({
-						itineraryData: data
-					});
-				}
-				else {
-					//console.log(response.statusText, response.statusCode);
-				}
+	updateItineraryData(data, needDistances = true) {
+		if (needDistances===false) {
+			this.setState({itineraryData: data})
+		}
+		else {
+			this.setState({
+				itineraryData: data
+			}, () => {
+				const serverObject = this.createServerObject();
+
+				sendServerRequestWithBody('trip', serverObject,
+						this.state.clientSettings.serverPort)
+				.then((response) => {
+					if (response.statusCode >= 200 && response.statusCode <= 299) {
+						this.validateApiResponse(response)
+						data.distances = response.body.distances;
+						this.setState({
+							itineraryData: data
+						});
+					} else {
+						//console.log(response.statusText, response.statusCode);
+					}
+				});
 			});
-		});
+		}
 	}
 	
 	geolocation(stateVar) { // Add a try/catch here

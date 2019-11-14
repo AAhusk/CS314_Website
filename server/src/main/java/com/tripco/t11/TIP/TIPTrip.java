@@ -41,6 +41,7 @@ public class TIPTrip extends TIPHeader {
       int[][] distancesTable = this.createDistTable(this.places.size());
       int[] tourSequence = this.nearestNeighborOptimization(distancesTable);
       this.places = this.getItinerary(tourSequence);
+      this.distances = this.getDistances(tourSequence, distancesTable);
     }
     else if (options.get("optimization").toString().equals("shorter")) {
       int[][] distancesTable = this.createDistTable(this.places.size()+1);
@@ -48,6 +49,7 @@ public class TIPTrip extends TIPHeader {
       TwoOPT shorterRoute = new TwoOPT(nearestRoute, distancesTable);
       int[] tourSequence = shorterRoute.shorterRoute();
       this.places = this.getItinerary(tourSequence);
+      this.distances = this.getDistances(tourSequence, distancesTable);
     }
     log.trace("buildResponse -> {}", this);
   } 
@@ -145,6 +147,16 @@ public class TIPTrip extends TIPHeader {
         results.add(this.places.get(tourSequence[i]));
       }
       return results;
+    }
+    private List<Integer> getDistances(int[] tourSequence, int[][] distancesTable) {
+      List<Integer> distances = new ArrayList<Integer>(this.places.size()) {
+      };
+      for (int i = 0; i < this.places.size(); i++) {
+        int destination = (i==this.places.size()-1) ? tourSequence[0]:tourSequence[i+1];
+        int distToNextPlace = distancesTable[tourSequence[i]][destination];
+        distances.add(distToNextPlace);
+      }
+      return distances;
     }
 }
 
