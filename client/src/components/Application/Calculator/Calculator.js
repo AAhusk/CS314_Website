@@ -36,8 +36,8 @@ export default class Calculator extends Component {
 	    let toggleModal = () => {
 	        this.setState({addModal: {
 	    	    toggle: !this.state.addModal.toggle,
-		    place: this.state.addModal.places,
-		    found: this.state.addModal.found
+		    place: this.state.suggestedPlaces,
+		    found: this.state.numFoundPlaces
 	        }});
 	    };
 
@@ -222,7 +222,7 @@ export default class Calculator extends Component {
 		    'requestType': 'locations',
 		    'requestVersion': 3,
 		    "match"          : match,
-		    "limit"          : 5,
+		    "limit"          : 100,
 		    "found"          : 0,
 		    "places"         : []
 		};
