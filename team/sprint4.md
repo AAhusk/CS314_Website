@@ -63,62 +63,71 @@ This sprint will complete the following Epics.
 
 | Statistic | # Planned | # Completed |
 | --- | ---: | ---: |
-| Epics | *6* | *value* |
-| Tasks |  *14*   | *value* | 
-| Story Points |  *20*  | *value* | 
+| Epics | *6* | *5* |
+| Tasks |  *14*   | *20* | 
+| Story Points |  *20*  | *20* | 
 
 
 ## Scrums
 
 | Date | Tasks closed  | Tasks in progress | Impediments |
 | :--- | :--- | :--- | :--- |
-| *date* | *#task, ...* | *#task, ...* | *none* | 
+| *10/28* | *none* | *#167, #171, #201* | *none* | 
+| *10/30* | *#167, #171* | *#172, #187, #179, #178* | *none* | 
+| *11/1* | *172, #187* | *#201, #179, #178* | *none* | 
+| *11/4* | *#201, #179, #178* | *#209, #181, #180* | *Database* | 
+| *11/6* | *#209, #181* | *#222, #192, #180* | *Database* | 
+| *11/8* | *#222, #192, #180* | *#173, #217, #197, #177* | *Database* | 
+| *11/11* | *#173* | *#217, #197, #177* | *Database* | 
+| *11/13* | *#217, #197, #177* | *none* | *none* | 
 
 
 ## Review (focus on solution and technology)
 
-In this sprint, ...
+In this sprint, we focused on Worldwide and easier better planning. The ModifyTrip epic and itinerary have been updated accordingly and allow for a better user experience. The Database request was done late and using search results has not been implemented yet.
 
 #### Completed epics in Sprint Backlog 
 
 These Epics were completed.
 
-* *## epic title: comments*
-* 
+* *#1: Modify Trip*
+* *#2: API Validation*
+* *#3: TIP v4*
+* *#4: Shorter Trip*
+* *#6: Distance Units*
 
 #### Incomplete epics in Sprint Backlog 
 
 These Epics were not completed.
 
-* *## epic title: explanation*
-*
+* *#5: Database: Can request and get response, but not show user the results.
 
 #### What went well
 
-The ...
+The amount of epics completed went well.
 
 
 #### Problems encountered and resolutions
 
-The ...
+The lack of progress at the beginning did not help the overall progress and led to a rush. Many projects and tests were going on during this time and the class got put on hold for a bit. But once things settled down we were able to work more on this project.
 
 
 ## Retrospective (focus on people, process, tools)
 
-In this sprint, ...
+In this sprint we had a hard time keeping up with the daily need of this project and everyone being available in class to talk about the sprint. We did complete a lot during the sprint, but was becoming more rushed during the last half.
 
 #### What we changed this sprint
 
-Our changes for this sprint included ...
+Our changes for this sprint included having better communication on slack, which did improve and helped when everyone was not able to meet.
 
 #### What we did well
 
-We ...
+We were able to focus more on this sprint when our other classes finished their tests and projects.
 
 #### What we need to work on
 
-We could improve ...
+We could improve on everyone being present at the scrum meetings and being on track for what needs to be completed and what we are working on. We need to be more verbal about our other commitments and work around them (jobs, tests, other projects, etc.).
 
 #### What we will change next sprint 
 
-We will change ...
+We will continue to have our daily scrum meetings, but also include time to update each other on our availability to work on this project in order to keep on track. If someone has less time, they will take shorter/easier tasks.
