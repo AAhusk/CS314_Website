@@ -140,10 +140,8 @@ export default class Application extends Component {
 				finalState = 'origin';
 			}
 
-			let lat = coords.getLatitude();
-			let long = coords.getLongitude();
-			let latFinal = this.formatLatLong(lat, 90);
-			let longFinal = this.formatLatLong(long, 180);
+			let latFinal = this.formatLatLong(coords.getLatitude(), 90);
+			let longFinal = this.formatLatLong(coords.getLongitude(), 180);
 			
 			if (returnFormattedCoords === true) {
 				return {latitude: latFinal.toString(), longitude: longFinal.toString()};

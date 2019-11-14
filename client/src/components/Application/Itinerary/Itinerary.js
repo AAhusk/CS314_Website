@@ -59,7 +59,7 @@ export default class Itinerary extends Component {
 
     let optimizationDropdownMenu = (
           <Dropdown isOpen={this.state.buttonDropdown.optimizationDropdownToggle} toggle={toggleOptDropdown} className="float-left">
-            <DropdownToggle caret>
+            <DropdownToggle caret className='bg-csu-gold text-white'>
               Optimize
             </DropdownToggle>
             <DropdownMenu>
@@ -72,7 +72,7 @@ export default class Itinerary extends Component {
 
     let downloadDropdownMenu = (
           <Dropdown isOpen={this.state.buttonDropdown.downloadDropdownToggle} toggle={toggleDwnDropdown} className="float-left">
-            <DropdownToggle caret>
+            <DropdownToggle caret className='bg-csu-gold text-white'>
               Export as
             </DropdownToggle>
             <DropdownMenu>
@@ -101,7 +101,7 @@ export default class Itinerary extends Component {
 
             </ModalBody>
             <ModalFooter>
-              <Button color="primary" onClick={this.addPlaceToItineraryDataFromModal} disabled={!this.state.addModal.submitActive}>Submit</Button>{' '}
+              <Button className='bg-csu-green text-white' onClick={this.addPlaceToItineraryDataFromModal} disabled={!this.state.addModal.submitActive}>Submit</Button>{' '}
             </ModalFooter>
           </Modal>
     );
@@ -116,12 +116,14 @@ export default class Itinerary extends Component {
                     <Col sm={{size: "auto"}}>
                       Itinerary
                     </Col>
-                    <Col sm={{size: "auto", offset: 2}}>
+                    <Col sm={{size: "auto", offset: 6}}>
                       {optimizationDropdownMenu}{'  '}
                       {downloadDropdownMenu}{'  '}
                     </Col>
                     <Col>
-                      <Button onClick={toggleModal} style={{float: "right"}} >+</Button>
+                      <Button id="reverseTrip" className='bg-csu-green text-white'
+                              onClick={() => this.reverseItinerary()}>Reverse Trip</Button>
+                      <Button className='bg-csu-green text-white' onClick={toggleModal} style={{float: "right"}} >+</Button>
                     </Col>
 
                   </Row>
@@ -182,34 +184,28 @@ export default class Itinerary extends Component {
   }
 
   shortTripOptimization() {
-
-    const tipObject = {
-      'requestType': 'trip',
-      'requestVersion': 4,
-      'distances': [],
-      'options': {
-        'title': "Short Trip",
-        'earthRadius': this.props.options.units[this.props.options.activeUnit].toString(),
-        'optimization': 'short'
-      },
-      'places': this.props.itineraryData.places
-    };
-    this.sendServerRequest('trip', tipObject);
+    const TIPObject = this.createTIPObject("Short Trip", 'short');
+    this.sendServerRequest('trip', TIPObject);
   }
 
   shorterTripOptimization() {
-    const TIPrequest = {
-      'requestType' : 'trip',
-      'requestVersion' : 4,
-      'distances': [],
-      'options': {
-        'title': "Shorter Trip",
-        'earthRadius': this.props.options.units[this.props.options.activeUnit].toString(),
-        'optimization': 'shorter'
-      },
-      'places': this.props.itineraryData.places
-    };
+    const TIPrequest = this.createTIPObject("Shorter Trip", 'shorter');
     this.sendServerRequest('trip', TIPrequest);
+  }
+
+  createTIPObject(title, optimization) {
+    const TIPrequest = {
+        'requestType': 'trip',
+        'requestVersion': 4,
+        'distances': [],
+        'options': {
+          'title': title,
+          'earthRadius': this.props.options.units[this.props.options.activeUnit].toString(),
+          'optimization': optimization
+        },
+        'places': this.props.itineraryData.places
+    };
+    return TIPrequest;
   }
 
   sendServerRequest(requestType, TIPrequest) {
@@ -266,6 +262,15 @@ export default class Itinerary extends Component {
     let data = this.props.itineraryData;
     data.places = joined;
 
+    this.props.updateItineraryData(data);
+  }
+  reverseItinerary() {
+    let data = this.props.itineraryData;
+    let origin = data.places[0];
+    let placesData = data.places.slice(1);
+    placesData.reverse();
+    placesData.unshift(origin);
+    data.places = placesData;
     this.props.updateItineraryData(data);
   }
 
