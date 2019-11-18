@@ -1,9 +1,9 @@
-# Sprint 5 - *your team number* - *your team name*
+# Sprint 5 - *t11* - *Team America*
 
 ## Goal
 
 ### Mobile release with a beautiful user experience!
-### Sprint Leader: *firstname lastname*
+### Sprint Leader: *Calvin Davis*
 
 ## Definition of Done
 
@@ -42,8 +42,12 @@
 
 This sprint will complete the following Epics.
 
-* *#0 epic title: description*
-*
+* *#1 Worldwide*
+* *#2 Map Clutter*
+* *#3 Distance Units*
+* *#4 Ease of Use*
+* *#5 Distance Display*
+* *#6 Trip Title*
 
 ***(Include a discussion of you plan with key diagrams here and remove this!)***
 
