@@ -49,8 +49,11 @@ This sprint will complete the following Epics.
 * *#5 Distance Display*
 * *#6 Trip Title*
 
-***(Include a discussion of you plan with key diagrams here and remove this!)***
+![Client Hierarchy](/team/images/SP4_Client_Hierarchy.jpg?raw=true "Client Hierarchy")
 
+![Server Hierarchy](/team/images/SP4_Server_Hierarchy.jpg?raw=true "Server Hierarchy")
+
+![Webpage Elements](/team/images/SP4_Client_Component_Layout.jpg?raw=true "Webpage Elements")
 
 ## Metrics
 
