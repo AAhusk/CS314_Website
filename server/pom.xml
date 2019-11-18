@@ -12,7 +12,7 @@
     <groupId>com.tripco.t11</groupId>
     <artifactId>server</artifactId>
     <packaging>jar</packaging>
-    <version>3.0</version>
+    <version>4.0</version>
     <name>t11</name>
     <url>https://github.com/csu314sp18/repo-base</url>
 
