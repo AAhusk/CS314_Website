@@ -43,7 +43,7 @@ export default class Application extends Component {
 			
 			origin: {latitude: "1", longitude: "1"},
 			destination: {latitude: "1", longitude: "1"},
-			itineraryData: {places: [], distances: []}
+			itineraryData: {places: [], distances: [], originalPlaces: [], checkBoxes: [], checked: null}
 		};
 		
 		this.updateServerConfig();
