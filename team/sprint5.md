@@ -45,9 +45,11 @@ This sprint will complete the following Epics.
 * *#1 Worldwide*
 * *#2 Map Clutter*
 * *#3 Distance Units*
-* *#4 Ease of Use*
-* *#5 Distance Display*
-* *#6 Trip Title*
+* *#4 TIP v5*
+* *#5 Ease of Use*
+* *#6 Auto Optimize*
+* *#7 Distance Display*
+* *#8 Trip Title*
 
 ![Client Hierarchy](/team/images/SP4_Client_Hierarchy.jpg?raw=true "Client Hierarchy")
 
@@ -59,9 +61,9 @@ This sprint will complete the following Epics.
 
 | Statistic | # Planned | # Completed |
 | --- | ---: | ---: |
-| Epics | *6* | *count* |
-| Tasks |  *15*   | *count* | 
-| Story Points |  *17*  | *count* | 
+| Epics | *8* | *count* |
+| Tasks |  *18*   | *count* | 
+| Story Points |  *40*  | *count* | 
 
 
 ## Scrums
