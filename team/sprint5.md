@@ -59,16 +59,16 @@ This sprint will complete the following Epics.
 
 | Statistic | # Planned | # Completed |
 | --- | ---: | ---: |
-| Epics | *count* | *count* |
-| Tasks |  *count*   | *count* | 
-| Story Points |  *count*  | *count* | 
+| Epics | *6* | *count* |
+| Tasks |  *15*   | *count* | 
+| Story Points |  *17*  | *count* | 
 
 
 ## Scrums
 
 | Date | Tasks closed  | Tasks in progress | Impediments |
 | :--- | :--- | :--- | :--- |
-| *date* | *#task, ...* | *#task, ...* | *none* | 
+| *11/18* | *none* | *#237, #242* | *none* | 
 
 
 ## Review (focus on solution and technology)
