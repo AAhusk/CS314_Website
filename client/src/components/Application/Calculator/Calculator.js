@@ -2,6 +2,8 @@ import React, {Component, Fragment} from 'react'
 import {Container, Row, Col, ListGroupItem, ListGroup, Modal, ModalHeader, ModalBody, ModalFooter} from 'reactstrap'
 import {Button} from 'reactstrap'
 import {Input} from 'reactstrap'
+import TextField from '@material-ui/core/TextField';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 import {sendServerRequestWithBody} from '../../../api/restfulAPI'
 import LMap from "../LMap";
 import Itinerary from "../Itinerary/Itinerary";
@@ -17,7 +19,7 @@ export default class Calculator extends Component {
 		this.state = {
 			origin: this.props.locationOrigin,
 			destination: this.props.locationDestination,
-			rawStringO: null,
+			rawStringO: "stuff",
 			rawStringD: null,
 			distance: 0,
 			errorMessage: this.props.errorMessage,
@@ -36,8 +38,8 @@ export default class Calculator extends Component {
 	    let toggleModal = () => {
 	        this.setState({addModal: {
 	    	    toggle: !this.state.addModal.toggle,
-		    place: this.state.suggestedPlaces,
-		    found: this.state.numFoundPlaces
+		    		place: this.state.suggestedPlaces,
+		    		found: this.state.numFoundPlaces
 	        }});
 	    };
 
@@ -46,31 +48,6 @@ export default class Calculator extends Component {
                 <ModalHeader toggle={toggleModal}>Search Results</ModalHeader>
                 <ModalBody>
                     <h5>Found {this.state.addModal.found} results</h5>
-                    {/*<Row>
-                        <Col>{this.state.addModal.place[0].name}</Col>
-                        <Col>{this.state.addModal.place[0].region}</Col>
-                        <Col>{this.state.addModal.place[0].country}</Col>
-                    </Row>
-                    <Row>
-                        <Col>{this.state.addModal.place[1].name}</Col>
-                        <Col>{this.state.addModal.place[1].region}</Col>
-                        <Col>{this.state.addModal.place[1].country}</Col>
-                    </Row>
-                    <Row>
-                        <Col>{this.state.addModal.place[2].name}</Col>
-                        <Col>{this.state.addModal.place[2].region}</Col>
-                        <Col>{this.state.addModal.place[2].country}</Col>
-                    </Row>
-                    <Row>
-                        <Col>{this.state.addModal.place[3].name}</Col>
-                        <Col>{this.state.addModal.place[3].region}</Col>
-                        <Col>{this.state.addModal.place[3].country}</Col>
-                    </Row>
-                    <Row>
-                        <Col>{this.state.addModal.place[4].name}</Col>
-                        <Col>{this.state.addModal.place[4].region}</Col>
-                        <Col>{this.state.addModal.place[5].country}</Col>
-                    </Row>*/}
                 </ModalBody>
             </Modal>
         );
@@ -118,6 +95,37 @@ export default class Calculator extends Component {
 			</React.Fragment>
 		);
 	}
+
+	ComboBox() {
+		const top10Films = [
+			{ title: 'The Shawshank Redemption', year: 1994 },
+			{ title: 'The Godfather', year: 1972 },
+			{ title: 'The Godfather: Part II', year: 1974 },
+			{ title: 'The Dark Knight', year: 2008 },
+			{ title: '12 Angry Men', year: 1957 },
+			{ title: "Schindler's List", year: 1993 },
+			{ title: 'Pulp Fiction', year: 1994 },
+			{ title: 'The Lord of the Rings: The Return of the King', year: 2003 },
+			{ title: 'The Good, the Bad and the Ugly', year: 1966 },
+			{ title: 'Fight Club', year: 1999 },
+			{ title: 'The Lord of the Rings: The Fellowship of the Ring', year: 2001 },
+			{ title: 'Star Wars: Episode V - The Empire Strikes Back', year: 1980 },
+			{ title: 'Forrest Gump', year: 1994 },
+			{ title: 'Inception', year: 2010 }];
+		return (
+				<Autocomplete
+						id="combo-box-demo"
+						options={top10Films}
+						getOptionLabel={option => option.title}
+						style={{ width: 300 }}
+						renderInput={params => (
+								<TextField {...params} label="Combo box" variant="outlined" fullWidth />
+						)}
+						filter={(searchText, key) => true}
+				/>
+		);
+	}
+
 	
 	handleButtonClick() {
 		this.props.geolocation('origin');
@@ -135,20 +143,31 @@ export default class Calculator extends Component {
 			if(this.state.useLocation === true) { this.setState({useLocation: false}); }
 			this.inputFieldCallback(stateVar, event.target.value); // origin / destination --- rawString
 		};
-		if(stateVar === 'origin' && this.state.useLocation === true) {
+		let label = stateVar.charAt(0).toUpperCase() + stateVar.slice(1)
+		if(stateVar == "origin" && this.state.useLocation === true) {
+			let myLocation = this.props.locationOrigin.latitude + ", " + this.props.locationOrigin.longitude;
 			return (
-				<Input name={stateVar + "field"}
-				       placeholder={stateVar.charAt(0).toUpperCase() + stateVar.slice(1)}
-				       value={this.props.locationOrigin.latitude + ", " + this.props.locationOrigin.longitude}
-				       id={`${stateVar}field`}
-				       onChange={(e) => (callback == null ? updateStateVarOnChange(e) : callback)}/>
+					<Autocomplete
+							freeSolo
+							id="combo-box-demo"
+							options={[{title: 'Inception'}]}
+							getOptionLabel={options => options.title}
+							renderInput={params => (
+									<TextField value={myLocation} label={"My Location"} fullWidth onChange={updateStateVarOnChange}/>
+							)}
+					/>
 			);
 		} else{
 			return (
-				<Input name={stateVar + "field"}
-				       placeholder={stateVar.charAt(0).toUpperCase() + stateVar.slice(1)}
-				       id={`${stateVar}field`}
-				       onChange={(e) => (callback == null ? updateStateVarOnChange(e) : callback)}/>
+					<Autocomplete
+							freeSolo
+							id="combo-box-demo"
+							options={[{title: 'Inception'}]}
+							getOptionLabel={options => options.title}
+							renderInput={params => (
+									<TextField {...params} label={label} fullWidth onChange={updateStateVarOnChange}/>
+							)}
+					/>
 			);
 		}
 	}
@@ -220,7 +239,7 @@ export default class Calculator extends Component {
 	queryDatabase(match) {
 		const tipConfigRequest = {
 		    'requestType': 'locations',
-		    'requestVersion': 3,
+		    'requestVersion': 4,
 		    "match"          : match,
 		    "limit"          : 100,
 		    "found"          : 0,
