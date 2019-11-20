@@ -5,6 +5,11 @@ import { Button, ButtonGroup } from 'reactstrap'
 export default class Units extends Component {
   constructor(props) {
     super(props)
+
+    this.state = {
+      customUnitName: null,
+      customUnitRadius: null,
+    };
   }
 
   render() {
