@@ -18,20 +18,18 @@ export default class Units extends Component {
 
   render() {
     return(
-          <Row>
-            <Col>
-              <Card className='text-left'>
+       <CardGroup>
+          <Card className='text-left'>
                 <CardHeader className='bg-csu-green text-white font-weight-semibold'>Units</CardHeader>
                   <CardBody>
                     <Col xs={12} sm={12} md={9} lg={9}>
-                      <ButtonGroup horizontal className='w100'>
+                      <ButtonGroup horizontal className="mr-2">
                         {this.renderUnitButtons(Object.keys(this.props.options.units))}
                       </ButtonGroup>
                     </Col>
                   </CardBody>
               </Card>
-            </Col>
-            <Col>
+
               <Card className='text-left'>
                 <CardHeader className='bg-csu-green text-white font-weight-semibold'>Create Custom Unit</CardHeader>
                   <CardBody>
@@ -51,8 +49,7 @@ export default class Units extends Component {
                     </Row>
                   </CardBody>
               </Card>
-            </Col>
-          </Row>
+       </CardGroup>
     );
   }
 
