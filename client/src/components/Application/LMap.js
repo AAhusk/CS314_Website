@@ -7,9 +7,7 @@ import {Map, Marker, Popup, TileLayer, Polyline} from 'react-leaflet';
 import iconblue from './images/iconblue.png';
 import iconblueD from './images/iconblueD.png';
 import iconred from './images/iconred.png';
-import icongreen from './images/icongreen.png'
 import iconhappy from './images/iconhappy.png'
-//import iconflower from './images/iconflower.png'
 
 export default class LMap extends Component {
 	constructor(props) {
@@ -53,9 +51,11 @@ export default class LMap extends Component {
 						</Marker>
 					);
 				}
-				ItinPolylinepts.push(
-					[pointArr[i].latitude, pointArr[i].longitude]
-				);
+				if (this.props.itineraryData.polyLineEnabled == true) {
+                  ItinPolylinepts.push(
+                        [pointArr[i].latitude, pointArr[i].longitude]
+                  );
+                }
 			}
 			ItinPolylinepts.push([pointArr[0].latitude, pointArr[0].longitude]);
 			let ItinPolyline = (<Polyline positions={ItinPolylinepts}/>);

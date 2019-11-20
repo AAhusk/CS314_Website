@@ -36,7 +36,8 @@ export default class Itinerary extends Component {
       },
       buttonDropdown: {
         optimizationDropdownToggle: false,
-        downloadDropdownToggle: false
+        downloadDropdownToggle: false,
+        settingsDropdownToggle: false
       }
     }
   }
@@ -44,17 +45,21 @@ export default class Itinerary extends Component {
   render() {
 
     let toggleOptDropdown = () => {
-      this.setState({buttonDropdown: {
-          optimizationDropdownToggle: !this.state.buttonDropdown.optimizationDropdownToggle,
-          downloadDropdownToggle: this.state.buttonDropdown.downloadDropdownToggle
-        }})
+      let data = this.state.buttonDropdown;
+      data.optimizationDropdownToggle = !data.optimizationDropdownToggle;
+      this.setState({buttonDropdown: data});
     };
 
     let toggleDwnDropdown = () => {
-      this.setState({buttonDropdown: {
-          optimizationDropdownToggle: this.state.buttonDropdown.optimizationDropdownToggle,
-          downloadDropdownToggle: !this.state.buttonDropdown.downloadDropdownToggle
-        }})
+      let data = this.state.buttonDropdown;
+      data.downloadDropdownToggle = !data.downloadDropdownToggle;
+      this.setState({buttonDropdown: data});
+    };
+
+    let toggleSetDropdown = () => {
+      let data = this.state.buttonDropdown;
+      data.settingsDropdownToggle = !data.settingsDropdownToggle;
+      this.setState({buttonDropdown: data});
     };
 
     let optimizationDropdownMenu = (
@@ -78,6 +83,22 @@ export default class Itinerary extends Component {
             <DropdownMenu>
               <DropdownItem onClick={() => this.createOutputJSON()}>JSON</DropdownItem>
               <DropdownItem onClick={() => this.createOutputCSV()}>CSV</DropdownItem>
+            </DropdownMenu>
+          </Dropdown>
+    );
+
+    let settingsDropdownMenu = (
+          <Dropdown isOpen={this.state.buttonDropdown.settingsDropdownToggle} toggle={toggleSetDropdown} className="float-left">
+            <DropdownToggle caret className='bg-csu-gold text-white'>
+              Settings
+            </DropdownToggle>
+            <DropdownMenu>
+              <DropdownItem onClick={() => {
+                let data = this.props.itineraryData;
+                data.polyLineEnabled = !data.polyLineEnabled;
+                this.props.updateItineraryData(data);
+              }}>Line Toggle</DropdownItem>
+              <DropdownItem onClick={() => this.reverseItinerary()}>Reverse</DropdownItem>
             </DropdownMenu>
           </Dropdown>
     );
@@ -119,10 +140,12 @@ export default class Itinerary extends Component {
                     <Col sm={{size: "auto", offset: 6}}>
                       {optimizationDropdownMenu}{'  '}
                       {downloadDropdownMenu}{'  '}
-                    </Col>
-                    <Col>
+                      {settingsDropdownMenu}{'  '}
+
+
                       <Button id="reverseTrip" className='bg-csu-green text-white'
                               onClick={() => this.reverseItinerary()}>Reverse Trip</Button>
+
                       <Button className='bg-csu-green text-white' onClick={toggleModal} style={{float: "right"}} >+</Button>
                     </Col>
 
