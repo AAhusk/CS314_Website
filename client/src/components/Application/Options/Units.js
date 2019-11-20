@@ -64,12 +64,57 @@ export default class Units extends Component {
     );
   }
 
-  renderCustomUnit() {
-
+  renderCustomUnit(stateVar) {
+    return (
+        <Pane header={(stateVar.charAt(10) === 'N') ? 'Unit Name' : 'Earth Radius'}
+              bodyJSX={
+                <Form>
+                  {this.createInputField(stateVar)}
+                </Form>
+              }
+        />
+    );
   }
 
-  renderEnterButton() {
-
+  renderEnterButton(){
+    return (
+        <Button className='bg-csu-gold text-white' onClick={(event) => this.createOption()}>Create Custom Unit</Button>
+    )
   }
+
+  createInputField(stateVar){
+    let updateStateVarOnChange = (event) => {
+      this.updateCustomUnitState(stateVar, event.target.value);
+    };
+    if(stateVar === 'customUnitName') {
+      return (
+          <Input name={stateVar}
+                 type="text"
+                 onChange={updateStateVarOnChange}
+                 style={{width: "100%"}}/>
+      )
+    }
+    else {
+      return (
+          <Input name={stateVar}
+                 type="number"
+                 onChange={updateStateVarOnChange}
+                 style={{width: "100%"}}/>
+      )
+    }
+  }
+
+  updateCustomUnitState(stateVar, newState) {
+    this.setState({[stateVar]: newState});
+  }
+
+  createOption() {
+    let currentUnits = this.props.options.units;
+    currentUnits[this.state.customUnitName] = parseInt(this.state.customUnitRadius);
+    this.props.updateOption('units', currentUnits);
+    this.render();
+    // create new button for custom Unit. Create new unit in Application.js for custom unit.
+  }
+
 
 }
