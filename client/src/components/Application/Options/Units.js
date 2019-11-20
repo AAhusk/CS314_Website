@@ -23,7 +23,7 @@ export default class Units extends Component {
                 <CardHeader className='bg-csu-green text-white font-weight-semibold'>Units</CardHeader>
                   <CardBody>
                     <Col xs={12} sm={12} md={9} lg={9}>
-                      <ButtonGroup horizontal className="mr-2">
+                      <ButtonGroup className="mr-2">
                         {this.renderUnitButtons(Object.keys(this.props.options.units))}
                       </ButtonGroup>
                     </Col>
@@ -114,7 +114,7 @@ export default class Units extends Component {
 
   createOption() {
     let currentUnits = this.props.options.units;
-    currentUnits[this.state.customUnitName] = this.state.customUnitRadius;
+    currentUnits[this.state.customUnitName] = parseInt(this.state.customUnitRadius);
     this.props.updateOption('units', currentUnits);
     this.render();
      // create new button for custom Unit. Create new unit in Application.js for custom unit.
