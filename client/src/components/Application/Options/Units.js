@@ -1,7 +1,9 @@
 import React, { Component } from 'react'
-import { Card, CardHeader, CardBody, CardText } from 'reactstrap'
+import { Card, CardHeader, CardGroup, CardBody, CardText } from 'reactstrap'
 import { Button, ButtonGroup } from 'reactstrap'
 import {Row, Col} from 'reactstrap'
+import Pane from "../Pane";
+import {Form, Input} from 'reactstrap'
 
 export default class Units extends Component {
   constructor(props) {
@@ -65,20 +67,21 @@ export default class Units extends Component {
   }
 
   renderCustomUnit(stateVar) {
-    return (
-        <Pane header={(stateVar.charAt(10) === 'N') ? 'Unit Name' : 'Earth Radius'}
-              bodyJSX={
-                <Form>
-                  {this.createInputField(stateVar)}
-                </Form>
-              }
-        />
-    );
+      return (
+          <Pane header={(stateVar.charAt(10) === 'N') ? 'Unit Name'
+              : 'Earth Radius'}
+                bodyJSX={
+                  <Form>
+                    {this.createInputField(stateVar)}
+                  </Form>
+                }
+          />
+      );
   }
 
   renderEnterButton(){
     return (
-        <Button className='bg-csu-gold text-white' onClick={(event) => this.createOption()}>Create Custom Unit</Button>
+        <Button className='bg-csu-gold text-white' value={"Enter"} onClick={(event) => this.createOption()}>Create Custom Unit</Button>
     )
   }
 
