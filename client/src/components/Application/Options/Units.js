@@ -1,10 +1,9 @@
 import React, { Component } from 'react'
-import { Card, CardHeader, CardBody, CardGroup, CardDeck } from 'reactstrap'
+import { Card, CardHeader, CardBody, CardGroup, CardText, CardDeck } from 'reactstrap'
 import { Row, Col, Button, ButtonGroup } from 'reactstrap'
 import {Form, Input} from 'reactstrap'
 import Pane from '../Pane';
 import {Container} from 'reactstrap'
-import CardText from "reactstrap/es/CardText";
 
 export default class Units extends Component {
   constructor(props) {
@@ -82,7 +81,7 @@ export default class Units extends Component {
   renderEnterButton(){
 
     return (
-        <Button className='bg-csu-gold text-white' onClick={(event) => this.createOption()}>Create Custom Unit</Button>
+        <Button className='bg-csu-gold text-white' value={"Enter"} onClick={(event) => this.createOption()}>Create Custom Unit</Button>
     )
   }
 

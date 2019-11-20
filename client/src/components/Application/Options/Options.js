@@ -3,7 +3,7 @@ import {Container, Row, Col} from 'reactstrap'
 import { Card, CardBody, CardHeader } from 'reactstrap';
 import Pane from '../Pane';
 import Units from './Units'
-import CardGroup from "reactstrap/es/CardGroup";
+import CardGroup from 'reactstrap';
 import Markers from "./Markers";
 
 /* Options allows the user to change the parameters for planning
