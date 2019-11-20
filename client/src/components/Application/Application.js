@@ -100,6 +100,7 @@ export default class Application extends Component {
 					if (response.statusCode >= 200 && response.statusCode <= 299) {
 						this.validateApiResponse(response)
 						data.distances = response.body.distances;
+						data.cumulativeDistances = this.updateCumulativeDistances(data.distances);
 						this.setState({
 							itineraryData: data
 						});
@@ -109,6 +110,18 @@ export default class Application extends Component {
 				});
 			});
 		}
+	}
+
+	updateCumulativeDistances(distances){
+		let cumulativeDistance = 0;
+		let cumulativeDistances = [];
+
+		distances.map( (distance) => {
+			cumulativeDistance += distance;
+			cumulativeDistances.push(cumulativeDistance);
+		});
+
+		return cumulativeDistances;
 	}
 	
 	geolocation(stateVar) { // Add a try/catch here

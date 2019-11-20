@@ -65,6 +65,8 @@ export default class FileInput extends Component {
 		let places = trip.places;
 		let distances = [];
 		let checkBoxes = new Array(trip.places.length).fill(true);
+		let cumulativeDistance = 0;
+		let cumulativeDistances = [];
 		
 		for (let i = 0; i < trip.places.length; i++) {
 			
@@ -75,8 +77,10 @@ export default class FileInput extends Component {
 			places[i].longitude = formattedCoordsOrigin.longitude;
 			places[i].checked = true;
 
-
 			distances.push((trip.distances != null) ? trip.distances[i] : "");
+
+			cumulativeDistance += distances[i];
+			cumulativeDistances.push(cumulativeDistance);
 		}
 		
 		itineraryData = {
@@ -85,7 +89,9 @@ export default class FileInput extends Component {
 			distances: distances,
 			checkBoxes: checkBoxes,
 			checked: true,
-            polyLineEnabled: true
+			cumulativeDistances: cumulativeDistances,
+      polyLineEnabled: true
+
 		};
 		
 		
