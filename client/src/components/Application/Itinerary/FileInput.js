@@ -89,7 +89,9 @@ export default class FileInput extends Component {
 			distances: distances,
 			checkBoxes: checkBoxes,
 			checked: true,
-			cumulativeDistances: cumulativeDistances
+			cumulativeDistances: cumulativeDistances,
+      polyLineEnabled: true
+
 		};
 		
 		
