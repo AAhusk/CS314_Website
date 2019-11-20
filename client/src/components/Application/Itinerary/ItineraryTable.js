@@ -27,7 +27,8 @@ export default class ItineraryTable extends React.Component {
                 <th style={{width: 0.1 + "em"}}><img src={iconredbutton} style={{cursor: "pointer"}} onClick={() => this.flipCheckBoxes()} alt="Marker" /></th>
                 <th>Origin</th>
                 <th>Destination</th>
-                <th>Distance</th>
+                <th>Leg Distance</th>
+                <th>Cumulative Distance</th>
                 <th></th>
               </tr>
               </thead>
@@ -49,6 +50,7 @@ export default class ItineraryTable extends React.Component {
     return (
           this.props.itineraryData.places.length > 0 &&
           <tr>
+            <th/>
             <th/>
             <th/>
             <th>Total Distance</th>
@@ -133,6 +135,7 @@ export default class ItineraryTable extends React.Component {
               <td style={{width: 0.1 + "em"}} key={"checkbox" + index}><Input addon type="checkbox" id={"Input" + this.state.forceUpdate} checked={entry.checked} onChange={() => this.checkBoxCallback(entry, index)}/></td>
               <td key={"name" + index}>{entry.origin != null && entry.origin.name}</td>
               <td key={"dest" + index}>{entry.destination != null && entry.destination.name}</td>
+              <td key={"dist" + index}>{this.props.itineraryData != null && this.props.itineraryData.distances[index]}</td>
               <td key={"dist" + index}>{this.props.itineraryData != null && this.props.itineraryData.cumulativeDistances[index]}</td>
               <td style={{width: 0.1 + "em"}} key={"buttons" + index}>
                 <ButtonGroup>
