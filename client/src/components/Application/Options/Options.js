@@ -18,9 +18,17 @@ export default class Options extends Component{
         <Container>
           <Card className = 'text-center'>
             <CardHeader className='bg-csu-gold text-white font-weight-semibold'>Options</CardHeader>
-                <Units options={this.props.options}
-                       activeUnit={this.props.options.activeUnit}
-                       updateOption={this.props.updateOption}/>
+              <Units options={this.props.options}
+                         activeUnit={this.props.options.activeUnit}
+                         updateOption={this.props.updateOption}/>
+            <Row>
+              <Col xs="12" sm="9" md="6" lg="4" xl="4">
+                <Markers updateOption={this.props.updateOption}
+                         colorURL={this.props.options.colorURL}
+                         markerSize={this.props.options.markerSize}
+                />
+              </Col>
+            </Row>
           </Card>
         </Container>
     )

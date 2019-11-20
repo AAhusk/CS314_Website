@@ -9,6 +9,11 @@ import Settings from './Settings/Settings';
 import {getOriginalServerPort, sendServerRequest, sendServerRequestWithBody} from '../../api/restfulAPI';
 import ErrorBanner from './ErrorBanner';
 
+import configSchema from '../../api/schemas/TIPConfigResponseSchema.json';
+import distanceSchema from '../../api/schemas/TIPDistanceResponseSchema.json';
+import locationsSchema from '../../api/schemas/TIPLocationsResponseSchema.json';
+import tripSchema from '../../api/schemas/TIPTripResponseSchema';
+import iconred from './images/iconred.png';
 
 /* Renders the application.
  * Holds the destinations and options state shared with the trip.
@@ -28,14 +33,16 @@ export default class Application extends Component {
 			serverConfig: null,
 			planOptions: {
 				units: {'miles': 3959, 'kilometers': 6371, 'nautical miles': 3440},
-				activeUnit: 'miles'
+				activeUnit: 'miles',
+				markerSize: [30, 41],
+				colorURL: iconred
 			},
 			clientSettings: {serverPort: getOriginalServerPort()},
 			errorMessage: null,
 			currentLocation: null,
 			
-			origin: {latitude: 1, longitude: 1},
-			destination: {latitude: 1, longitude: 1},
+			origin: {latitude: "1", longitude: "1"},
+			destination: {latitude: "1", longitude: "1"},
 			itineraryData: {places: [], distances: []}
 		};
 		
@@ -54,47 +61,54 @@ export default class Application extends Component {
 	
 	onLocationChange(position, stateVar) {
 		let update = {
-			latitude: position.latitude,
-			longitude: position.longitude
+			latitude: position.latitude.toString(),
+			longitude: position.longitude.toString()
 		};
 		this.setState({
 			[stateVar]: update
 		})
 	}
-	
-	updateItineraryData(data) {
-		
+
+	createServerObject() {
 		const serverObject = {
 			'requestType': 'trip',
-			'requestVersion': 3,
+			'requestVersion': 4,
 			'distances': [],
 			'options': {
 				'title': "Update Distances",
-				'earthRadius': this.state.planOptions.units[this.state.planOptions.activeUnit],
+				'earthRadius': this.state.planOptions.units[this.state.planOptions.activeUnit].toString(),
 				'optimization': 'none'
 			},
 			'places': this.state.itineraryData.places
 		};
-		
-		this.setState({
-			itineraryData: data
-		}, () => {
-			
-			sendServerRequestWithBody('trip', serverObject, this.state.clientSettings.serverPort)
-			.then((response) => {
-				if (response.statusCode >= 200 && response.statusCode <= 299) {
-					data.distances = response.body.distances;
-					
-					this.setState({
-						itineraryData: data
-					});
-					
-				} else {
-					console.log(response.statusText, response.statusCode);
-				}
+		return serverObject;
+	}
+
+	updateItineraryData(data, needDistances = true) {
+		if (needDistances===false) {
+			this.setState({itineraryData: data})
+		}
+		else {
+			this.setState({
+				itineraryData: data
+			}, () => {
+				const serverObject = this.createServerObject();
+
+				sendServerRequestWithBody('trip', serverObject,
+						this.state.clientSettings.serverPort)
+				.then((response) => {
+					if (response.statusCode >= 200 && response.statusCode <= 299) {
+						this.validateApiResponse(response)
+						data.distances = response.body.distances;
+						this.setState({
+							itineraryData: data
+						});
+					} else {
+						//console.log(response.statusText, response.statusCode);
+					}
+				});
 			});
-			
-		});
+		}
 	}
 	
 	geolocation(stateVar) { // Add a try/catch here
@@ -113,105 +127,51 @@ export default class Application extends Component {
 			)
 		}
 	}
-	
+
 	formatCoordinates(rawString, stateVar, returnFormattedCoords = false) {
-		// Input would look like "40N, 100W", "rawStringO"
-		// If returnFormattedCoords is false, it just updates the state
-		
 		if (returnFormattedCoords === false) {
 			this.setState({errorMessage: null});
 		}
 		const Coordinates = require('coordinate-parser');
+
 		try {
 			let coords = new Coordinates(rawString);
 			let finalState = "destination";
-			
+
 			if (stateVar === 'rawStringO') {
 				finalState = 'origin';
 			}
-			
-			let lat = coords.getLatitude();
-			let long = coords.getLongitude();
-			let latNew = lat;
-			let longNew = long;
-			
-			
-			// Compute Latitude & Longitude
-			{
-				if (lat > 180 || lat < -180) {
-					lat = lat % 180;
-				}
-				if (lat > 90) {
-					latNew = 0;
-					if (lat % 180 === 0) {
-						latNew = 0;
-					} else if (lat % 180 > 90) {
-						latNew = ((lat % 180) % 90) + -90;
-					} else if (lat % 180 < 90) {
-						latNew = (lat % 180) + -90;
-					} else {
-						latNew = 0;
-					}
-					lat = latNew;
-				} else if (lat < -90) {
-					lat = -1 * lat;
-					latNew = 0;
-					if (lat % 180 === 0) {
-						latNew = 0;
-					} else if (lat % 180 > 90) {
-						latNew = -1 * (((lat % 180) % 90) + -90);
-					} else if (lat % 180 < 90) {
-						latNew = -1 * ((lat % 180) + -90);
-					} else {
-						latNew = 0;
-					}
-					lat = latNew;
-				}
-				
-				// Compute Longitude
-				if (long > 360 || long < -360) {
-					long = long % 360;
-				}
-				if (long > 180) {
-					longNew = 0;
-					if (long % 360 === 0) {
-						longNew = 0;
-					} else if (long % 360 > 180) {
-						longNew = (((long % 360) % 180) + -180);
-					} else if (long % 360 < 180) {
-						longNew = ((long % 360) + -180);
-					} else {
-						longNew = 0;
-					}
-					long = longNew;
-				} else if (long < -180) {
-					long = -1 * long;
-					longNew = 0;
-					if (long % 360 === 0) {
-						longNew = 0;
-					} else if (long % 360 > 180) {
-						longNew = -1 * (((long % 360) % 180) + -180);
-					} else if (long % 360 < 180) {
-						longNew = -1 * ((long % 360) + -180);
-					} else {
-						longNew = 0;
-					}
-					long = longNew;
-				}
-			}
+
+			let latFinal = this.formatLatLong(coords.getLatitude(), 90);
+			let longFinal = this.formatLatLong(coords.getLongitude(), 180);
 			
 			if (returnFormattedCoords === true) {
-				return {latitude: lat, longitude: long};
+				return {latitude: latFinal.toString(), longitude: longFinal.toString()};
 			} else {
-				let dict = {latitude: lat, longitude: long};
+				let dict = {latitude: latFinal.toString(), longitude: longFinal.toString()};
 				this.setState({[finalState]: dict});
 			}
-		} catch (err) {
+		}
+		catch (err) {
 			if (!(err.message.includes("Uneven") || err.message.includes("null"))) {
 				this.setState({errorMessage: <ErrorBanner statusText="Error with input" message={err.message}/>})
 			}
 			return 1;
 		}
+	}
+
+	formatLatLong(coordinate, maxDegrees) {
+		let returnCoord = coordinate;
+		if (coordinate > 2*maxDegrees || coordinate < -2*maxDegrees) {
+			coordinate = coordinate % (2*maxDegrees);
+		}
+		if (coordinate > maxDegrees) {
+			returnCoord = coordinate - (2*maxDegrees);
+		}
+		if (coordinate < -maxDegrees) {
+			returnCoord = coordinate + (2*maxDegrees);
+		}
+		return returnCoord;
 	}
 	
 	updateClientSetting(field, value) {
@@ -233,6 +193,7 @@ export default class Application extends Component {
 	updateServerConfig() {
 		sendServerRequest('config', this.state.clientSettings.serverPort).then(config => {
 			console.log(config);
+			this.validateApiResponse(config);
 			this.processConfigResponse(config);
 		});
 	}
@@ -264,7 +225,8 @@ export default class Application extends Component {
 				                   geolocation={this.geolocation}
 				                   formatCoordinates={this.formatCoordinates}
 				                   updateItineraryData={this.updateItineraryData}
-				                   itineraryData={this.state.itineraryData}
+								   itineraryData={this.state.itineraryData}
+								   validateApiResponse={this.validateApiResponse}
 				/>;
 			
 			case 'options':
@@ -281,10 +243,29 @@ export default class Application extends Component {
 					locationDestination={this.state.destination}
 					currentLocation={this.state.currentLocation}
 					geolocation={this.geolocation}
+					options={this.state.planOptions}
 				/>;
 		}
 	}
+
 	
+	validateApiResponse(response) {
+		var Ajv = require('ajv');
+		var ajv = new Ajv(); // options can be passed, e.g. {allErrors: true}
+
+		switch(response.body.requestType){
+			case 'config': var valid = ajv.validate(configSchema, response.body); break;
+			case 'distance': var valid = ajv.validate(distanceSchema, response.body); break;
+			case 'locations': var valid = ajv.validate(locationsSchema, response.body); break;
+			case 'trip': var valid = ajv.validate(tripSchema, response.body); break;
+		}
+
+		if (!valid) console.log(ajv.errors);
+		else return true;
+	}
+
+
+
 	processConfigResponse(config) {
 		if (config.statusCode >= 200 && config.statusCode <= 299) {
 			console.log("Switching to server ", this.state.clientSettings.serverPort);

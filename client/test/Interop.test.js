@@ -67,9 +67,9 @@ function mockConfigResponse() {
         status: 200,
         statusText: 'OK',
         body: {
-          'placeAttributes': ["name","latitude","longitude","id","altitude","municipality","type"],
+          'placeAttributes': ["name","latitude","longitude","id","altitude","municipality","region", "country","continent", "type"],
           'requestType': "config",
-          'requestVersion': 3,
+          'requestVersion': 4,
           'serverName': "t11"
         },
         type: 'basic',

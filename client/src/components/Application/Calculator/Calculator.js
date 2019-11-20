@@ -1,5 +1,5 @@
-import React, {Component} from 'react'
-import {Container, Row, Col, ListGroupItem, ListGroup} from 'reactstrap'
+import React, {Component, Fragment} from 'react'
+import {Container, Row, Col, ListGroupItem, ListGroup, Modal, ModalHeader, ModalBody, ModalFooter} from 'reactstrap'
 import {Button} from 'reactstrap'
 import {Input} from 'reactstrap'
 import {sendServerRequestWithBody} from '../../../api/restfulAPI'
@@ -21,13 +21,61 @@ export default class Calculator extends Component {
 			rawStringD: null,
 			distance: 0,
 			errorMessage: this.props.errorMessage,
-			useLocation: false
+			useLocation: false,
+			suggestedPlaces: [],
+		        numFoundPlaces: 0,
+		        addModal: {
+		   	    toggle: false,
+			    places: [],
+			    found: 0
+		        } 
 		};
 	}
 	
 	render() {
+	    let toggleModal = () => {
+	        this.setState({addModal: {
+	    	    toggle: !this.state.addModal.toggle,
+		    place: this.state.suggestedPlaces,
+		    found: this.state.numFoundPlaces
+	        }});
+	    };
+
+        let addPlaceModal = (
+            <Modal isOpen={this.state.addModal.toggle} toggle={toggleModal}>
+                <ModalHeader toggle={toggleModal}>Search Results</ModalHeader>
+                <ModalBody>
+                    <h5>Found {this.state.addModal.found} results</h5>
+                    {/*<Row>
+                        <Col>{this.state.addModal.place[0].name}</Col>
+                        <Col>{this.state.addModal.place[0].region}</Col>
+                        <Col>{this.state.addModal.place[0].country}</Col>
+                    </Row>
+                    <Row>
+                        <Col>{this.state.addModal.place[1].name}</Col>
+                        <Col>{this.state.addModal.place[1].region}</Col>
+                        <Col>{this.state.addModal.place[1].country}</Col>
+                    </Row>
+                    <Row>
+                        <Col>{this.state.addModal.place[2].name}</Col>
+                        <Col>{this.state.addModal.place[2].region}</Col>
+                        <Col>{this.state.addModal.place[2].country}</Col>
+                    </Row>
+                    <Row>
+                        <Col>{this.state.addModal.place[3].name}</Col>
+                        <Col>{this.state.addModal.place[3].region}</Col>
+                        <Col>{this.state.addModal.place[3].country}</Col>
+                    </Row>
+                    <Row>
+                        <Col>{this.state.addModal.place[4].name}</Col>
+                        <Col>{this.state.addModal.place[4].region}</Col>
+                        <Col>{this.state.addModal.place[5].country}</Col>
+                    </Row>*/}
+                </ModalBody>
+            </Modal>
+        );
 		return (
-			<div>
+			<React.Fragment>
 				<Row>
 					{this.state.errorMessage}
 					<Col xs={12} sm={12} md={9} lg={9}>
@@ -35,18 +83,26 @@ export default class Calculator extends Component {
 						      locationOrigin={this.props.locationOrigin}
 						      locationDestination={this.props.locationDestination}
 						      itineraryData={this.props.itineraryData}
+						      options={this.props.options}
 						/>
 					</Col>
 					<Col xs={12} sm={12} md={3} lg={3}>
+						{addPlaceModal}
 						<ListGroup>
-							<ListGroupItem> <Button color='primary' onClick={() => this.handleButtonClick()}>Use My
+							<ListGroupItem> <Button className='bg-csu-green text-white' onClick={() => this.handleButtonClick()}>Use My
 								Location</Button> </ListGroupItem>
 							<ListGroupItem> {this.createInputField("origin")}</ListGroupItem>
+							<Button onClick={toggleModal} className="float-right">Search Database</Button>
+                            				<br></br>
 							<ListGroupItem> {this.createInputField("destination")}</ListGroupItem>
+							<Button onClick={toggleModal} className="float-right">Search Database</Button>
+                            				<br></br>
 							<ListGroupItem> {this.createDistance()}</ListGroupItem>
 						</ListGroup>
 					</Col>
 				</Row>
+				<hr/>
+					{' '}
 				<Row>
 					<Itinerary options={this.props.options}
 					           settings={this.props.settings}
@@ -55,10 +111,11 @@ export default class Calculator extends Component {
 					           updateItineraryData={this.props.updateItineraryData}
 					           formatCoordinates={this.props.formatCoordinates}
 					           createInputField={this.createInputField}
-					           itineraryData={this.props.itineraryData}
+						   itineraryData={this.props.itineraryData}
+						   validateApiResponse={this.props.validateApiResponse}
 					/>
 				</Row>
-			</div>
+			</React.Fragment>
 		);
 	}
 	
@@ -102,10 +159,18 @@ export default class Calculator extends Component {
 			rawStateName = "rawStringO"
 		}
 		if(!rawString) { rawString = "0N, 0W"}
-		
+
 		// rawString should look like "40N, 108W"
-		this.props.formatCoordinates(rawString, rawStateName);
-		this.setState({[rawStateName]: rawString})
+		if(this.hasNumber(rawString)) {
+		   this.props.formatCoordinates(rawString, rawStateName);
+		   this.setState({[rawStateName]: rawString})
+		} else {
+		    this.queryDatabase(rawString);
+		}
+	}
+
+	hasNumber(s) {
+	    return /\d/.test(s);
 	}
 	
 	createDistance() {
@@ -113,7 +178,7 @@ export default class Calculator extends Component {
 			<Container>
 				<Row>
 					<Col>
-						<Button color='primary' onClick={this.calculateDistance}>Calculate</Button>
+						<Button className='bg-csu-green text-white' onClick={this.calculateDistance}>Calculate</Button>
 					</Col>
 					<Col>
 						<h5>{`${this.state.distance} ${this.props.options.activeUnit}`}</h5>
@@ -125,8 +190,8 @@ export default class Calculator extends Component {
 	
 	calculateDistance() {
 		const tipConfigRequest = {
-			'type': 'distance',
-			'version': 2,
+			'requestType': 'distance',
+			'requestVersion': 4,
 			'origin': this.props.locationOrigin,
 			'destination': this.props.locationDestination,
 			'earthRadius': this.props.options.units[this.props.options.activeUnit]
@@ -135,6 +200,7 @@ export default class Calculator extends Component {
 		sendServerRequestWithBody('distance', tipConfigRequest, this.props.settings.serverPort)
 		.then((response) => {
 			if (response.statusCode >= 200 && response.statusCode <= 299) {
+				this.props.validateApiResponse(response);
 				this.setState({
 					distance: response.body.distance,
 					errorMessage: null
@@ -149,6 +215,36 @@ export default class Calculator extends Component {
 				});
 			}
 		});
+	}
+
+	queryDatabase(match) {
+		const tipConfigRequest = {
+		    'requestType': 'locations',
+		    'requestVersion': 3,
+		    "match"          : match,
+		    "limit"          : 100,
+		    "found"          : 0,
+		    "places"         : []
+		};
+
+		sendServerRequestWithBody('location', tipConfigRequest, this.props.settings.serverPort)
+		    .then((response) => {
+			if (response.statusCode >= 200 && response.statusCode <= 299) {
+			    this.setState({
+				numFoundPlaces: response.body.found,
+				suggestedPlaces: response.body.places,
+				errorMessage: null
+			    });
+			} else {
+			    this.setState({
+				errorMessage: this.props.createErrorBanner(
+				    response.statusText,
+				    response.statusCode,
+				    `Request to ${this.props.settings.serverPort} failed.`
+				)
+			    });
+			}
+		    });
 	}
 	
 	updateLocationState(stateVar, field, value) {

@@ -77,7 +77,7 @@ module.exports = {
       // transpiler, converting modern JavaScript to an older-syntax,
       // browser-safe version.
       {
-        test: /\.(js|jsx)/, use: 'babel-loader',
+        test: /\.(js|jsx)$/, use: 'babel-loader',
         include: path.join(__dirname, './', 'src'),
       },
       // Rule 2: Stylesheets (CSS). Use style-loader first, then css-loader.

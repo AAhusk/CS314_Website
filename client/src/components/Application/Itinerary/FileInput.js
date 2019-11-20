@@ -48,12 +48,13 @@ export default class FileInput extends Component {
 		.then((response) => {
 			
 			if (response.statusCode >= 200 && response.statusCode <= 299) {
+				this.props.validateApiResponse(response);
 				var itineraryData = this.formatTripData(response.body);
 				var totalDistance = this.props.sumTotalDistance(response.body.distances);
 				this.setState({backgroundColor: green});
 				this.props.onFileSelect(trip, itineraryData, totalDistance);
 			} else {
-				console.log("Error");
+				//console.log("Error");
 				this.props.errorHandler(response.statusText, response.statusCode);
 			}
 		});
@@ -63,6 +64,8 @@ export default class FileInput extends Component {
 		let itineraryData;
 		let places = trip.places;
 		let distances = [];
+		let checkBoxes = new Array(trip.places.length).fill(true);
+		
 		for (let i = 0; i < trip.places.length; i++) {
 			
 			let formattedCoordsOrigin = this.props.formatCoordinates(
@@ -70,13 +73,19 @@ export default class FileInput extends Component {
 
 			places[i].latitude = formattedCoordsOrigin.latitude;
 			places[i].longitude = formattedCoordsOrigin.longitude;
+			places[i].checked = true;
+
 
 			distances.push((trip.distances != null) ? trip.distances[i] : "");
 		}
 		
 		itineraryData = {
+			originalPlaces: places.slice(), // Dont edit
 			places: places,
-			distances: distances
+			distances: distances,
+			checkBoxes: checkBoxes,
+			checked: true,
+            polyLineEnabled: true
 		};
 		
 		

@@ -7,9 +7,7 @@ import {Map, Marker, Popup, TileLayer, Polyline} from 'react-leaflet';
 import iconblue from './images/iconblue.png';
 import iconblueD from './images/iconblueD.png';
 import iconred from './images/iconred.png';
-//import icongreen from './images/icongreen.png'
 import iconhappy from './images/iconhappy.png'
-//import iconflower from './images/iconflower.png'
 
 export default class LMap extends Component {
 	constructor(props) {
@@ -20,9 +18,9 @@ export default class LMap extends Component {
 	
 	render() {
 		return (
-			<Container>
+			<React.Fragment>
 				{this.renderMap()}
-			</Container>
+			</React.Fragment>
 		);
 	}
 	
@@ -35,26 +33,29 @@ export default class LMap extends Component {
 	}
 	
 	itineraryComponentSetup() {
-		let MarkerArr = [];
-		let ItinPolylinepts = [];
+		let MarkerArr = [];	let ItinPolylinepts = [];
 		
 		let pointArr = this.props.itineraryData.places;
 		if (pointArr.length !== 0) {
 			for (let i = 0; i < pointArr.length; i++) {
-				MarkerArr.push(
-					<Marker key={"Marker" + i}
-					        position={L.latLng(pointArr[i].latitude, pointArr[i].longitude)}
-					        icon={this.markerIcon(iconred)}>
-						<Popup className="font-weight-extrabold">
-							Destination:<br/>
-							{pointArr[i].latitude} Latitude<br/>
-							{pointArr[i].longitude} Longitude
-						</Popup>
-					</Marker>
-				);
-				ItinPolylinepts.push(
-					[pointArr[i].latitude, pointArr[i].longitude]
-				);
+				if (this.props.itineraryData.places[i].checked === true) {
+					MarkerArr.push(
+						<Marker key={"Marker" + i}
+						        position={L.latLng(pointArr[i].latitude, pointArr[i].longitude)}
+						        icon={this.markerIcon(iconred)}>
+							<Popup className="font-weight-extrabold">
+								Destination:<br/>
+								{pointArr[i].latitude} Latitude<br/>
+								{pointArr[i].longitude} Longitude
+							</Popup>
+						</Marker>
+					);
+				}
+				if (this.props.itineraryData.polyLineEnabled == true) {
+                  ItinPolylinepts.push(
+                        [pointArr[i].latitude, pointArr[i].longitude]
+                  );
+                }
 			}
 			ItinPolylinepts.push([pointArr[0].latitude, pointArr[0].longitude]);
 			let ItinPolyline = (<Polyline positions={ItinPolylinepts}/>);
@@ -80,9 +81,13 @@ export default class LMap extends Component {
 			</Marker>
 		);
 		
-		let destinationMarker = (
+		let destinationMarker = this.createDestinationMarker();
+		return {ODPolyline: ODPolyline, originMarker: originMarker, destinationMarker: destinationMarker};
+	}
+	createDestinationMarker() {
+		return (
 			<Marker position={this.currentDestination()}
-			        icon={this.markerIcon(iconblueD)}>
+							icon={this.markerIcon(iconblueD)}>
 				<Popup className="font-weight-extrabold">
 					Destination:<br/>
 					{this.props.locationDestination.latitude} Latitude<br/>
@@ -90,9 +95,8 @@ export default class LMap extends Component {
 				</Popup>
 			</Marker>
 		);
-		return {ODPolyline: ODPolyline, originMarker: originMarker, destinationMarker: destinationMarker};
 	}
-	
+
 	renderLeafletMap() {
 		
 		let calculatorComponents = {ODPolyline: null, originMarker: null, destinationMarker: null};
@@ -165,11 +169,13 @@ export default class LMap extends Component {
 	markerIcon(url = icon) {
 		// react-leaflet does not currently handle default marker icons correctly,
 		// so we must create our own
+		console.log(this.props.options.colorURL)
+		const iconAnchorValue = [this.props.options.markerSize[0]/2, this.props.options.markerSize[1]]
 		return L.icon({
-			iconUrl: url,
-			iconSize: [30, 41],
+			iconUrl: this.props.options.colorURL,
+			iconSize: this.props.options.markerSize,
 			shadowUrl: iconShadow,
-			iconAnchor: [15, 41]  // for proper placement
+			iconAnchor: iconAnchorValue  // for proper placement
 		})
 	}
 }
