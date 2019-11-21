@@ -19,18 +19,18 @@ export default class Calculator extends Component {
 		this.state = {
 			origin: this.props.locationOrigin,
 			destination: this.props.locationDestination,
-			rawStringO: "stuff",
+			rawStringO: null,
 			rawStringD: null,
 			distance: 0,
 			errorMessage: this.props.errorMessage,
 			useLocation: false,
 			suggestedPlaces: [],
-		        numFoundPlaces: 0,
-		        addModal: {
-		   	    toggle: false,
-			    places: [],
-			    found: 0
-		        } 
+			numFoundPlaces: 0,
+			addModal: {
+				toggle: false,
+				places: [],
+				found: 0
+			}
 		};
 	}
 	
@@ -140,38 +140,43 @@ export default class Calculator extends Component {
 	
 	createInputField(stateVar, callback = null) {
 		let updateStateVarOnChange = (event) => {
-			if(this.state.useLocation === true) { this.setState({useLocation: false}); }
+			if (this.state.useLocation === true && stateVar === 'origin') {
+				this.setState({useLocation: false});
+			}
 			this.inputFieldCallback(stateVar, event.target.value); // origin / destination --- rawString
 		};
 		let label = stateVar.charAt(0).toUpperCase() + stateVar.slice(1)
-		if(stateVar == "origin" && this.state.useLocation === true) {
-			let myLocation = this.props.locationOrigin.latitude + ", " + this.props.locationOrigin.longitude;
+		let myLocation = this.props.locationOrigin.latitude + ", "
+				+ this.props.locationOrigin.longitude;
+		if (stateVar === 'origin' && this.state.useLocation === true) {
 			return (
-					<Autocomplete
-							freeSolo
-							id="combo-box-demo"
-							options={[{title: 'Inception'}]}
-							getOptionLabel={options => options.title}
-							renderInput={params => (
-									<TextField value={myLocation} label={"My Location"} fullWidth onChange={updateStateVarOnChange}/>
-							)}
-					/>
+				<Autocomplete
+						freeSolo
+						id="combo-box-demo"
+						options={[{title: 'Inception'}]}
+						getOptionLabel={options => options.title}
+						renderInput={params => (
+								<TextField value={myLocation} label={"My Location"} fullWidth
+													 onChange={(e) => (callback == null ? updateStateVarOnChange(e) : callback)}/>
+						)}
+				/>
 			);
-		} else{
-			return (
-					<Autocomplete
-							freeSolo
-							id="combo-box-demo"
-							options={[{title: 'Inception'}]}
-							getOptionLabel={options => options.title}
-							renderInput={params => (
-									<TextField {...params} label={label} fullWidth onChange={updateStateVarOnChange}/>
-							)}
-					/>
-			);
+		} else {
+				return (
+						<Autocomplete
+								freeSolo
+								id="combo-box-demo"
+								options={this.state.suggestedPlaces}
+								getOptionLabel={options => options.title}
+								renderInput={params => (
+										<TextField {...params} label={label}
+															 fullWidth onChange={(e) => (callback == null ? updateStateVarOnChange(e) : callback)}/>
+								)}
+						/>
+				);
 		}
 	}
-	
+
 	inputFieldCallback(stateVar, rawString) {
 		let rawStateName = "rawStringD";
 		if (stateVar === "origin") {
@@ -239,7 +244,7 @@ export default class Calculator extends Component {
 	queryDatabase(match) {
 		const tipConfigRequest = {
 		    'requestType': 'locations',
-		    'requestVersion': 4,
+		    'requestVersion': 3,
 		    "match"          : match,
 		    "limit"          : 100,
 		    "found"          : 0,
