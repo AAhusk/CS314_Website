@@ -56,88 +56,88 @@ public class TestTIPDistance {
   public void testOriginDestinationSame() {
     TIPDistance trip = new TIPDistance(version, csu, csu, radiusMiles);
     trip.buildResponse();
-    int expect = 0;
-    int actual = trip.getDistance();
+    long expect = 0;
+    long actual = trip.getDistance();
     assertEquals("origin and destination are the same", expect, actual);
   }
   @Test
   public void testQ1toQ2() {
     TIPDistance trip = new TIPDistance(version, Q1, Q2, radiusMiles);
     trip.buildResponse();
-    int expect = 4920;
-    int actual = trip.getDistance();
+    long expect = 4920;
+    long actual = trip.getDistance();
     assertEquals("Q1 to Q2 equals 4920", expect, actual);
   }
   @Test
   public void testQ1toQ3() {
     TIPDistance trip = new TIPDistance(version, Q1, Q3, radiusMiles);
     trip.buildResponse();
-    int expect = 6139;
-    int actual = trip.getDistance();
+    long expect = 6139;
+    long actual = trip.getDistance();
     assertEquals("Q1 to Q3 equals 6139", expect, actual);
   }
   @Test
   public void testQ1toQ4() {
     TIPDistance trip = new TIPDistance(version, Q1, Q4, radiusMiles);
     trip.buildResponse();
-    int expect = 2780;
-    int actual = trip.getDistance();
+    long expect = 2780;
+    long actual = trip.getDistance();
     assertEquals("Q1 to Q4 equals 2780", expect, actual);
   }
   @Test
   public void testQ2toQ3() {
     TIPDistance trip = new TIPDistance(version, Q2, Q3, radiusMiles);
     trip.buildResponse();
-    int expect = 2060;
-    int actual = trip.getDistance();
+    long expect = 2060;
+    long actual = trip.getDistance();
     assertEquals("Q2 to Q3 equals 2060", expect, actual);
   }
   @Test
   public void testQ2toQ4() {
     TIPDistance trip = new TIPDistance(version, Q2, Q4, radiusMiles);
     trip.buildResponse();
-    int expect = 7362;
-    int actual = trip.getDistance();
+    long expect = 7362;
+    long actual = trip.getDistance();
     assertEquals("Q2 to Q4 equals 7362", expect, actual);
   }
   @Test
   public void testQ3toQ4() {
     TIPDistance trip = new TIPDistance(version, Q3, Q4, radiusMiles);
     trip.buildResponse();
-    int expect = 7684;
-    int actual = trip.getDistance();
+    long expect = 7684;
+    long actual = trip.getDistance();
     assertEquals("Q2 to Q4 equals 7684", expect, actual);
   }
   @Test
   public void testOutOfBoundsLongitude() {
     TIPDistance trip = new TIPDistance(version, Q1, OutOfBoundsLongitude, radiusMiles);
     trip.buildResponse();
-    int expect = 0;
-    int actual = trip.getDistance();
+    long expect = 0;
+    long actual = trip.getDistance();
     assertEquals("380.4 Degrees Longitude equals 20.4 Degrees", expect, actual);
   }
   @Test
   public void testNegOutOfBoundsLongitude() {
     TIPDistance trip = new TIPDistance(version, Q1, NegOutOfBoundsLongitude, radiusMiles);
     trip.buildResponse();
-    int expect = 0;
-    int actual = trip.getDistance();
+    long expect = 0;
+    long actual = trip.getDistance();
     assertEquals("-339.6 Degrees Longitude equals 20.4 Degrees", expect, actual);
   }
   @Test
   public void testKilometersAsEarthRadius() {
     TIPDistance trip = new TIPDistance(version, Q1, Q2, radiusKilometers);
     trip.buildResponse();
-    int expect = 7917;
-    int actual = trip.getDistance();
+    long expect = 7917;
+    long actual = trip.getDistance();
     assertEquals("Q1 to Q2 equals 7917 Kilometers", expect, actual);
   }
   @Test
   public void testNauticalMilesAsEarthRadius() {
     TIPDistance trip = new TIPDistance(version, Q1, Q2, radiusNauticalMiles);
     trip.buildResponse();
-    int expect = 4275;
-    int actual = trip.getDistance();
+    long expect = 4275;
+    long actual = trip.getDistance();
     assertEquals("Q1 to Q2 equals 4275 Nautical Miles", expect, actual);
   }
 }
