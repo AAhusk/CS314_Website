@@ -370,7 +370,7 @@ export default class Itinerary extends Component {
       totalDistance: totalDistance,
       trip: trip
     });
-    this.props.updateItineraryData(itineraryData);
+    this.props.updateItineraryData(itineraryData, false);
   }
 
   errorHandler(statusText, statusCode){
