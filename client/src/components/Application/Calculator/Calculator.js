@@ -167,7 +167,7 @@ export default class Calculator extends Component {
 								freeSolo
 								id="combo-box-demo"
 								options={this.state.suggestedPlaces}
-								getOptionLabel={options => options.title}
+								getOptionLabel={options => options.name}
 								renderInput={params => (
 										<TextField {...params} label={label}
 															 fullWidth onChange={(e) => (callback == null ? updateStateVarOnChange(e) : callback)}/>

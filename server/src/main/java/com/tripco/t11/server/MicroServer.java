@@ -193,7 +193,7 @@ class MicroServer {
       TIPHeader tipRequest = jsonConverter.fromJson(request.body(), tipType);
       tipRequest.buildResponse();
       String responseBody = jsonConverter.toJson(tipRequest);
-      log.trace("TIP Response: {}", responseBody);
+      log.info("TIP Response: {}", responseBody);
       return responseBody;
     } catch (Exception e) {
       log.error("Exception: {}", e);
