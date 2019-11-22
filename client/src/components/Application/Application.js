@@ -201,6 +201,7 @@ export default class Application extends Component {
 		let optionsCopy = Object.assign({}, this.state.planOptions);
 		optionsCopy[option] = value;
 		this.setState({'planOptions': optionsCopy});
+		this.updateItineraryData(this.state.itineraryData)
 	}
 	
 	updateServerConfig() {

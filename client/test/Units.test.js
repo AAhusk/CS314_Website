@@ -19,6 +19,7 @@ function testButtonValues() {
   let actual = [];
   units.find('Button').map((element) => actual.push(element.prop('value')));
   let expected = Object.keys(startProperties.config.units);
+  expected.push("Enter");
 
   expect(actual.sort()).toEqual(expected.sort());
 }
@@ -37,13 +38,12 @@ function testInitialActiveButton() {
 
   let actualButtons = [];
   units.find('Button').map((button) => actualButtons.push(button));
-
   for (let button of actualButtons) {
-
-    if (button.prop('value') === startProperties.activeUnit){
+    if (button.prop('value') === "Enter") {
+      continue
+    } if (button.prop('value') === startProperties.activeUnit) {
       expect(button.prop('active')).toEqual(true);
-    }
-    else {
+    } else {
       expect(button.prop('active')).toEqual(false);
     }
   }
