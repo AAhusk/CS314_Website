@@ -1,22 +1,54 @@
 import React, { Component } from 'react'
-import { Card, CardHeader, CardBody } from 'reactstrap'
+import { Card, CardHeader, CardGroup, CardBody, CardText } from 'reactstrap'
 import { Button, ButtonGroup } from 'reactstrap'
+import {Row, Col} from 'reactstrap'
+import Pane from "../Pane";
+import {Form, Input} from 'reactstrap'
 
 export default class Units extends Component {
   constructor(props) {
     super(props)
+
+    this.state = {
+      customUnitName: null,
+      customUnitRadius: null,
+    };
   }
 
   render() {
     return(
-      <Card className='text-left'>
-          <CardHeader className='bg-csu-green text-white font-weight-semibold'>Units</CardHeader>
-          <CardBody>
-              <ButtonGroup horizontal={"true"} className='w100'>
-                {this.renderUnitButtons(Object.keys(this.props.options.units))}
-              </ButtonGroup>
-          </CardBody>
-      </Card>
+        <CardGroup>
+          <Card className='text-left'>
+            <CardHeader className='bg-csu-green text-white font-weight-semibold'>Units</CardHeader>
+            <CardBody>
+              <Col xs={12} sm={12} md={9} lg={9}>
+                <ButtonGroup className="mr-2">
+                  {this.renderUnitButtons(Object.keys(this.props.options.units))}
+                </ButtonGroup>
+              </Col>
+            </CardBody>
+          </Card>
+
+          <Card className='text-left'>
+            <CardHeader className='bg-csu-green text-white font-weight-semibold'>Create Custom Unit</CardHeader>
+            <CardBody>
+              <CardText> Enter the name of the unit you would like to create. Then enter the value of the Earth's radius in terms of this unit. </CardText>
+              <Row>
+                <Col xs={12} sm={12} md={9} lg={7} xl={6}>
+                  {this.renderCustomUnit('customUnitName')}
+                </Col>
+                <Col xs={12} sm={12} md={9} lg={7} xl={6}>
+                  {this.renderCustomUnit('customUnitRadius')}
+                </Col>
+              </Row>
+              <Row>
+                <Col xs={12} sm={12} md={9} lg={7} xl={6}>
+                  {this.renderEnterButton()}
+                </Col>
+              </Row>
+            </CardBody>
+          </Card>
+        </CardGroup>
     );
   }
 
@@ -33,5 +65,59 @@ export default class Units extends Component {
       </Button>
     );
   }
+
+  renderCustomUnit(stateVar) {
+      return (
+          <Pane header={(stateVar.charAt(10) === 'N') ? 'Unit Name'
+              : 'Earth Radius'}
+                bodyJSX={
+                  <Form>
+                    {this.createInputField(stateVar)}
+                  </Form>
+                }
+          />
+      );
+  }
+
+  renderEnterButton(){
+    return (
+        <Button className='bg-csu-gold text-white' value={"Enter"} onClick={(event) => this.createOption()}>Create Custom Unit</Button>
+    )
+  }
+
+  createInputField(stateVar){
+    let updateStateVarOnChange = (event) => {
+      this.updateCustomUnitState(stateVar, event.target.value);
+    };
+    if(stateVar === 'customUnitName') {
+      return (
+          <Input name={stateVar}
+                 type="text"
+                 onChange={updateStateVarOnChange}
+                 style={{width: "100%"}}/>
+      )
+    }
+    else {
+      return (
+          <Input name={stateVar}
+                 type="number"
+                 onChange={updateStateVarOnChange}
+                 style={{width: "100%"}}/>
+      )
+    }
+  }
+
+  updateCustomUnitState(stateVar, newState) {
+    this.setState({[stateVar]: newState});
+  }
+
+  createOption() {
+    let currentUnits = this.props.options.units;
+    currentUnits[this.state.customUnitName] = parseInt(this.state.customUnitRadius);
+    this.props.updateOption('units', currentUnits);
+    this.render();
+    // create new button for custom Unit. Create new unit in Application.js for custom unit.
+  }
+
 
 }

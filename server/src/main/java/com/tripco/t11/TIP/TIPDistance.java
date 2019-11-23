@@ -27,7 +27,7 @@ public class TIPDistance extends TIPHeader {
   private Map origin;
   private Map destination;
   private Float earthRadius;
-  private Integer distance;
+  private long distance;
 
   private final transient Logger log = LoggerFactory.getLogger(TIPDistance.class);
 
@@ -55,7 +55,7 @@ public class TIPDistance extends TIPHeader {
   }
 
 
-  int getDistance() { // This is where the vincenty equation should be made
+  long getDistance() { // This is where the vincenty equation should be made
 
     return distance;
   }

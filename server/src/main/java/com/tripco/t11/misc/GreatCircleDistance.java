@@ -27,11 +27,10 @@ public class GreatCircleDistance {
     this.EarthRadius = EarthRadius;
   }
 
-  public int CalculateDistance() {
+  public long CalculateDistance() {
     double centralAngleInRadians = calcCentralAngle();
-
     double distance = centralAngleInRadians * EarthRadius;
-    return Math.abs((int) Math.round(distance));
+    return Math.abs(Math.round(distance));
   }
 
   private double calcCentralAngle() {

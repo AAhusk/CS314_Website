@@ -3,7 +3,7 @@ import {Container, Row, Col} from 'reactstrap'
 import { Card, CardBody, CardHeader } from 'reactstrap';
 import Pane from '../Pane';
 import Units from './Units'
-import Markers from './Markers'
+import Markers from "./Markers";
 
 /* Options allows the user to change the parameters for planning
  * and rendering the trip map and itinerary.
@@ -19,13 +19,13 @@ export default class Options extends Component{
         <Container>
           <Card className = 'text-center'>
             <CardHeader className='bg-csu-gold text-white font-weight-semibold'>Options</CardHeader>
-              <Row>
-                <Col xs="12" sm="9" md="6" lg="4" xl="4">
-                  <Units options={this.props.options}
-                         activeUnit={this.props.options.activeUnit}
-                         updateOption={this.props.updateOption}/>
-                </Col>
-              </Row>
+            <Row>
+              <Col>
+                <Units options={this.props.options}
+                       activeUnit={this.props.options.activeUnit}
+                       updateOption={this.props.updateOption}/>
+              </Col>
+            </Row>
             <Row>
               <Col xs="12" sm="9" md="6" lg="4" xl="4">
                 <Markers updateOption={this.props.updateOption}
@@ -35,6 +35,7 @@ export default class Options extends Component{
               </Col>
             </Row>
           </Card>
+
         </Container>
     )
   }
