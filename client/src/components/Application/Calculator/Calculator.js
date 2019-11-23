@@ -96,36 +96,6 @@ export default class Calculator extends Component {
 		);
 	}
 
-	ComboBox() {
-		const top10Films = [
-			{ title: 'The Shawshank Redemption', year: 1994 },
-			{ title: 'The Godfather', year: 1972 },
-			{ title: 'The Godfather: Part II', year: 1974 },
-			{ title: 'The Dark Knight', year: 2008 },
-			{ title: '12 Angry Men', year: 1957 },
-			{ title: "Schindler's List", year: 1993 },
-			{ title: 'Pulp Fiction', year: 1994 },
-			{ title: 'The Lord of the Rings: The Return of the King', year: 2003 },
-			{ title: 'The Good, the Bad and the Ugly', year: 1966 },
-			{ title: 'Fight Club', year: 1999 },
-			{ title: 'The Lord of the Rings: The Fellowship of the Ring', year: 2001 },
-			{ title: 'Star Wars: Episode V - The Empire Strikes Back', year: 1980 },
-			{ title: 'Forrest Gump', year: 1994 },
-			{ title: 'Inception', year: 2010 }];
-		return (
-				<Autocomplete
-						id="combo-box-demo"
-						options={top10Films}
-						getOptionLabel={option => option.title}
-						style={{ width: 300 }}
-						renderInput={params => (
-								<TextField {...params} label="Combo box" variant="outlined" fullWidth />
-						)}
-						filter={(searchText, key) => true}
-				/>
-		);
-	}
-
 	
 	handleButtonClick() {
 		this.props.geolocation('origin');
@@ -145,23 +115,20 @@ export default class Calculator extends Component {
 			}
 			this.inputFieldCallback(stateVar, event.target.value); // origin / destination --- rawString
 		};
-		let label = stateVar.charAt(0).toUpperCase() + stateVar.slice(1)
-		let myLocation = this.props.locationOrigin.latitude + ", "
-				+ this.props.locationOrigin.longitude;
 		if (stateVar === 'origin' && this.state.useLocation === true) {
 			return (
 				<Autocomplete
 						freeSolo
 						id="combo-box-demo"
-						options={[{title: 'Inception'}]}
-						getOptionLabel={options => options.title}
 						renderInput={params => (
-								<TextField value={myLocation} label={"My Location"} fullWidth
+								<TextField value={this.props.locationOrigin.latitude + ", " + this.props.locationOrigin.longitude}
+													 label={"My Location"} fullWidth
 													 onChange={(e) => (callback == null ? updateStateVarOnChange(e) : callback)}/>
 						)}
 				/>
 			);
 		} else {
+				let label = stateVar.charAt(0).toUpperCase() + stateVar.slice(1)
 				return (
 						<Autocomplete
 								freeSolo
