@@ -225,8 +225,8 @@ export default class Application extends Component {
 				                   geolocation={this.geolocation}
 				                   formatCoordinates={this.formatCoordinates}
 				                   updateItineraryData={this.updateItineraryData}
-								   itineraryData={this.state.itineraryData}
-								   validateApiResponse={this.validateApiResponse}
+													 itineraryData={this.state.itineraryData}
+													 validateApiResponse={this.validateApiResponse}
 				/>;
 			
 			case 'options':

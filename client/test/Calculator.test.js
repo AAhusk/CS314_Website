@@ -3,6 +3,7 @@ import React from 'react';
 import {shallow, mount} from 'enzyme';
 import Calculator from '../src/components/Application/Calculator/Calculator';
 import Application from '../src/components/Application/Application';
+import iconred from '/home/aahusk/IdeaProjects/t11/client/src/components/Application/images/iconred.png';
 
 
 const startProperties = {
@@ -19,6 +20,10 @@ function testCreateInputFields() {
       <Calculator options={startProperties.options}
                   formatCoordinates={Application.formatCoordinates}
                   itineraryData={{places: [], distances: []}}
+                  locationOrigin={{latitude: 0, longitude: 20}}
+                  locationDestination={{latitude: 20, longitude: 0}}
+                  options={{units: {'miles': 3959, 'kilometers': 6371, 'nautical miles': 3440},
+                    activeUnit: 'miles', markerSize: [30, 41], colorURL: iconred}}
 
       />
   ));
