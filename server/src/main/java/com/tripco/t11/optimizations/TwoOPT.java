@@ -2,11 +2,11 @@ package com.tripco.t11.optimizations;
 
 public class TwoOPT {
 
-  private int[][] distTable;
+  private long[][] distTable;
   private int[] shorterRoute;
 
 
-  public TwoOPT(int[] nearestRoute, int[][] distTable) {
+  public TwoOPT(int[] nearestRoute, long[][] distTable) {
     createRouteArray(nearestRoute);
     this.distTable = distTable;
   }
