@@ -4,10 +4,7 @@ import { Button, ButtonGroup } from 'reactstrap'
 import iconblue from '../images/iconblue.png'
 import iconred from '../images/iconred.png'
 import icongreen from '../images/icongreen.png'
-import { withStyles, makeStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
 import Slider from '@material-ui/core/Slider';
-import Typography from '@material-ui/core/Typography';
 import Tooltip from '@material-ui/core/Tooltip';
 
 export default class Markers extends Component {
