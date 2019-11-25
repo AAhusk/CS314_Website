@@ -2,11 +2,12 @@ import React, {Component, Fragment} from 'react'
 import {Container, Row, Col, ListGroupItem, ListGroup, Modal, ModalHeader, ModalBody, ModalFooter} from 'reactstrap'
 import {Button} from 'reactstrap'
 import {Input} from 'reactstrap'
-import TextField from '@material-ui/core/TextField';
+import {TextField, IconButton, SvgIcon} from '@material-ui/core';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import {sendServerRequestWithBody} from '../../../api/restfulAPI'
 import LMap from "../LMap";
 import Itinerary from "../Itinerary/Itinerary";
+import { MyLocation } from '@material-ui/icons';
 
 export default class Calculator extends Component {
 	constructor(props) {
@@ -21,6 +22,8 @@ export default class Calculator extends Component {
 			destination: this.props.locationDestination,
 			rawStringO: null,
 			rawStringD: null,
+			inputOrigin: '',
+			inputDest: '',
 			distance: 0,
 			errorMessage: this.props.errorMessage,
 			useLocation: false,
@@ -66,15 +69,26 @@ export default class Calculator extends Component {
 					<Col xs={12} sm={12} md={3} lg={3}>
 						{addPlaceModal}
 						<ListGroup>
-							<ListGroupItem> <Button className='bg-csu-green text-white' onClick={() => this.handleButtonClick()}>Use My
-								Location</Button> </ListGroupItem>
-							<ListGroupItem> {this.createInputField("origin")}</ListGroupItem>
-							<Button onClick={toggleModal} className="float-right">Search Database</Button>
-                            				<br></br>
+							<ListGroupItem>
+								<Row>
+									<IconButton title={"Use My Location"} onClick={() => this.handleButtonClick()}> <MyLocation/> </IconButton>
+									{this.createInputField("origin")}
+								</Row>
+							</ListGroupItem>
+
 							<ListGroupItem> {this.createInputField("destination")}</ListGroupItem>
+							<ListGroupItem>
+								<Row>
+									{<IconButton title={"Calculate Distance"} onClick={this.calculateDistance}>
+										<SvgIcon> <path d="M7,2H17A2,2 0 0,1 19,4V20A2,2 0 0,1 17,22H7A2,2 0 0,1 5,20V4A2,2 0 0,1 7,2M7,4V8H17V4H7M7,10V12H9V10H7M11,
+										10V12H13V10H11M15,10V12H17V10H15M7,14V16H9V14H7M11,14V16H13V14H11M15,14V16H17V14H15M7,18V20H9V18H7M11,18V20H13V18H11M15,18V20H17V18H15Z"/></SvgIcon>
+									</IconButton>}
+									<h4 style={{marginTop:'10px', marginLeft:'10px'}}>{`${this.state.distance} ${this.props.options.activeUnit}`}</h4>
+								</Row>
+							</ListGroupItem>
+							<ListGroupItem> {this.createInputField("database")}</ListGroupItem>
 							<Button onClick={toggleModal} className="float-right">Search Database</Button>
                             				<br></br>
-							<ListGroupItem> {this.createDistance()}</ListGroupItem>
 						</ListGroup>
 					</Col>
 				</Row>
@@ -97,38 +111,34 @@ export default class Calculator extends Component {
 	}
 
 	
-	handleButtonClick() {
-		this.props.geolocation('origin');
+	async handleButtonClick() {
+		await this.props.geolocation('origin');
 		this.setState({
 			rawStringO: {
 				latitude: this.props.locationOrigin.latitude,
 				longitude: this.props.locationOrigin.longitude
 			},
-			useLocation: true
+			inputOrigin: this.props.locationOrigin.latitude + ", " + this.props.locationOrigin.longitude
 		});
 	}
-	
-	createInputField(stateVar, callback = null) {
-		let updateStateVarOnChange = (event) => {
-			if (this.state.useLocation === true && stateVar === 'origin') {
-				this.setState({useLocation: false});
-			}
+
+	updateStateVarOnChange(event, stateVar) {
+		if (stateVar === 'origin') {
+			this.setState({inputOrigin: event.target.value});
+		}
+		if (stateVar === 'destination') {
+			this.setState({inputDest: event.target.value})
+		}
+		else {
 			this.inputFieldCallback(stateVar, event.target.value); // origin / destination --- rawString
-		};
-		if (stateVar === 'origin' && this.state.useLocation === true) {
-			return (
-				<Autocomplete
-						freeSolo
-						id="combo-box-demo"
-						renderInput={params => (
-								<TextField value={this.props.locationOrigin.latitude + ", " + this.props.locationOrigin.longitude}
-													 label={"My Location"} fullWidth
-													 onChange={(e) => (callback == null ? updateStateVarOnChange(e) : callback)}/>
-						)}
-				/>
-			);
-		} else {
-				let label = stateVar.charAt(0).toUpperCase() + stateVar.slice(1)
+		}
+	};
+
+	createInputField(stateVar, callback = null) {
+		if (stateVar === 'origin' || stateVar === 'destination') {
+			return (this.createCoordInput(stateVar));
+		}
+		else {
 				return (
 						<Autocomplete
 								freeSolo
@@ -136,12 +146,23 @@ export default class Calculator extends Component {
 								options={this.state.suggestedPlaces}
 								getOptionLabel={options => options.name}
 								renderInput={params => (
-										<TextField {...params} label={label}
-															 fullWidth onChange={(e) => (callback == null ? updateStateVarOnChange(e) : callback)}/>
+										<TextField {...params} label={"Search"}
+															 fullWidth onChange={(e) => (callback == null ? this.updateStateVarOnChange(e, stateVar) : callback)}/>
 								)}
 						/>
 				);
 		}
+	}
+	createCoordInput(stateVar, callback = null) {
+		let origin = (stateVar === 'origin');
+		return (
+				<Input name={stateVar + "field"}
+							 style={origin ? {width:'80%', border:'2px',height:'50px'}:{width:'80%', height:'50px', border:'2px', marginLeft:'34px'}}
+							 placeholder={stateVar.charAt(0).toUpperCase() + stateVar.slice(1)}
+							 value={origin ? this.state.inputOrigin : this.state.inputDest}
+							 id={`${stateVar}field`}
+							 onChange={(e) => (callback == null ? this.updateStateVarOnChange(e, stateVar) : callback)}/>
+		)
 	}
 
 	inputFieldCallback(stateVar, rawString) {
@@ -162,21 +183,6 @@ export default class Calculator extends Component {
 
 	hasNumber(s) {
 	    return /\d/.test(s);
-	}
-	
-	createDistance() {
-		return (
-			<Container>
-				<Row>
-					<Col>
-						<Button className='bg-csu-green text-white' onClick={this.calculateDistance}>Calculate</Button>
-					</Col>
-					<Col>
-						<h5>{`${this.state.distance} ${this.props.options.activeUnit}`}</h5>
-					</Col>
-				</Row>
-			</Container>
-		)
 	}
 	
 	calculateDistance() {
