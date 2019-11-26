@@ -279,7 +279,8 @@ export default class Itinerary extends Component {
           {
             name: this.state.addModal.modalNameInput,
             latitude: this.state.addModal.modalPlaceInput.latitude,
-            longitude: this.state.addModal.modalPlaceInput.longitude
+            longitude: this.state.addModal.modalPlaceInput.longitude,
+            checked: true
           }
     );
 
@@ -357,7 +358,7 @@ export default class Itinerary extends Component {
       TripLocation.push(distance, cumulativeDistance);
       TripArray.push(TripLocation);
     }
-    console.log(TripArray);
+    //console.log(TripArray);
     let backToOrigin = TripArray[1].slice(0);
     let distToOrigin = this.props.itineraryData.distances[this.props.itineraryData.distances.length-1];
     backToOrigin[backToOrigin.length-2] = distToOrigin;
@@ -366,9 +367,11 @@ export default class Itinerary extends Component {
   }
 
   onFileSelect(trip, itineraryData, totalDistance) {
-    this.setState({totalDistance: totalDistance});
-    this.props.updateItineraryData(itineraryData);
-    this.setState({trip: trip});
+    this.setState({
+      totalDistance: totalDistance,
+      trip: trip
+    });
+    this.props.updateItineraryData(itineraryData, false);
   }
 
   errorHandler(statusText, statusCode){
