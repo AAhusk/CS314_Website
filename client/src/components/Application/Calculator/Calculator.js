@@ -111,25 +111,22 @@ export default class Calculator extends Component {
 	}
 
 	
-	async handleButtonClick() {
-		await this.props.geolocation('origin');
+	handleButtonClick() {
+		this.props.geolocation('origin');
 		this.setState({
 			rawStringO: {
 				latitude: this.props.locationOrigin.latitude,
 				longitude: this.props.locationOrigin.longitude
 			},
-			inputOrigin: this.props.locationOrigin.latitude + ", " + this.props.locationOrigin.longitude
+			useLocation: true
 		});
 	}
 
-	updateStateVarOnChange(event, stateVar) {
-		if (stateVar === 'origin') {
-			this.setState({inputOrigin: event.target.value});
+	updateStateVarOnChange(event, searchDB = false) {
+		if(this.state.useLocation === true) {
+			this.setState({useLocation: false});
 		}
-		if (stateVar === 'destination') {
-			this.setState({inputDest: event.target.value})
-		}
-		else {
+		if(searchDB) {
 			this.inputFieldCallback(stateVar, event.target.value); // origin / destination --- rawString
 		}
 	};
@@ -147,22 +144,32 @@ export default class Calculator extends Component {
 								getOptionLabel={options => options.name}
 								renderInput={params => (
 										<TextField {...params} label={"Search"}
-															 fullWidth onChange={(e) => (callback == null ? this.updateStateVarOnChange(e, stateVar) : callback)}/>
+															 fullWidth onChange={(e) => (callback == null ? this.updateStateVarOnChange(e, true) : callback)}/>
 								)}
 						/>
 				);
 		}
 	}
 	createCoordInput(stateVar, callback = null) {
-		let origin = (stateVar === 'origin');
-		return (
-				<Input name={stateVar + "field"}
-							 style={origin ? {width:'80%', border:'2px',height:'50px'}:{width:'80%', height:'50px', border:'2px', marginLeft:'34px'}}
-							 placeholder={stateVar.charAt(0).toUpperCase() + stateVar.slice(1)}
-							 value={origin ? this.state.inputOrigin : this.state.inputDest}
-							 id={`${stateVar}field`}
-							 onChange={(e) => (callback == null ? this.updateStateVarOnChange(e, stateVar) : callback)}/>
-		)
+		let origin = (stateVar ==='origin')
+		if(origin && this.state.useLocation === true) {
+			return (
+					<Input name={stateVar + "field"}
+								 style={origin ? {width:'80%', border:'2px',height:'50px'}:{width:'80%', height:'50px', border:'2px', marginLeft:'34px'}}
+								 placeholder={stateVar.charAt(0).toUpperCase() + stateVar.slice(1)}
+								 value={this.props.locationOrigin.latitude + ", " + this.props.locationOrigin.longitude}
+								 id={`${stateVar}field`}
+								 onChange={(e) => (callback == null ? this.updateStateVarOnChange(e) : callback)}/>
+			);
+		} else{
+			return (
+					<Input name={stateVar + "field"}
+								 style={origin ? {width:'80%', border:'2px',height:'50px'}:{width:'80%', height:'50px', border:'2px', marginLeft:'34px'}}
+								 placeholder={stateVar.charAt(0).toUpperCase() + stateVar.slice(1)}
+								 id={`${stateVar}field`}
+								 onChange={(e) => (callback == null ? this.updateStateVarOnChange(e) : callback)}/>
+			);
+		}
 	}
 
 	inputFieldCallback(stateVar, rawString) {
