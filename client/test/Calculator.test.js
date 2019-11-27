@@ -5,6 +5,7 @@ import Calculator from '../src/components/Application/Calculator/Calculator';
 import Application from '../src/components/Application/Application';
 import TextField from '@material-ui/core/TextField';
 import iconred from '/home/aahusk/IdeaProjects/t11/client/src/components/Application/images/iconred.png';
+import {Input} from 'reactstrap'
 
 
 const startProperties = {
@@ -26,16 +27,21 @@ function testCreateInputFields() {
   ));
 
   let numberOfInputs = calculator.find(TextField).length;
-  expect(numberOfInputs).toEqual(2);
+  expect(numberOfInputs).toEqual(1);
 
-  let actualInputs = [];
-  calculator.find(TextField).map((input) => actualInputs.push(input.prop('label')));
+  let actualSearches = [];
+  calculator.find(TextField).map((input) => actualSearches.push(input.prop('label')));
 
-  let expectedInputs = [
-      "Origin",
-      "Destination"
+  let expectedSearches = [
+      "Search"
   ];
-
+  let actualInputs = [];
+  calculator.find(Input).map((input) => actualInputs.push(input.prop('name')))
+  let expectedInputs = [
+      "originfield",
+      "destinationfield"
+  ];
+  expect(actualSearches).toEqual(expectedSearches);
   expect(actualInputs).toEqual(expectedInputs);
 }
 
