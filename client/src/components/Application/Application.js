@@ -124,7 +124,7 @@ export default class Application extends Component {
 		return cumulativeDistances;
 	}
 	
-	async geolocation(stateVar) { // Add a try/catch here
+	geolocation(stateVar) { // Add a try/catch here
 		if (navigator.geolocation) {
 			if(stateVar !== 'origin') {
 				navigator.geolocation.getCurrentPosition((position) =>
