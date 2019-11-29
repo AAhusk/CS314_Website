@@ -69,7 +69,7 @@ export default class Application extends Component {
 		})
 	}
 
-	createServerObject() {
+	createServerObject(places) {
 		const serverObject = {
 			'requestType': 'trip',
 			'requestVersion': 4,
@@ -79,7 +79,7 @@ export default class Application extends Component {
 				'earthRadius': this.state.planOptions.units[this.state.planOptions.activeUnit].toString(),
 				'optimization': 'none'
 			},
-			'places': this.state.itineraryData.places
+			'places': places
 		};
 		return serverObject;
 	}
@@ -89,10 +89,7 @@ export default class Application extends Component {
 			this.setState({itineraryData: data})
 		}
 		else {
-			this.setState({
-				itineraryData: data
-			}, () => {
-				const serverObject = this.createServerObject();
+			 	const serverObject = this.createServerObject(data.places);
 
 				sendServerRequestWithBody('trip', serverObject,
 						this.state.clientSettings.serverPort)
@@ -108,7 +105,6 @@ export default class Application extends Component {
 						//console.log(response.statusText, response.statusCode);
 					}
 				});
-			});
 		}
 	}
 

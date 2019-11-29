@@ -33,9 +33,7 @@ export default class Calculator extends Component {
 				places: [],
 				found: 0
 			},
-			filters: ["France", "USA", "Germany"],
 			DBplace: null,
-			examplePlaces: [{name:"France", region:"D'our", latitude:54, longitude:20}, {name:"USA", region:"Colorado", latitude:54, longitude:20}, {name:"Germany", region:"Hamburg", latitude:54, longitude:20}]
 		};
 	}
 	
@@ -139,8 +137,8 @@ export default class Calculator extends Component {
 			return(
 					<ListGroupItem>
 						<h4>Place</h4>
-						<pre><b>Location</b>     	| {this.state.DBplace.name} <br></br>
-							<b>Coordinates</b> 		| {this.state.DBplace.latitude}, {this.state.DBplace.longitude}</pre>
+						<pre><b>Location</b>   | {this.state.DBplace.name} <br></br>
+							<b>Coordinates</b> | {this.state.DBplace.latitude}, {this.state.DBplace.longitude}</pre>
 						<IconButton size={"small"} title={"Add to Itinerary"} onClick={() => this.addToItinerary()}> <Add/> </IconButton>
 					</ListGroupItem>
 			);
@@ -158,7 +156,7 @@ export default class Calculator extends Component {
 		});
 	}
 
-	updateStateVarOnChange(event, searchDB = false) {
+	updateStateVarOnChange(stateVar, event, searchDB = false) {
 		if(this.state.useLocation === true) {
 			this.setState({useLocation: false});
 		}
@@ -179,14 +177,15 @@ export default class Calculator extends Component {
 			return (
 					<Autocomplete
 							multiple={DBsearch ? false:true}
+							noOptionsText={""}
 							id="combo-box"
 							style={DBsearch ? {width: '80%', height: '60px'}:{}}
-							options={DBsearch ? this.state.examplePlaces:this.state.filters}
+							options={DBsearch ? this.state.suggestedPlaces:this.state.filters}
 							getOptionLabel={DBsearch ? options => options.name: options => options}
-							onChange={DBsearch ? (event, value) => this.setDBplace(value):() => this.setDBplace()}
+							onChange={DBsearch ? (event, value) => this.setDBplace(value) : () => this.setDBplace()}
 							renderInput={params => DBsearch ?
 									<TextField {...params} label={stateVar}
-														 fullWidth onChange={(e) => (callback == null ? this.updateStateVarOnChange(e, true) : callback)}/>
+														 fullWidth onChange={(e) => this.updateStateVarOnChange(stateVar, e, true)}/>
 									: <TextField {...params} label={stateVar} fullWidth/>
 							}
 					/>);
@@ -201,7 +200,7 @@ export default class Calculator extends Component {
 								 placeholder={stateVar.charAt(0).toUpperCase() + stateVar.slice(1)}
 								 value={this.props.locationOrigin.latitude + ", " + this.props.locationOrigin.longitude}
 								 id={`${stateVar}field`}
-								 onChange={(e) => (callback == null ? this.updateStateVarOnChange(e) : callback)}/>
+								 onChange={(e) => (callback == null ? this.updateStateVarOnChange(stateVar, e) : callback)}/>
 			);
 		} else{
 			return (
@@ -209,16 +208,18 @@ export default class Calculator extends Component {
 								 style={origin ? {width:'80%', border:'2px',height:'50px'}:{width:'80%', height:'50px', border:'2px', marginLeft:'34px'}}
 								 placeholder={stateVar.charAt(0).toUpperCase() + stateVar.slice(1)}
 								 id={`${stateVar}field`}
-								 onChange={(e) => (callback == null ? this.updateStateVarOnChange(e) : callback)}/>
+								 onChange={(e) => (callback == null ? this.updateStateVarOnChange(stateVar, e) : callback)}/>
 			);
 		}
 	}
 
 	addToItinerary() {
-		let data = this.props.itineraryData;
-		data.places.concat(
+		let places = this.props.itineraryData.places;
+		let addPlace = places.concat(
 				{name: this.state.DBplace.name, latitude: this.state.DBplace.latitude, longitude: this.state.DBplace.longitude, checked: true}
 		)
+		let data = this.props.itineraryData
+		data.places = addPlace
 		this.props.updateItineraryData(data)
 	}
 
