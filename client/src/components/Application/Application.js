@@ -34,7 +34,7 @@ export default class Application extends Component {
 			planOptions: {
 				units: {'miles': 3959, 'kilometers': 6371, 'nautical miles': 3440},
 				activeUnit: 'miles',
-				markerSize: [30, 41],
+				markerSize: 50,
 				colorURL: iconred
 			},
 			clientSettings: {serverPort: getOriginalServerPort()},
