@@ -14,7 +14,7 @@ function testButtonValues() {
   const units = mount((
       <Units options={startProperties.config}
              activeUnit={startProperties.activeUnit}/>
-    ));
+  ));
 
   let actual = [];
   units.find('Button').map((element) => actual.push(element.prop('value')));
