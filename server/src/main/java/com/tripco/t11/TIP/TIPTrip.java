@@ -15,7 +15,6 @@ public class TIPTrip extends TIPHeader {
   private Map options;
   private List<Map> places;
   private List<Long> distances;
-  private Double earthRadius;
 
   private final transient Logger log = LoggerFactory.getLogger(TIPTrip.class);
 
@@ -73,12 +72,12 @@ public class TIPTrip extends TIPHeader {
 
   private long[][] createDistTable(int tableSize) {
     long[][] distanceMatrix = new long[tableSize][tableSize];
-    this.earthRadius = Double.parseDouble(options.get("earthRadius").toString());
+    double earthRadius = Double.parseDouble(options.get("earthRadius").toString());
 
     for (int i = 0; i < this.places.size(); i++) {
       distanceMatrix[i][i] = 0;
       for (int j = i+1; j < this.places.size(); j++) {
-        GreatCircleDistance distBetween = new GreatCircleDistance(places.get(i), places.get(j), this.earthRadius);
+        GreatCircleDistance distBetween = new GreatCircleDistance(places.get(i), places.get(j), earthRadius);
 
         long distance = distBetween.CalculateDistance();
         distanceMatrix[i][j] = distance;
