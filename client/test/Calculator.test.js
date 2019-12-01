@@ -33,7 +33,7 @@ function testCreateInputFields() {
   calculator.find(TextField).map((input) => actualSearches.push(input.prop('label')));
 
   let expectedSearches = [
-      "Search"
+      "Database Search"
   ];
   let actualInputs = [];
   calculator.find(Input).map((input) => actualInputs.push(input.prop('name')))
