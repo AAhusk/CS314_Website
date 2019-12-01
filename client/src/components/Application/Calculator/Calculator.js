@@ -68,7 +68,7 @@ export default class Calculator extends Component {
 						      options={this.props.options}
 						/>
 					</Col>
-					<Col xs={12} sm={12} md={3} lg={3}>
+					<Col xs={12} sm={12} md={6} lg={3}>
 						{addPlaceModal}
 						<ListGroup>
 							<ListGroupItem>
@@ -94,7 +94,7 @@ export default class Calculator extends Component {
 										<SvgIcon> <path d="M14,12V19.88C14.04,20.18 13.94,20.5 13.71,20.71C13.32,21.1 12.69,21.1 12.3,20.71L10.29,18.7C10.06,18.47 9.96,18.16 10,17.87V12H9.97L4.21,
 										4.62C3.87,4.19 3.95,3.56 4.38,3.22C4.57,3.08 4.78,3 5,3V3H19V3C19.22,3 19.43,3.08 19.62,3.22C20.05,3.56 20.13,4.19 19.79,4.62L14.03,12H14Z" /></SvgIcon>
 									</IconButton>}
-									{this.createInputField("Search")}
+									{this.createInputField("Database Search")}
 								</Row>
 								{filters}
 							</ListGroupItem>
@@ -137,8 +137,15 @@ export default class Calculator extends Component {
 			return(
 					<ListGroupItem>
 						<h4>Place</h4>
-						<pre><b>Location</b>   | {this.state.DBplace.name} <br></br>
-							<b>Coordinates</b> | {this.state.DBplace.latitude}, {this.state.DBplace.longitude}</pre>
+						<Row>
+							<Col m={6} lg={5}><b>Location</b></Col>
+							<Col m={6} lg={3}>{this.state.DBplace.name}</Col>
+						</Row>
+						<Row>
+							<Col m={6} lg={5}><b>Coordinates</b></Col>
+							<Col m={6} lg={4}>{Number.parseFloat(this.state.DBplace.latitude).toPrecision(8)}
+								 , {Number.parseFloat(this.state.DBplace.longitude).toPrecision(8)}</Col>
+						</Row>
 						<IconButton size={"small"} title={"Add to Itinerary"} onClick={() => this.addToItinerary()}> <Add/> </IconButton>
 					</ListGroupItem>
 			);
@@ -173,7 +180,7 @@ export default class Calculator extends Component {
 	}
 
 	createInputField(stateVar, callback = null) {
-		let DBsearch = (stateVar === "Search")
+		let DBsearch = (stateVar === "Database Search")
 			return (
 					<Autocomplete
 							multiple={DBsearch ? false:true}
