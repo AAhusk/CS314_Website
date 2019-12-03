@@ -1,6 +1,7 @@
 #!/bin/bash
 
 #LICENSE: this script was written by Ben Gillett, and posted on Piazza
+
 trap 'printf "\nExiting...\n"; trap - SIGTERM && kill -- -$$' SIGINT SIGTERM EXIT
 # make sure to pick a server and set your username
 ssh -L 56247:faure.cs.colostate.edu:3306 "$CS_USERNAME"@whatever-server.cs.colostate.edu -N &
