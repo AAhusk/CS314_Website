@@ -19,7 +19,7 @@ function testInitialState() {
     units:  {"kilometers": 6371, "miles": 3959, "nautical miles": 3440},
     activeUnit: 'miles',
     colorURL: iconred,
-    markerSize: [30, 41]
+    markerSize: 50
   };
 
   expect(actualOptions).toEqual(expectedOptions);

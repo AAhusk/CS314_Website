@@ -4,10 +4,16 @@ import { Button, ButtonGroup } from 'reactstrap'
 import iconblue from '../images/iconblue.png'
 import iconred from '../images/iconred.png'
 import icongreen from '../images/icongreen.png'
+import Slider from '@material-ui/core/Slider';
+import Tooltip from '@material-ui/core/Tooltip';
 
 export default class Markers extends Component {
   constructor(props) {
     super(props)
+
+    this.state = {
+      sliderValue: 50
+    }
   }
 
   render() {
@@ -18,13 +24,44 @@ export default class Markers extends Component {
             <ButtonGroup horizontal={"true"} className='w100'>
               {this.renderUnitButtons(['Red', 'Blue', 'Green'], [iconred, iconblue, icongreen], 'colorURL')}
             </ButtonGroup>
-            <ButtonGroup horizontal={"true"} className='w100'>
+            <Slider
+                ValueLabelComponent={this.sliderComponent}
+                aria-label="custom thumb label"
+                min={10}
+                defaultValue={this.props.markerSize}
+                onChangeCommitted={(event, value) => this.props.updateOption('markerSize', value)}
+            />
+            {/*<ButtonGroup horizontal={"true"} className='w100'>
               {this.renderUnitButtons(['Small', 'Medium', 'Large'], [[18, 25], [30, 41], [40, 51]], 'markerSize')}
-            </ButtonGroup>
+            </ButtonGroup> */}
           </CardBody>
         </Card>
     );
+  }
 
+  sliderComponent(props) {
+    const { children, open, value } = props;
+
+    const popperRef = React.useRef(null);
+    React.useEffect(() => {
+      if (popperRef.current) {
+        popperRef.current.update();
+      }
+    });
+
+    return (
+        <Tooltip
+            PopperProps={{
+              popperRef,
+            }}
+            open={open}
+            enterTouchDelay={0}
+            placement="top"
+            title={value}
+        >
+          {children}
+        </Tooltip>
+    );
   }
 
   renderUnitButtons(colors, colorURL, option) {
