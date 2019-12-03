@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 // Created by Dave Matthews in TripCo/guides/database/DatabaseGuide.md
 public class TIPLocation extends TIPHeader {
   private String match;     // Client & Server
+  private String narrow[];
   private int limit;        // Optional in client, provided in server iff in client
   private int found;        // Server only
   private List<Place> places; // Server only
@@ -18,9 +19,10 @@ public class TIPLocation extends TIPHeader {
   private final transient Logger log = LoggerFactory.getLogger(TIPLocation.class);
 
 
-  TIPLocation(int version, String match, int limit, int found, List<Place> places) {
+  TIPLocation(int version, String match, String narrow[], int limit, int found, List<Place> places) {
     this.requestVersion = version;
     this.match = match;
+    this.narrow = narrow;
     this.limit = limit;
     this.found = found;
     this.places = places;
@@ -54,7 +56,7 @@ public class TIPLocation extends TIPHeader {
       pass = null;
     }
     else if(isDevelopment != null && isDevelopment.equals("development")) {
-      myUrl = "jdbc:mysql://127.0.0.1:56247/cs314";
+      myUrl = "jdbc:mysql://faure.cs.colostate.edu/cs314";
       user = "cs314-db";
       pass = "eiK5liet1uej";
     }
@@ -74,13 +76,50 @@ public class TIPLocation extends TIPHeader {
       String query = "SELECT world.name, world.municipality, region.name, country.name, continent.name, world.latitude, world.longitude, world.altitude, world.id FROM continent " +
                      "INNER JOIN country on continent.id = country.continent " +
                      "INNER JOIN region on country.id = region.iso_country " +
-                     "INNER JOIN world on region.id = world.iso_region " +
-                     "WHERE country.name LIKE " + m +
+                     "INNER JOIN world on region.id = world.iso_region";
+      if(this.narrow.size() == 0) {
+            query += " WHERE country.name LIKE " + m +
                      " OR region.name LIKE " + m +
                      " OR world.name LIKE " + m +
                      " OR world.municipality LIKE " + m +
-                     " ORDER BY continent.name, country.name, region.name, world.municipality, world.name ASC" +
-                     " LIMIT " + this.limit;
+                     " OR continent.name LIKE " + m +
+                     " OR world.id LIKE " + m +
+                     " ORDER BY continent.name, country.name, region.name, world.municipality, world.name ASC";
+      } else {
+            String element = "";
+            int count = 0;
+            for(option : this.narrow) {
+                if(count == 0) {
+                    query += " WHERE ";
+                    count++;
+                }
+                else {
+                    query += " OR ";
+                }
+                switch(option) {
+                  case "country" : 
+                      query += "country.name LIKE "+ m;
+                      break;
+                  case "region" : 
+                      break;
+                  case "municipality" : 
+                      break;
+                  case "name" : 
+                      break;
+                  case "continent" : 
+                      break;
+                  case "id" : 
+                      break;
+                  default : 
+                      break;
+                }
+            }
+      }
+      
+      if(this.limit != 0) {
+            query += " LIMIT " + this.limit;
+      }
+                     
       try (Connection conn = DriverManager.getConnection(myUrl, user, pass);
            Statement stCount = conn.createStatement();
            Statement stQuery = conn.createStatement();
@@ -99,7 +138,6 @@ public class TIPLocation extends TIPHeader {
         }
       }
       log.trace("---------------Finished---------------");
-
     } catch(Exception e) {
         System.err.println("Exception: "+e.getMessage());
     }
