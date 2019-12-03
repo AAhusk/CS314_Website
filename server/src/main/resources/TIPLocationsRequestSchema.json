@@ -18,7 +18,7 @@
     "match": {
       "description":"an alphanumeric pattern used to find geographic locations.",
       "type":"string",
-      "pattern":"^[a-zA-Z0-9 ]+$"
+      "pattern":"^[a-zA-Z0-9']+$"
     },
     "narrow": {
       "description": "optional, helps narrow the search by using configuration values supplied by the server",

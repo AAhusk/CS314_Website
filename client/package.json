@@ -6,6 +6,8 @@
   },
   "dependencies": {
     "@material-ui/core": "latest",
+    "@material-ui/icons": "latest",
+    "@material-ui/lab": "^4.0.0-alpha.32",
     "babel-cli": "^6.26.0",
     "babel-loader": "^7.1.2",
     "babel-polyfill": "^6.26.0",
@@ -22,6 +24,7 @@
     "react-dom": "^16.7.0",
     "react-leaflet": "^2.2.0",
     "reactstrap": "^7.0.2",
+    "redux-form": "latest",
     "style-loader": "^0.23.1",
     "webpack": "^4.28.4",
     "webpack-cli": "^3.2.1"

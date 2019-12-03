@@ -3,6 +3,9 @@ import React from 'react';
 import {shallow, mount} from 'enzyme';
 import Calculator from '../src/components/Application/Calculator/Calculator';
 import Application from '../src/components/Application/Application';
+import TextField from '@material-ui/core/TextField';
+import iconred from '/home/aahusk/IdeaProjects/t11/client/src/components/Application/images/iconred.png';
+import {Input} from 'reactstrap'
 
 
 const startProperties = {
@@ -23,17 +26,22 @@ function testCreateInputFields() {
       />
   ));
 
-  let numberOfInputs = calculator.find('Input').length;
-  expect(numberOfInputs).toEqual(2);
+  let numberOfInputs = calculator.find(TextField).length;
+  expect(numberOfInputs).toEqual(1);
 
+  let actualSearches = [];
+  calculator.find(TextField).map((input) => actualSearches.push(input.prop('label')));
+
+  let expectedSearches = [
+      "Search"
+  ];
   let actualInputs = [];
-  calculator.find('Input').map((input) => actualInputs.push(input.prop('name')));
-
+  calculator.find(Input).map((input) => actualInputs.push(input.prop('name')))
   let expectedInputs = [
       "originfield",
       "destinationfield"
   ];
-
+  expect(actualSearches).toEqual(expectedSearches);
   expect(actualInputs).toEqual(expectedInputs);
 }
 
