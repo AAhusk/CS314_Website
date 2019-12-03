@@ -122,13 +122,11 @@ export default class Calculator extends Component {
 		});
 	}
 
-	updateStateVarOnChange(event, searchDB = false) {
+	updateStateVarOnChange(stateVar, event, searchDB = false) {
 		if(this.state.useLocation === true) {
 			this.setState({useLocation: false});
 		}
-		if(searchDB) {
-			this.inputFieldCallback(stateVar, event.target.value); // origin / destination --- rawString
-		}
+		this.inputFieldCallback(stateVar, event.target.value); // origin / destination --- rawString
 	};
 
 	createInputField(stateVar, callback = null) {
@@ -144,7 +142,7 @@ export default class Calculator extends Component {
 								getOptionLabel={options => options.name}
 								renderInput={params => (
 										<TextField {...params} label={"Search"}
-															 fullWidth onChange={(e) => (callback == null ? this.updateStateVarOnChange(e, true) : callback)}/>
+															 fullWidth onChange={(e) => (callback == null ? this.updateStateVarOnChange(stateVar, e, true) : callback)}/>
 								)}
 						/>
 				);
@@ -159,7 +157,7 @@ export default class Calculator extends Component {
 								 placeholder={stateVar.charAt(0).toUpperCase() + stateVar.slice(1)}
 								 value={this.props.locationOrigin.latitude + ", " + this.props.locationOrigin.longitude}
 								 id={`${stateVar}field`}
-								 onChange={(e) => (callback == null ? this.updateStateVarOnChange(e) : callback)}/>
+								 onChange={(e) => (callback == null ? this.updateStateVarOnChange(stateVar, e) : callback)}/>
 			);
 		} else{
 			return (
@@ -167,7 +165,7 @@ export default class Calculator extends Component {
 								 style={origin ? {width:'80%', border:'2px',height:'50px'}:{width:'80%', height:'50px', border:'2px', marginLeft:'34px'}}
 								 placeholder={stateVar.charAt(0).toUpperCase() + stateVar.slice(1)}
 								 id={`${stateVar}field`}
-								 onChange={(e) => (callback == null ? this.updateStateVarOnChange(e) : callback)}/>
+								 onChange={(e) => (callback == null ? this.updateStateVarOnChange(stateVar, e) : callback)}/>
 			);
 		}
 	}
