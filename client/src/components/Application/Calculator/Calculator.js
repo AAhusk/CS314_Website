@@ -168,7 +168,7 @@ export default class Calculator extends Component {
 			this.setState({useLocation: false});
 		}
 		if(searchDB) {
-			this.inputFieldCallback(stateVar, event.target.value); // origin / destination --- rawString
+			this.queryDatabase(event.target.value) // origin / destination --- rawString
 		}
 	};
 
@@ -176,7 +176,6 @@ export default class Calculator extends Component {
 		this.setState( {
 			DBplace: value
 		});
-
 	}
 
 	createInputField(stateVar, callback = null) {
@@ -207,7 +206,7 @@ export default class Calculator extends Component {
 								 placeholder={stateVar.charAt(0).toUpperCase() + stateVar.slice(1)}
 								 value={this.props.locationOrigin.latitude + ", " + this.props.locationOrigin.longitude}
 								 id={`${stateVar}field`}
-								 onChange={(e) => (callback == null ? this.updateStateVarOnChange(stateVar, e) : callback)}/>
+								 onChange={(e) => (callback == null ? this.updateCoordState(stateVar, e) : callback)}/>
 			);
 		} else{
 			return (
@@ -215,11 +214,10 @@ export default class Calculator extends Component {
 								 style={origin ? {width:'80%', border:'2px',height:'50px'}:{width:'80%', height:'50px', border:'2px', marginLeft:'34px'}}
 								 placeholder={stateVar.charAt(0).toUpperCase() + stateVar.slice(1)}
 								 id={`${stateVar}field`}
-								 onChange={(e) => (callback == null ? this.updateStateVarOnChange(stateVar, e) : callback)}/>
+								 onChange={(e) => (callback == null ? this.updateCoordState(stateVar, e) : callback)}/>
 			);
 		}
 	}
-
 	addToItinerary() {
 		let places = this.props.itineraryData.places;
 		let addPlace = places.concat(
@@ -230,26 +228,17 @@ export default class Calculator extends Component {
 		this.props.updateItineraryData(data)
 	}
 
-	inputFieldCallback(stateVar, rawString) {
+	updateCoordState(stateVar, event) {
+		let rawString = event.target.value
 		let rawStateName = "rawStringD";
 		if (stateVar === "origin") {
 			rawStateName = "rawStringO"
 		}
-		if(!rawString) { rawString = "0N, 0W"}
-
-		// rawString should look like "40N, 108W"
-		if(this.hasNumber(rawString)) {
-		   this.props.formatCoordinates(rawString, rawStateName);
-		   this.setState({[rawStateName]: rawString})
-		} else {
-		    this.queryDatabase(rawString);
-		}
+		if (!rawString) {rawString = "0N, 0W"}
+		this.props.formatCoordinates(rawString, rawStateName);
+		this.setState({[rawStateName]: rawString})
 	}
 
-	hasNumber(s) {
-	    return /\d/.test(s);
-	}
-	
 	calculateDistance() {
 		const tipConfigRequest = {
 			'requestType': 'distance',
