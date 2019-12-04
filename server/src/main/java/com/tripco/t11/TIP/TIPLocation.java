@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
 // Created by Dave Matthews in TripCo/guides/database/DatabaseGuide.md
 public class TIPLocation extends TIPHeader {
   private String match;     // Client & Server
-  private String narrow[];
+  private Map narrow;
   private int limit;        // Optional in client, provided in server iff in client
   private int found;        // Server only
   private List<Place> places; // Server only
@@ -19,7 +19,7 @@ public class TIPLocation extends TIPHeader {
   private final transient Logger log = LoggerFactory.getLogger(TIPLocation.class);
 
 
-  TIPLocation(int version, String match, String narrow[], int limit, int found, List<Place> places) {
+  TIPLocation(int version, String match, Map narrow, int limit, int found, List<Place> places) {
     this.requestVersion = version;
     this.match = match;
     this.narrow = narrow;
