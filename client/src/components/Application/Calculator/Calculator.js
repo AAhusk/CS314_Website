@@ -29,6 +29,13 @@ export default class Calculator extends Component {
 			errorMessage: this.props.errorMessage,
 			useLocation: false,
 			suggestedPlaces: [],
+			filters: [
+				{name: "type", values: []},
+				{name: "country", values: []},
+				{name: "region", values: []},
+				{name: "municipality", values: []},
+				{name: "country", values: []},
+			],
 			numFoundPlaces: 0,
 			filterToggle: false,
 			addModal: {
