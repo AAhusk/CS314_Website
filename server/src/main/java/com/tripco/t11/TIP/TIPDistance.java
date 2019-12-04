@@ -38,7 +38,7 @@ public class TIPDistance extends TIPHeader {
     this.origin = origin;
     this.destination = destination;
     this.earthRadius = earthRadius;
-    this.distance = 100; // What gets returned
+    this.distance = 0; // What gets returned
   }
 
 

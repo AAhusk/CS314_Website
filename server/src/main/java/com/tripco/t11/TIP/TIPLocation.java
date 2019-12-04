@@ -24,6 +24,7 @@ public class TIPLocation extends TIPHeader {
     this.limit = limit;
     this.found = found;
     this.places = places;
+    //this.narrow = narrow;
   }
 
   private TIPLocation() {
