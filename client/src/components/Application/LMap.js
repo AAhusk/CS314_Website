@@ -37,17 +37,16 @@ export default class LMap extends Component {
 		);
 	}
 	
-	itineraryComponentSetup() {
+	itineraryComponentSetup(latLngs) {
 		let MarkerArr = [];	let ItinPolylinepts = []; let placesCoords = [];
 		
 		let pointArr = this.props.itineraryData.places;
 		if (pointArr.length !== 0) {
 			for (let i = 0; i < pointArr.length; i++) {
-				placesCoords.push(L.latLng(pointArr[i].latitude, pointArr[i].longitude))
 				if (this.props.itineraryData.places[i].checked === true) {
 					MarkerArr.push(
 						<Marker key={"Marker" + i}
-						        position={placesCoords[i]}
+						        position={latLngs[i]}
 						        icon={this.markerIcon(iconred)}>
 							<Popup className="font-weight-extrabold">
 								Destination:<br/>
@@ -59,7 +58,7 @@ export default class LMap extends Component {
 				}
 				if (this.props.itineraryData.polyLineEnabled == true) {
                   ItinPolylinepts.push(
-                        [pointArr[i].latitude, pointArr[i].longitude]
+                  		[pointArr[i].latitude, pointArr[i].longitude]
                   );
                 }
 			}
@@ -117,12 +116,21 @@ export default class LMap extends Component {
 		if (this.props.locationOrigin != null) {
 			calculatorComponents = this.calculatorComponentSetup();
 		}
-		
+		var mapBounds = null
+		var mapCenter = this.csuOvalGeographicCoordinates()
+
 		let itineraryComponents = {MarkerArr: null, ItinPolyline: null};
 		if (this.props.itineraryData != null) {
 			if (this.props.itineraryData.length !== 0) {
-				itineraryComponents = this.itineraryComponentSetup();
-				let pointArr = this.props.itineraryData.places;
+				let latLngs = this.getLatLngs();
+				itineraryComponents = this.itineraryComponentSetup(latLngs);
+				if (this.props.itineraryData.places.length > 1) {
+					mapBounds = latLngBounds(latLngs)
+				}
+				if (this.props.itineraryData.places.length == 1) {
+					let location = this.props.itineraryData.places[0]
+					mapCenter = L.latLng(location.latitude, location.longitude)
+				}
 			}
 		}
 		
@@ -142,16 +150,9 @@ export default class LMap extends Component {
 			);
 		}
 
-		var mapBounds = null
-		if (this.props.itineraryData != null) {
-			if (this.props.itineraryData.places.length != 0) {
-				mapBounds = latLngBounds(this.getLatLngs())
-			}
-		}
-
 
 		return (
-			<Map center={this.csuOvalGeographicCoordinates()} bounds={mapBounds} zoom={10} ref='map'
+			<Map center={mapCenter} bounds={mapBounds} zoom={10} ref='map'
 			     style={{height: 500, maxwidth: 700}}>
 				<TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
 				           attribution="&copy; <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"/>
