@@ -8,12 +8,17 @@ import iconblue from './images/iconblue.png';
 import iconblueD from './images/iconblueD.png';
 import iconred from './images/iconred.png';
 import iconhappy from './images/iconhappy.png'
+import {latLngBounds} from 'leaflet'
 
 export default class LMap extends Component {
 	constructor(props) {
 		super(props);
 		
 		this.currentLocation = this.currentLocation.bind(this);
+
+		this.state = {
+			placesLatLng: []
+		}
 	}
 	
 	render() {
@@ -33,15 +38,16 @@ export default class LMap extends Component {
 	}
 	
 	itineraryComponentSetup() {
-		let MarkerArr = [];	let ItinPolylinepts = [];
+		let MarkerArr = [];	let ItinPolylinepts = []; let placesCoords = [];
 		
 		let pointArr = this.props.itineraryData.places;
 		if (pointArr.length !== 0) {
 			for (let i = 0; i < pointArr.length; i++) {
+				placesCoords.push(L.latLng(pointArr[i].latitude, pointArr[i].longitude))
 				if (this.props.itineraryData.places[i].checked === true) {
 					MarkerArr.push(
 						<Marker key={"Marker" + i}
-						        position={L.latLng(pointArr[i].latitude, pointArr[i].longitude)}
+						        position={placesCoords[i]}
 						        icon={this.markerIcon(iconred)}>
 							<Popup className="font-weight-extrabold">
 								Destination:<br/>
@@ -59,9 +65,17 @@ export default class LMap extends Component {
 			}
 			ItinPolylinepts.push([pointArr[0].latitude, pointArr[0].longitude]);
 			let ItinPolyline = (<Polyline positions={ItinPolylinepts}/>);
-			
 			return {ItinPolyline: ItinPolyline, MarkerArr: MarkerArr}
 		}
+	}
+
+	getLatLngs() {
+		let placesCoords = []
+		let pointArr = this.props.itineraryData.places;
+		for (let i = 0; i < pointArr.length; i++) {
+			placesCoords.push(L.latLng(pointArr[i].latitude, pointArr[i].longitude))
+		}
+		return placesCoords;
 	}
 	
 	calculatorComponentSetup() {
@@ -98,7 +112,7 @@ export default class LMap extends Component {
 	}
 
 	renderLeafletMap() {
-		
+
 		let calculatorComponents = {ODPolyline: null, originMarker: null, destinationMarker: null};
 		if (this.props.locationOrigin != null) {
 			calculatorComponents = this.calculatorComponentSetup();
@@ -108,6 +122,7 @@ export default class LMap extends Component {
 		if (this.props.itineraryData != null) {
 			if (this.props.itineraryData.length !== 0) {
 				itineraryComponents = this.itineraryComponentSetup();
+				let pointArr = this.props.itineraryData.places;
 			}
 		}
 		
@@ -126,9 +141,17 @@ export default class LMap extends Component {
 				</Marker>
 			);
 		}
-		
+
+		var mapBounds = null
+		if (this.props.itineraryData != null) {
+			if (this.props.itineraryData.places.length != 0) {
+				mapBounds = latLngBounds(this.getLatLngs())
+			}
+		}
+
+
 		return (
-			<Map center={this.csuOvalGeographicCoordinates()} zoom={10}
+			<Map center={this.csuOvalGeographicCoordinates()} bounds={mapBounds} zoom={10} ref='map'
 			     style={{height: 500, maxwidth: 700}}>
 				<TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
 				           attribution="&copy; <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"/>
