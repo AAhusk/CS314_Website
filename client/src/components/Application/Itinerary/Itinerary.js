@@ -72,17 +72,18 @@ export default class Itinerary extends Component {
     let optimizationDropdownMenu = (
           <OptimizationDropdown shortTripOptimization={this.shortTripOptimization}
                                 shorterTripOptimization={this.shorterTripOptimization}/>
+      
+//           <Dropdown isOpen={this.state.buttonDropdown.optimizationDropdownToggle} toggle={toggleOptDropdown} className="float-left">
+//             <DropdownToggle caret className='bg-csu-gold text-white'>
+//               Optimize
+//             </DropdownToggle>
+//             <DropdownMenu>
+//               <DropdownItem onClick={() => this.autoOptimization()}>Smart Optimize</DropdownItem>
+//               <DropdownItem onClick={() => this.shortTripOptimization()}>Short Trip</DropdownItem>
+//               <DropdownItem onClick={() => this.shorterTripOptimization()}>Shorter Trip</DropdownItem>
+//             </DropdownMenu>
+//           </Dropdown>
 
-          // <Dropdown isOpen={this.state.buttonDropdown.optimizationDropdownToggle} toggle={toggleOptDropdown} className="float-left">
-          //   <DropdownToggle caret className='bg-csu-gold text-white'>
-          //     Optimize
-          //   </DropdownToggle>
-          //   <DropdownMenu>
-          //     <DropdownItem onClick={() => this.shortTripOptimization()}>Short Trip</DropdownItem>
-          //     <DropdownItem onClick={() => this.shorterTripOptimization()}>Shorter Trip</DropdownItem>
-
-          //   </DropdownMenu>
-          // </Dropdown>
     );
 
     let downloadDropdownMenu = (
@@ -233,6 +234,19 @@ export default class Itinerary extends Component {
       }});
   };
 
+  autoOptimization() {
+    if (this.props.itineraryData.places.length < 100)
+      this.shorterTripOptimization();
+    else if (this.props.itineraryData.places.length > 100 && this.props.itineraryData.places.length < 300)
+      this.shortTripOptimization();
+    else {
+      // Do this to at the very least regenerate the distances
+      const TIPObject = this.createTIPObject("Normal Trip", 'none');
+      this.sendServerRequest('trip', TIPObject);
+    }
+
+  }
+
   createInputField(stateVar) {
     return (
           <Input name={stateVar + "field"}
@@ -256,8 +270,8 @@ export default class Itinerary extends Component {
   }
 
   shorterTripOptimization() {
-    const TIPrequest = this.createTIPObject("Shorter Trip", 'shorter');
-    this.sendServerRequest('trip', TIPrequest);
+    const TIPObject = this.createTIPObject("Shorter Trip", 'shorter');
+    this.sendServerRequest('trip', TIPObject);
   }
 
   createTIPObject(title, optimization) {
