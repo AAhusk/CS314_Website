@@ -10,6 +10,11 @@ import {
 } from "../../../api/restfulAPI";
 
 import {DownloadDropdown, OptimizationDropdown} from './Dropdowns'
+import Tooltip from '@material-ui/core/Tooltip';
+import IconButton from '@material-ui/core/IconButton';
+import FlipCameraAndroidIcon from '@material-ui/icons/FlipCameraAndroid';
+import TimelineIcon from '@material-ui/icons/Timeline';
+import AddIcon from '@material-ui/icons/Add';
 
 export default class Itinerary extends Component {
 
@@ -94,21 +99,44 @@ export default class Itinerary extends Component {
           // </Dropdown>
     );
 
-    let settingsDropdownMenu = (
-          <Dropdown isOpen={this.state.buttonDropdown.settingsDropdownToggle} toggle={toggleSetDropdown} className="float-left">
-            <DropdownToggle caret className='bg-csu-gold text-white'>
-              Settings
-            </DropdownToggle>
-            <DropdownMenu>
-              <DropdownItem onClick={() => {
-                let data = this.props.itineraryData;
-                data.polyLineEnabled = !data.polyLineEnabled;
-                this.props.updateItineraryData(data);
-              }}>Line Toggle</DropdownItem>
-              <DropdownItem onClick={() => this.reverseItinerary()}>Reverse</DropdownItem>
-            </DropdownMenu>
-          </Dropdown>
+    let reverseButton = (
+      <Tooltip title="Reverse Trip" placement="top" arrow>
+        <IconButton color="primary"
+                    onClick={() => this.reverseItinerary()}>
+          <FlipCameraAndroidIcon/>
+        </IconButton>
+      </Tooltip>
     );
+
+    let lineToggleButton = (
+      <Tooltip title="Line Toggle" placement="top" arrow>
+        <IconButton color="primary"
+                    onClick={() => {
+                              let data = this.props.itineraryData;
+                              data.polyLineEnabled = !data.polyLineEnabled;
+                              this.props.updateItineraryData(data);
+                            }}>
+          <TimelineIcon/>
+        </IconButton>
+      </Tooltip>
+    );
+
+
+    // let settingsDropdownMenu = (
+    //       <Dropdown isOpen={this.state.buttonDropdown.settingsDropdownToggle} toggle={toggleSetDropdown} className="float-left">
+    //         <DropdownToggle caret className='bg-csu-gold text-white'>
+    //           Settings
+    //         </DropdownToggle>
+    //         <DropdownMenu>
+    //           <DropdownItem onClick={() => {
+    //             let data = this.props.itineraryData;
+    //             data.polyLineEnabled = !data.polyLineEnabled;
+    //             this.props.updateItineraryData(data);
+    //           }}>Line Toggle</DropdownItem>
+    //           <DropdownItem onClick={() => this.reverseItinerary()}>Reverse</DropdownItem>
+    //         </DropdownMenu>
+    //       </Dropdown>
+    // );
 
     let toggleModal = () => {
       this.setState({addModal: {
@@ -147,13 +175,22 @@ export default class Itinerary extends Component {
                     <Col sm={{size: "auto", offset: 6}}>
                       {optimizationDropdownMenu}{'  '}
                       {downloadDropdownMenu}{'  '}
-                      {settingsDropdownMenu}{'  '}
+                      {reverseButton}{'  '}
+                      {lineToggleButton}{'  '}
+                      
+                      <Tooltip title="Add Location" placement="top" arrow>
+                        <IconButton color="primary"
+                                    onClick={toggleModal}
+                                    style={{float: "right"}}>
+                          <AddIcon/>
+                        </IconButton>
+                      </Tooltip>
+                      
 
 
-                      <Button id="reverseTrip" className='bg-csu-green text-white'
-                              onClick={() => this.reverseItinerary()}>Reverse Trip</Button>
-
-                      <Button className='bg-csu-green text-white' onClick={toggleModal} style={{float: "right"}} >+</Button>
+                      {/* <Button id="reverseTrip" className='bg-csu-green text-white'
+                              onClick={() => this.reverseItinerary()}>Reverse Trip</Button> */}
+                      {/* <Button className='bg-csu-green text-white' onClick={toggleModal} style={{float: "right"}} >+</Button> */}
                     </Col>
 
                   </Row>
