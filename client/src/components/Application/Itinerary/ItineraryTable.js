@@ -1,8 +1,6 @@
 import React from 'react';
-import {Button, ButtonGroup, Table, Input, Media} from 'reactstrap';
-import {sendServerRequestWithBody} from "../../../api/restfulAPI";
+import {Button, ButtonGroup, Table, Input} from 'reactstrap';
 import iconredbutton from '../images/iconredbutton.png'
-import iconred from '../images/iconred.png'
 
 
 export default class ItineraryTable extends React.Component {
@@ -64,8 +62,7 @@ export default class ItineraryTable extends React.Component {
     let data = this.props.itineraryData;
 
     data.checked = !data.checked;
-    let checkBoxes = Array(data.places.length).fill(data.checked);
-    data.checkBoxes = checkBoxes;
+    data.checkBoxes = Array(data.places.length).fill(data.checked);
 
     for (let i = 0; i < data.places.length; i++) {
       data.places[i].checked = data.checked;
@@ -136,7 +133,7 @@ export default class ItineraryTable extends React.Component {
               <td key={"name" + index}>{entry.origin != null && entry.origin.name}</td>
               <td key={"dest" + index}>{entry.destination != null && entry.destination.name}</td>
               <td key={"dist" + index}>{this.props.itineraryData != null && this.props.itineraryData.distances[index]}</td>
-              <td key={"dist" + index}>{this.props.itineraryData != null && this.props.itineraryData.cumulativeDistances[index]}</td>
+              <td key={"cumdist" + index}>{this.props.itineraryData != null && this.props.itineraryData.cumulativeDistances[index]}</td>
               <td style={{width: 0.1 + "em"}} key={"buttons" + index}>
                 <ButtonGroup>
                   <Button outline color="secondary" className={"float-right"} onClick={() => this.movePlace("UP", entry, index)}>↑</Button>

@@ -1,6 +1,6 @@
 {
   "requestType"    : "trip",
-  "requestVersion" : 3,
+  "requestVersion" : 5,
   "options"        : { "title":"My Trip", 
                        "earthRadius":"3958.8",
                        "optimization":"none" },
