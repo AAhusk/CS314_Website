@@ -22,7 +22,7 @@
     },
     "narrow": {
       "description": "optional, helps narrow the search by using configuration values supplied by the server",
-      "type": "array"
+      "type": "object"
     },
     "limit": {
       "description":"the maximum number of matching places that may be returned.",
