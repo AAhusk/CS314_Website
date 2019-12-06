@@ -27,7 +27,7 @@ public class TIPConfig extends TIPHeader {
   private String serverName;
   private List<String> placeAttributes;
   private List<String> optimizations;
-  //private List<Map<String, Object>> filters;
+  private List<Map<String, Object>> filters;
 
   private final transient Logger log = LoggerFactory.getLogger(TIPConfig.class);
 
@@ -45,10 +45,7 @@ public class TIPConfig extends TIPHeader {
                                          "region", "country","continent", "type");
     this.optimizations = Arrays.asList("none", "short", "shorter");
 
-    /*This code adds the "filters" part to the config JSON object. 
-    Will include this if we include filters in our database query.
-    
-    this.filters = new ArrayList<Map<String, Object>>();
+    this.filters = new ArrayList<>();
     Map<String, Object> typeFilter = new HashMap<String, Object>() {{
       put("name", "type");
       put("values", new String[] {"airport", "heliport", "balloonport", "closed"});
@@ -59,7 +56,7 @@ public class TIPConfig extends TIPHeader {
     }};
     this.filters.add(typeFilter);
     this.filters.add(countryFilter);
-    log.trace("buildResponse -> {}", this);*/
+    log.trace("buildResponse -> {}", this);
   }
 
 
