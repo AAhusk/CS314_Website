@@ -65,7 +65,7 @@ function DownloadDropdown(props) {
 
 
 
-function OptimizationDropdown() {
+function OptimizationDropdown(props) {
 
   const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -77,9 +77,16 @@ function OptimizationDropdown() {
     setAnchorEl(null);
   };
 
+  const short = () => {
+    props.shortTripOptimization();
+  }
+  const shorter = () => {
+    props.shorterTripOptimization();
+  }
+
   return (
     <React.Fragment>
-      <Tooltip title="Download" placement="top" arrow>
+      <Tooltip title="Optimization" placement="top" arrow>
         <IconButton
             aria-controls="customized-menu"
             aria-haspopup="true"
@@ -87,7 +94,7 @@ function OptimizationDropdown() {
             color="primary"
             onClick={handleClick}
         >
-            <MoreVertIcon />
+            <SpeedIcon />
         </IconButton>
       </Tooltip>
       <StyledMenu
@@ -97,12 +104,9 @@ function OptimizationDropdown() {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        <StyledMenuItem>
-          <ListItemText primary="CSV" />
-        </StyledMenuItem>
-        <StyledMenuItem>
-          <ListItemText primary="JSON" />
-        </StyledMenuItem>
+          <MenuItem onClick={handleClose}>None</MenuItem>
+          <MenuItem onClick={short}>Short</MenuItem>
+          <MenuItem onClick={shorter}>Shorter</MenuItem>
       </StyledMenu>
     </React.Fragment>
   );

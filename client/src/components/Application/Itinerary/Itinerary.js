@@ -9,7 +9,7 @@ import {
   sendServerRequestWithBody
 } from "../../../api/restfulAPI";
 
-import {DownloadDropdown} from './Dropdowns'
+import {DownloadDropdown, OptimizationDropdown} from './Dropdowns'
 
 export default class Itinerary extends Component {
 
@@ -19,9 +19,7 @@ export default class Itinerary extends Component {
     this.onFileSelect = this.onFileSelect.bind(this);
     this.errorHandler = this.errorHandler.bind(this);
     this.createOutputJSON = this.createOutputJSON.bind(this);
-    this.createOutputJSONcallback = this.createOutputJSONcallback.bind(this);
     this.createOutputCSV = this.createOutputCSV.bind(this);
-    this.createOutputCSVcallback = this.createOutputCSVcallback.bind(this);
     this.modalPlaceInputCallback = this.modalPlaceInputCallback.bind(this);
     this.addPlaceToItineraryDataFromModal = this.addPlaceToItineraryDataFromModal.bind(this);
 
@@ -67,16 +65,19 @@ export default class Itinerary extends Component {
     };
 
     let optimizationDropdownMenu = (
-          <Dropdown isOpen={this.state.buttonDropdown.optimizationDropdownToggle} toggle={toggleOptDropdown} className="float-left">
-            <DropdownToggle caret className='bg-csu-gold text-white'>
-              Optimize
-            </DropdownToggle>
-            <DropdownMenu>
-              <DropdownItem onClick={() => this.shortTripOptimization()}>Short Trip</DropdownItem>
-              <DropdownItem onClick={() => this.shorterTripOptimization()}>Shorter Trip</DropdownItem>
+          <OptimizationDropdown shortTripOptimization={this.shortTripOptimization}
+                                shorterTripOptimization={this.shorterTripOptimization}/>
 
-            </DropdownMenu>
-          </Dropdown>
+          // <Dropdown isOpen={this.state.buttonDropdown.optimizationDropdownToggle} toggle={toggleOptDropdown} className="float-left">
+          //   <DropdownToggle caret className='bg-csu-gold text-white'>
+          //     Optimize
+          //   </DropdownToggle>
+          //   <DropdownMenu>
+          //     <DropdownItem onClick={() => this.shortTripOptimization()}>Short Trip</DropdownItem>
+          //     <DropdownItem onClick={() => this.shorterTripOptimization()}>Shorter Trip</DropdownItem>
+
+          //   </DropdownMenu>
+          // </Dropdown>
     );
 
     let downloadDropdownMenu = (
@@ -322,13 +323,6 @@ export default class Itinerary extends Component {
       let FileSaver = require('file-saver');
       FileSaver.saveAs(file, "TIPTrip.json");
     }
-  }
-
-  createOutputJSONcallback(){
-    this.createOutputJSON();
-  }
-  createOutputCSVcallback(){
-    this.createOutputCSV();
   }
 
   createOutputCSV() {
