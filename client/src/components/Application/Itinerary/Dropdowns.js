@@ -77,9 +77,14 @@ function OptimizationDropdown(props) {
     setAnchorEl(null);
   };
 
+  const auto = () => {
+    props.autoOptimization();
+  }
+
   const short = () => {
     props.shortTripOptimization();
   }
+
   const shorter = () => {
     props.shorterTripOptimization();
   }
@@ -104,9 +109,11 @@ function OptimizationDropdown(props) {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
+          <MenuItem onClick={auto}>Auto</MenuItem>
           <MenuItem onClick={handleClose}>None</MenuItem>
           <MenuItem onClick={short}>Short</MenuItem>
           <MenuItem onClick={shorter}>Shorter</MenuItem>
+
       </StyledMenu>
     </React.Fragment>
   );

@@ -27,6 +27,9 @@ export default class Itinerary extends Component {
     this.createOutputCSV = this.createOutputCSV.bind(this);
     this.modalPlaceInputCallback = this.modalPlaceInputCallback.bind(this);
     this.addPlaceToItineraryDataFromModal = this.addPlaceToItineraryDataFromModal.bind(this);
+    this.autoOptimization = this.autoOptimization.bind(this);
+    this.shortTripOptimization = this.shortTripOptimization.bind(this);
+    this.shorterTripOptimization = this.shorterTripOptimization.bind(this);
 
     this.state = {
       trip: null,
@@ -70,7 +73,8 @@ export default class Itinerary extends Component {
     };
 
     let optimizationDropdownMenu = (
-          <OptimizationDropdown shortTripOptimization={this.shortTripOptimization}
+          <OptimizationDropdown autoOptimization={this.autoOptimization}
+                                shortTripOptimization={this.shortTripOptimization}
                                 shorterTripOptimization={this.shorterTripOptimization}/>
       
 //           <Dropdown isOpen={this.state.buttonDropdown.optimizationDropdownToggle} toggle={toggleOptDropdown} className="float-left">
