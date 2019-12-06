@@ -77,7 +77,7 @@ export default class Calculator extends Component {
 							<ListGroupItem>
 								<Row>
 
-									<IconButton title={"Use My Location"} onClick={() => this.useMyLocation()}> <MyLocation/> </IconButton>
+									<IconButton title={"Use My Location"} color="primary" onClick={() => this.useMyLocation()}> <MyLocation/> </IconButton>
 									{this.createCoordInput("origin")}
 								</Row>
 							</ListGroupItem>
@@ -85,7 +85,7 @@ export default class Calculator extends Component {
 							<ListGroupItem> {this.createCoordInput("destination")}</ListGroupItem>
 							<ListGroupItem>
 								<Row>
-									{<IconButton title={"Calculate Distance"} onClick={this.calculateDistance}>
+									{<IconButton title={"Calculate Distance"} color="primary" onClick={this.calculateDistance}>
 										<SvgIcon> <path d="M7,2H17A2,2 0 0,1 19,4V20A2,2 0 0,1 17,22H7A2,2 0 0,1 5,20V4A2,2 0 0,1 7,2M7,4V8H17V4H7M7,10V12H9V10H7M11,
 										10V12H13V10H11M15,10V12H17V10H15M7,14V16H9V14H7M11,14V16H13V14H11M15,14V16H17V14H15M7,18V20H9V18H7M11,18V20H13V18H11M15,18V20H17V18H15Z"/></SvgIcon>
 									</IconButton>}
@@ -94,7 +94,7 @@ export default class Calculator extends Component {
 							</ListGroupItem>
 							<ListGroupItem>
 								<Row>
-									{<IconButton title={"Filter Database"} onClick={() => this.toggleFilter()}>
+									{<IconButton title={"Filter Database"} color="primary" onClick={() => this.toggleFilter()}>
 										<SvgIcon> <path d="M14,12V19.88C14.04,20.18 13.94,20.5 13.71,20.71C13.32,21.1 12.69,21.1 12.3,20.71L10.29,18.7C10.06,18.47 9.96,18.16 10,17.87V12H9.97L4.21,
 										4.62C3.87,4.19 3.95,3.56 4.38,3.22C4.57,3.08 4.78,3 5,3V3H19V3C19.22,3 19.43,3.08 19.62,3.22C20.05,3.56 20.13,4.19 19.79,4.62L14.03,12H14Z" /></SvgIcon>
 									</IconButton>}
