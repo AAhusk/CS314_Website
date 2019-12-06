@@ -30,9 +30,15 @@ export default class Calculator extends Component {
 			useLocation: false,
 			suggestedPlaces: [],
 			filters: [
-				{name: "type", values: []},
-				{name: "country", values: []},
+				{name: "type", value: "airport"},
+				{name: "country", value: "USA"},
+				{name: "type", value: "balloonport"},
+				{name: "country", value: "France"}
 			],
+			selectedFilters: {
+				type: [],
+				country: []
+			},
 			numFoundPlaces: 0,
 			filterToggle: false,
 			addModal: {
@@ -186,6 +192,25 @@ export default class Calculator extends Component {
 		});
 	}
 
+	setFilters(value) {
+		var types = []
+		var countries = []
+		value.forEach(filter => {
+			if(filter.name == "type") {
+				types.push(filter.value)
+			}
+			else if(filter.name == "country") {
+				countries.push(filter.value)
+			}
+		})
+		this.setState({
+			selectedFilters: {
+				type: types,
+				country: countries
+			}
+		})
+	}
+
 	createInputField(stateVar, callback = null) {
 		let DBsearch = (stateVar === "Database Search")
 			return (
@@ -195,8 +220,8 @@ export default class Calculator extends Component {
 							id="combo-box"
 							style={DBsearch ? {width: '80%', height: '60px'}:{}}
 							options={DBsearch ? this.state.suggestedPlaces:this.state.filters}
-							getOptionLabel={DBsearch ? options => options.name: options => options}
-							onChange={DBsearch ? (event, value) => this.setDBplace(value) : () => this.setDBplace()}
+							getOptionLabel={DBsearch ? options => options.name: options => options.value}
+							onChange={DBsearch ? (event, value) => this.setDBplace(value) : (event, value) => this.setFilters(value)}
 							renderInput={params => DBsearch ?
 									<TextField {...params} label={stateVar}
 														 fullWidth onChange={(e) => this.updateStateVarOnChange(stateVar, e, true)}/>
@@ -277,10 +302,12 @@ export default class Calculator extends Component {
 	}
 
 	queryDatabase(match) {
+
 		const tipConfigRequest = {
 		    'requestType': 'locations',
 		    'requestVersion': 3,
 		    "match"          : match,
+				"narrow"				 : this.state.selectedFilters,
 		    "limit"          : 50,
 		    "found"          : 0,
 		    "places"         : []
