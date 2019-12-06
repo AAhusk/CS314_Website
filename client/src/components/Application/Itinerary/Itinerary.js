@@ -28,11 +28,13 @@ export default class Itinerary extends Component {
     this.modalPlaceInputCallback = this.modalPlaceInputCallback.bind(this);
     this.addPlaceToItineraryDataFromModal = this.addPlaceToItineraryDataFromModal.bind(this);
     this.autoOptimization = this.autoOptimization.bind(this);
+    this.noOptimization = this.noOptimization.bind(this);
     this.shortTripOptimization = this.shortTripOptimization.bind(this);
     this.shorterTripOptimization = this.shorterTripOptimization.bind(this);
 
     this.state = {
       trip: null,
+      originalTrip: null,
       itineraryData: {},
       totalDistance: "",
       places: [],
@@ -53,7 +55,8 @@ export default class Itinerary extends Component {
   }
 
   render() {
-
+    console.log('ItineraryData', this.props.itineraryData);
+    console.log('OriginalData', this.state.originalTrip);
     let toggleOptDropdown = () => {
       let data = this.state.buttonDropdown;
       data.optimizationDropdownToggle = !data.optimizationDropdownToggle;
@@ -74,6 +77,7 @@ export default class Itinerary extends Component {
 
     let optimizationDropdownMenu = (
           <OptimizationDropdown autoOptimization={this.autoOptimization}
+                                noOptimization={this.noOptimization}
                                 shortTripOptimization={this.shortTripOptimization}
                                 shorterTripOptimization={this.shorterTripOptimization}/>
     );
@@ -139,7 +143,7 @@ export default class Itinerary extends Component {
                     <Col sm={{size: "auto"}}>
                       Itinerary
                     </Col>
-                    <Col sm={{size: "auto", offset: 6}}>
+                    <Col sm={{size: "auto", offset: 8}}>
                       {optimizationDropdownMenu}{'  '}
                       {downloadDropdownMenu}{'  '}
                       {reverseButton}{'  '}
@@ -222,6 +226,12 @@ export default class Itinerary extends Component {
       sum =  sum + distance;
     });
     return sum;
+  }
+
+  noOptimization(){
+    this.props.updateItineraryData(this.state.originalTrip);
+    const TIPObject = this.createTIPObject("Short Trip", 'none');
+    this.sendServerRequest('trip', TIPObject);
   }
 
   shortTripOptimization() {
@@ -387,7 +397,8 @@ export default class Itinerary extends Component {
   onFileSelect(trip, itineraryData, totalDistance) {
     this.setState({
       totalDistance: totalDistance,
-      trip: trip
+      trip: trip,
+      originalTrip: itineraryData
     });
     this.props.updateItineraryData(itineraryData, false);
   }
