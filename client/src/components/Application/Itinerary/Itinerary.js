@@ -9,6 +9,8 @@ import {
   sendServerRequestWithBody
 } from "../../../api/restfulAPI";
 
+import {DownloadDropdown} from './Dropdowns'
+
 export default class Itinerary extends Component {
 
   constructor(props) {
@@ -17,7 +19,9 @@ export default class Itinerary extends Component {
     this.onFileSelect = this.onFileSelect.bind(this);
     this.errorHandler = this.errorHandler.bind(this);
     this.createOutputJSON = this.createOutputJSON.bind(this);
+    this.createOutputJSONcallback = this.createOutputJSONcallback.bind(this);
     this.createOutputCSV = this.createOutputCSV.bind(this);
+    this.createOutputCSVcallback = this.createOutputCSVcallback.bind(this);
     this.modalPlaceInputCallback = this.modalPlaceInputCallback.bind(this);
     this.addPlaceToItineraryDataFromModal = this.addPlaceToItineraryDataFromModal.bind(this);
 
@@ -76,15 +80,17 @@ export default class Itinerary extends Component {
     );
 
     let downloadDropdownMenu = (
-          <Dropdown isOpen={this.state.buttonDropdown.downloadDropdownToggle} toggle={toggleDwnDropdown} className="float-left">
-            <DropdownToggle caret className='bg-csu-gold text-white'>
-              Export as
-            </DropdownToggle>
-            <DropdownMenu>
-              <DropdownItem onClick={() => this.createOutputJSON()}>JSON</DropdownItem>
-              <DropdownItem onClick={() => this.createOutputCSV()}>CSV</DropdownItem>
-            </DropdownMenu>
-          </Dropdown>
+          <DownloadDropdown createOutputCSV={this.createOutputCSV}
+                            createOutputJSON={this.createOutputJSON}/>
+          // <Dropdown isOpen={this.state.buttonDropdown.downloadDropdownToggle} toggle={toggleDwnDropdown} className="float-left">
+          //   <DropdownToggle caret className='bg-csu-gold text-white'>
+          //     Export as
+          //   </DropdownToggle>
+          //   <DropdownMenu>
+          //     <DropdownItem onClick={() => this.createOutputJSON()}>JSON</DropdownItem>
+          //     <DropdownItem onClick={() => this.createOutputCSV()}>CSV</DropdownItem>
+          //   </DropdownMenu>
+          // </Dropdown>
     );
 
     let settingsDropdownMenu = (
@@ -316,6 +322,13 @@ export default class Itinerary extends Component {
       let FileSaver = require('file-saver');
       FileSaver.saveAs(file, "TIPTrip.json");
     }
+  }
+
+  createOutputJSONcallback(){
+    this.createOutputJSON();
+  }
+  createOutputCSVcallback(){
+    this.createOutputCSV();
   }
 
   createOutputCSV() {
