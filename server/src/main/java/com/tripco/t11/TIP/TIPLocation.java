@@ -129,17 +129,18 @@ public class TIPLocation extends TIPHeader {
           }
         }
       query += " ORDER BY continent.name, country.name, region.name, world.municipality, world.name ASC";
-      /*if(this.limit != 0) {
-          query += " LIMIT " + this.limit;
-      }*/
-      log.info("THIS IS THE QUERY: " + query);
+
+      if(limit == 27) {
+        query += " LIMIT 27";
+      }
+
       try (Connection conn = DriverManager.getConnection(myUrl, user, pass);
            Statement stCount = conn.createStatement();
            Statement stQuery = conn.createStatement();
            //ResultSet rsCount = stCount.executeQuery(String.valueOf(this.limit));
            ResultSet rsQuery = stQuery.executeQuery(query);
       ) {
-        log.trace("RESULTS ", rsQuery);
+        log.trace("RESULTS " + rsQuery);
         while(rsQuery.next()) {
           this.found++;
           if(this.found <= this.limit) {

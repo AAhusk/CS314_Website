@@ -308,7 +308,7 @@ export default class Calculator extends Component {
 		    'requestVersion': 3,
 		    "match"          : match,
 				"narrow"				 : this.state.selectedFilters,
-		    "limit"          : 50,
+		    "limit"          : 27,
 		    "found"          : 0,
 		    "places"         : []
 		};
