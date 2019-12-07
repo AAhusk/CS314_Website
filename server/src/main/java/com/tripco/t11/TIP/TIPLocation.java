@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 // Created by Dave Matthews in TripCo/guides/database/DatabaseGuide.md
 public class TIPLocation extends TIPHeader {
   private String match;     // Client & Server
+  private Map<String, List<String>> narrow;
   private int limit;        // Optional in client, provided in server iff in client
   private int found;        // Server only
   private List<Place> places; // Server only
@@ -18,9 +19,10 @@ public class TIPLocation extends TIPHeader {
   private final transient Logger log = LoggerFactory.getLogger(TIPLocation.class);
 
 
-  TIPLocation(int version, String match, int limit, int found, List<Place> places) {
+  TIPLocation(int version, String match, Map<String, List<String>> narrow, int limit, int found, List<Place> places) {
     this.requestVersion = version;
     this.match = match;
+    this.narrow = narrow;
     this.limit = limit;
     this.found = found;
     this.places = places;
@@ -55,7 +57,7 @@ public class TIPLocation extends TIPHeader {
       pass = null;
     }
     else if(isDevelopment != null && isDevelopment.equals("development")) {
-      myUrl = "jdbc:mysql://127.0.0.1:56247/cs314";
+      myUrl = "jdbc:mysql://faure.cs.colostate.edu/cs314";
       user = "cs314-db";
       pass = "eiK5liet1uej";
     }
@@ -80,8 +82,59 @@ public class TIPLocation extends TIPHeader {
                      " OR region.name LIKE " + m +
                      " OR world.name LIKE " + m +
                      " OR world.municipality LIKE " + m +
-                     " ORDER BY continent.name, country.name, region.name, world.municipality, world.name ASC" +
-                     " LIMIT " + this.limit;
+                     " OR continent.name LIKE " + m +
+                     " OR world.id LIKE " + m;
+
+      for(Map.Entry<String, List<String>> entry : narrow.entrySet()) {
+        String key = entry.getKey();
+        List<String> values = entry.getValue();
+
+        switch(key.toString()) {
+            case "type":
+                for(String val : values) {
+                    query += " AND type.name LIKE '%" + m + "%'";
+                }
+                break;
+            case "country":
+                for(String val : values) {
+                    query += " AND country.name LIKE '%" + m + "%'";
+                }
+                break;
+            case "region":
+                for(String val : values) {
+                    query += " AND region.name LIKE '%" + m + "%'";
+                }
+                break;
+            case "municipality":
+                for(String val : values) {
+                    query += " AND world.municipality LIKE '%" + m + "%'";
+                }
+                break;
+            case "name":
+                for(String val : values) {
+                    query += " AND world.name LIKE '%" + m + "%'";
+                }
+                break;
+            case "continent":
+                for(String val : values) {
+                    query += " AND continent.name LIKE '%" + m + "%'";
+                }
+                break;
+            case "id":
+                for(String val : values) {
+                    query += " AND world.id LIKE '%" + m + "%'";
+                }
+                break;
+            default:
+                break;
+        }
+        query += " ORDER BY continent.name, country.name, region.name, world.municipality, world.name ASC";
+      }
+      
+      /*if(this.limit != 0) {
+          query += " LIMIT " + this.limit;
+      }*/
+                     
       try (Connection conn = DriverManager.getConnection(myUrl, user, pass);
            Statement stCount = conn.createStatement();
            Statement stQuery = conn.createStatement();
@@ -90,20 +143,22 @@ public class TIPLocation extends TIPHeader {
       ) {
         log.trace("RESULTS ", rsQuery);
         while(rsQuery.next()) {
-          found++;
-          Place p = new Place(rsQuery.getString("world.name"), rsQuery.getString("world.latitude"),
-                                rsQuery.getString("world.longitude"), rsQuery.getString("world.id"),
-                                rsQuery.getString("world.municipality"), rsQuery.getString("world.altitude"),
-                                rsQuery.getString("region.name"), rsQuery.getString("country.name"),
-                                rsQuery.getString("continent.name"));
-          places.add(p);
+          this.found++;
+          if(this.found <= this.limit) {
+              Place p = new Place(rsQuery.getString("world.name"), rsQuery.getString("world.latitude"),
+                      rsQuery.getString("world.longitude"), rsQuery.getString("world.id"),
+                      rsQuery.getString("world.municipality"), rsQuery.getString("world.altitude"),
+                      rsQuery.getString("region.name"), rsQuery.getString("country.name"),
+                      rsQuery.getString("continent.name"));
+              places.add(p);
+          }
         }
       }
       log.trace("---------------Finished---------------");
-
     } catch(Exception e) {
         System.err.println("Exception: "+e.getMessage());
     }
     log.trace("buildResponse -> {}", this);
   }
 }
+
