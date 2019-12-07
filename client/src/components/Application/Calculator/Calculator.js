@@ -1,6 +1,5 @@
 import React, {Component, Fragment} from 'react'
-import {Container, Row, Col, ListGroupItem, ListGroup, ListGroupItemText, Modal, ModalHeader, ModalBody, ModalFooter} from 'reactstrap'
-import {Button} from 'reactstrap'
+import {Container, Row, Col, ListGroupItem, ListGroup} from 'reactstrap'
 import {Input} from 'reactstrap'
 import {TextField, IconButton, SvgIcon} from '@material-ui/core';
 import Autocomplete from '@material-ui/lab/Autocomplete';
@@ -8,6 +7,7 @@ import {sendServerRequestWithBody} from '../../../api/restfulAPI'
 import LMap from "../LMap";
 import Itinerary from "../Itinerary/Itinerary";
 import { MyLocation, Add } from '@material-ui/icons';
+import filters from "./filters";
 
 
 export default class Calculator extends Component {
@@ -27,12 +27,7 @@ export default class Calculator extends Component {
 			errorMessage: this.props.errorMessage,
 			useLocation: false,
 			suggestedPlaces: [],
-			filters: [
-				{name: "type", value: "airport"},
-				{name: "country", value: "USA"},
-				{name: "type", value: "balloonport"},
-				{name: "country", value: "France"}
-			],
+			filters: filters,
 			selectedFilters: {
 				type: [],
 				country: []
@@ -138,7 +133,7 @@ export default class Calculator extends Component {
 	showTotal() {
 		if (this.state.totalToggle) {
 			return (
-					<h4>{this.state.numFoundPlaces} results</h4>
+					<h4 style={{marginTop:'10px', marginLeft:'10px'}}>{this.state.numFoundPlaces} results</h4>
 			)
 		}
 	}

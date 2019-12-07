@@ -91,7 +91,7 @@ public class TIPLocation extends TIPHeader {
           switch (key) {
             case "type":
               for (String val : values) {
-                query += " AND type.name LIKE '%" + val + "%'";
+                query += " AND world.type LIKE '%" + val + "%'";
               }
               break;
             case "country":
