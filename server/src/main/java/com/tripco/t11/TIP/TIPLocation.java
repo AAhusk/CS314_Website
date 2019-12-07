@@ -57,7 +57,7 @@ public class TIPLocation extends TIPHeader {
       pass = null;
     }
     else if(isDevelopment != null && isDevelopment.equals("development")) {
-      myUrl = "jdbc:mysql://127.0.0.1:56247/cs314";
+      myUrl = "jdbc:mysql://faure.cs.colostate.edu/cs314";
       user = "cs314-db";
       pass = "eiK5liet1uej";
     }
@@ -133,7 +133,6 @@ public class TIPLocation extends TIPHeader {
       if(limit == 27) {
         query += " LIMIT 27";
       }
-
       try (Connection conn = DriverManager.getConnection(myUrl, user, pass);
            Statement stCount = conn.createStatement();
            Statement stQuery = conn.createStatement();
