@@ -148,7 +148,7 @@ public class TIPLocation extends TIPHeader {
                       rsQuery.getString("world.longitude"), rsQuery.getString("world.id"),
                       rsQuery.getString("world.municipality"), rsQuery.getString("world.altitude"),
                       rsQuery.getString("region.name"), rsQuery.getString("country.name"),
-                      rsQuery.getString("continent.name"), rsQuery.getString("type.name"));
+                      rsQuery.getString("continent.name"));
               places.add(p);
           }
         }
