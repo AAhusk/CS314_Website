@@ -85,7 +85,7 @@ class MicroServer {
 
 
   private String processTIPconfigRequest(Request request, Response response) {
-    log.info("TIP Config request: {}", HTTPrequestToJson(request));
+    log.trace("TIP Config request: {}", HTTPrequestToJson(request));
     response.type("application/json");
     response.header("Access-Control-Allow-Origin", "*");
     response.status(200);
@@ -152,8 +152,8 @@ class MicroServer {
     JSONObject JSONrequest = null;
     try {
       JSONrequest = new JSONObject(TripRequest);
-      log.info("This is the JSONrequestBody: {}\n", JSONrequest);
-      log.info("This is the JSON schema: {}\n", JSONSchema);
+      log.trace("This is the JSONrequestBody: {}\n", JSONrequest);
+      log.trace("This is the JSON schema: {}\n", JSONSchema);
       Schema schema = SchemaLoader.load(JSONSchema);
       schema.validate(JSONrequest);    // This is the line that will throw a ValidationException if anything doesn't conform to the schema!
     }
@@ -184,7 +184,7 @@ class MicroServer {
   }
 
   private String processTIPrequest(Type tipType, Request request, Response response) {
-    log.info("TIP Request: {}", HTTPrequestToJson(request));
+    log.trace("TIP Request: {}", HTTPrequestToJson(request));
     response.type("application/json");
     response.header("Access-Control-Allow-Origin", "*");
     response.status(200);
@@ -193,7 +193,7 @@ class MicroServer {
       TIPHeader tipRequest = jsonConverter.fromJson(request.body(), tipType);
       tipRequest.buildResponse();
       String responseBody = jsonConverter.toJson(tipRequest);
-      log.info("TIP Response: {}", responseBody);
+      log.trace("TIP Response: {}", responseBody);
       return responseBody;
     } catch (Exception e) {
       log.error("Exception: {}", e);

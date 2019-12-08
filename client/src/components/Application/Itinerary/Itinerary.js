@@ -55,8 +55,6 @@ export default class Itinerary extends Component {
   }
 
   render() {
-    console.log('ItineraryData', this.props.itineraryData);
-    console.log('OriginalData', this.state.originalTrip);
     let toggleOptDropdown = () => {
       let data = this.state.buttonDropdown;
       data.optimizationDropdownToggle = !data.optimizationDropdownToggle;

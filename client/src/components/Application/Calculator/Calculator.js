@@ -1,6 +1,5 @@
 import React, {Component, Fragment} from 'react'
-import {Container, Row, Col, ListGroupItem, ListGroup, ListGroupItemText, Modal, ModalHeader, ModalBody, ModalFooter} from 'reactstrap'
-import {Button} from 'reactstrap'
+import {Container, Row, Col, ListGroupItem, ListGroup} from 'reactstrap'
 import {Input} from 'reactstrap'
 import {TextField, IconButton, SvgIcon} from '@material-ui/core';
 import Autocomplete from '@material-ui/lab/Autocomplete';
@@ -8,6 +7,7 @@ import {sendServerRequestWithBody} from '../../../api/restfulAPI'
 import LMap from "../LMap";
 import Itinerary from "../Itinerary/Itinerary";
 import { MyLocation, Add } from '@material-ui/icons';
+import filters from "./filters";
 
 
 export default class Calculator extends Component {
@@ -23,46 +23,28 @@ export default class Calculator extends Component {
 			destination: this.props.locationDestination,
 			rawStringO: null,
 			rawStringD: null,
-			inputOrigin: '',
-			inputDest: '',
 			distance: 0,
 			errorMessage: this.props.errorMessage,
 			useLocation: false,
 			suggestedPlaces: [],
-			filters: [
-				{name: "type", values: []},
-				{name: "country", values: []},
-			],
-			numFoundPlaces: 0,
-			filterToggle: false,
-			addModal: {
-				toggle: false,
-				places: [],
-				found: 0
+			filters: filters,
+			selectedFilters: {
+				type: [],
+				country: []
 			},
+			currentMatch: '',
+			numFoundPlaces: null,
+			totalToggle: false,
+			filterToggle: false,
 			DBplace: null,
 		};
 	}
 	
 	render() {
 		let filters = this.createFilters();
+		let showTotal = this.showTotal();
 		let DBplaceInfo = this.showDBinfo();
-	    let toggleModal = () => {
-	        this.setState({addModal: {
-	    	    toggle: !this.state.addModal.toggle,
-		    		place: this.state.suggestedPlaces,
-		    		found: this.state.numFoundPlaces
-	        }});
-	    };
 
-        let addPlaceModal = (
-            <Modal isOpen={this.state.addModal.toggle} toggle={toggleModal}>
-                <ModalHeader toggle={toggleModal}>Search Results</ModalHeader>
-                <ModalBody>
-                    <h5>Found {this.state.addModal.found} results</h5>
-                </ModalBody>
-            </Modal>
-        );
 		return (
 			<React.Fragment>
 				<Row>
@@ -76,7 +58,6 @@ export default class Calculator extends Component {
 						/>
 					</Col>
 					<Col xs={12} sm={12} md={6} lg={3}>
-						{addPlaceModal}
 						<ListGroup>
 							<ListGroupItem>
 								<Row>
@@ -103,6 +84,15 @@ export default class Calculator extends Component {
 										4.62C3.87,4.19 3.95,3.56 4.38,3.22C4.57,3.08 4.78,3 5,3V3H19V3C19.22,3 19.43,3.08 19.62,3.22C20.05,3.56 20.13,4.19 19.79,4.62L14.03,12H14Z" /></SvgIcon>
 									</IconButton>}
 									{this.createInputField("Database Search")}
+								</Row>
+								<Row>
+								{<IconButton title={"Total Results"} color="primary" onClick={() => this.findTotal()}>
+									<SvgIcon> <path  d="M4,4H20A2,2 0 0,1 22,6V18A2,2 0 0,1 20,20H4A2,2 0 0,1 2,18V6A2,2 0 0,1 4,4M4,6V18H11V6H4M20,18V6H18.76C19,6.54 18.95,7.07 18.95,7.13C18.88,7.8
+									18.41,8.5 18.24,8.75L15.91,11.3L19.23,11.28L19.24,12.5L14.04,12.47L14,11.47C14,11.47 17.05,8.24 17.2,7.95C17.34,7.67 17.91,6 16.5,6C15.27,6.05 15.41,7.3 15.41,7.3L13.87,
+									7.31C13.87,7.31 13.88,6.65 14.25,6H13V18H15.58L15.57,17.14L16.54,17.13C16.54,17.13 17.45,16.97 17.46,16.08C17.5,15.08 16.65,15.08 16.5,15.08C16.37,15.08 15.43,15.13 15.43,15.95H13.91C13.91,
+									15.95 13.95,13.89 16.5,13.89C19.1,13.89 18.96,15.91 18.96,15.91C18.96,15.91 19,17.16 17.85,17.63L18.37,18H20M8.92,16H7.42V10.2L5.62,10.76V9.53L8.76,8.41H8.92V16Z" /> </SvgIcon>
+								</IconButton> }
+									{showTotal}
 								</Row>
 								{filters}
 							</ListGroupItem>
@@ -138,6 +128,14 @@ export default class Calculator extends Component {
 	toggleFilter() {
 		let filterToggle = this.state.filterToggle;
 		this.setState( {filterToggle: !filterToggle})
+	}
+
+	showTotal() {
+		if (this.state.totalToggle) {
+			return (
+					<h4 style={{marginTop:'10px', marginLeft:'10px'}}>{this.state.numFoundPlaces} results</h4>
+			)
+		}
 	}
 
 	showDBinfo() {
@@ -176,7 +174,11 @@ export default class Calculator extends Component {
 			this.setState({useLocation: false});
 		}
 		if(searchDB) {
-			this.queryDatabase(event.target.value) // origin / destination --- rawString
+			this.setState( {
+				totalToggle: false,
+				currentMatch: event.target.value
+			})
+			this.queryDatabase(event.target.value, 27) // origin / destination --- rawString
 		}
 	};
 
@@ -184,6 +186,25 @@ export default class Calculator extends Component {
 		this.setState( {
 			DBplace: value
 		});
+	}
+
+	setFilters(value) {
+		var types = []
+		var countries = []
+		value.forEach(filter => {
+			if(filter.name == "type") {
+				types.push(filter.value)
+			}
+			else if(filter.name == "country") {
+				countries.push(filter.value)
+			}
+		})
+		this.setState({
+			selectedFilters: {
+				type: types,
+				country: countries
+			}
+		})
 	}
 
 	createInputField(stateVar, callback = null) {
@@ -195,8 +216,8 @@ export default class Calculator extends Component {
 							id="combo-box"
 							style={DBsearch ? {width: '80%', height: '60px'}:{}}
 							options={DBsearch ? this.state.suggestedPlaces:this.state.filters}
-							getOptionLabel={DBsearch ? options => options.name: options => options}
-							onChange={DBsearch ? (event, value) => this.setDBplace(value) : () => this.setDBplace()}
+							getOptionLabel={DBsearch ? options => options.name: options => options.value}
+							onChange={DBsearch ? (event, value) => this.setDBplace(value) : (event, value) => this.setFilters(value)}
 							renderInput={params => DBsearch ?
 									<TextField {...params} label={stateVar}
 														 fullWidth onChange={(e) => this.updateStateVarOnChange(stateVar, e, true)}/>
@@ -247,6 +268,10 @@ export default class Calculator extends Component {
 		this.setState({[rawStateName]: rawString})
 	}
 
+	findTotal() {
+		this.queryDatabase(this.state.currentMatch, 26, true);
+	}
+
 	calculateDistance() {
 		const tipConfigRequest = {
 			'requestType': 'distance',
@@ -276,33 +301,38 @@ export default class Calculator extends Component {
 		});
 	}
 
-	queryDatabase(match) {
+	queryDatabase(match, limit, count = false) {
 		const tipConfigRequest = {
 		    'requestType': 'locations',
 		    'requestVersion': 3,
 		    "match"          : match,
-		    "limit"          : 50,
+				"narrow"				 : this.state.selectedFilters,
+		    "limit"          : limit,
 		    "found"          : 0,
 		    "places"         : []
 		};
-
 		sendServerRequestWithBody('location', tipConfigRequest, this.props.settings.serverPort)
 		    .then((response) => {
-			if (response.statusCode >= 200 && response.statusCode <= 299) {
-			    this.setState({
-				numFoundPlaces: response.body.found,
-				suggestedPlaces: response.body.places,
-				errorMessage: null
-			    });
-			} else {
-			    this.setState({
-				errorMessage: this.props.createErrorBanner(
-				    response.statusText,
-				    response.statusCode,
-				    `Request to ${this.props.settings.serverPort} failed.`
-				)
-			    });
-			}
+				if (response.statusCode >= 200 && response.statusCode <= 299 && count) {
+						this.setState({
+							numFoundPlaces: response.body.found,
+							suggestedPlaces: response.body.places,
+							errorMessage: null,
+							totalToggle: true
+						});
+				} else if(response.statusCode >= 200 && response.statusCode <= 299) {
+						this.setState( {
+							suggestedPlaces: response.body.places,
+							errorMessage: null
+						});
+				} else {
+						this.setState({
+							errorMessage: this.props.createErrorBanner(
+							response.statusText,
+							response.statusCode,
+							`Request to ${this.props.settings.serverPort} failed.`)
+						});
+					}
 		    });
 	}
 	
