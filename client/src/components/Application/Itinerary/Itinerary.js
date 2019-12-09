@@ -31,6 +31,7 @@ export default class Itinerary extends Component {
     this.noOptimization = this.noOptimization.bind(this);
     this.shortTripOptimization = this.shortTripOptimization.bind(this);
     this.shorterTripOptimization = this.shorterTripOptimization.bind(this);
+    this.itineraryIcons = this.itineraryIcons.bind(this);
 
     this.state = {
       trip: null,
@@ -46,67 +47,49 @@ export default class Itinerary extends Component {
         modalNameInput: null,
         submitActive: false
       },
-      buttonDropdown: {
-        optimizationDropdownToggle: false,
-        downloadDropdownToggle: false,
-        settingsDropdownToggle: false
-      }
+      iconVisibility: true,
+    }
+  }
+
+  itineraryIcons() {
+    if (this.state.iconVisibility == true){
+      return(
+        <React.Fragment>
+            <OptimizationDropdown autoOptimization={this.autoOptimization}
+                                  noOptimization={this.noOptimization}
+                                  shortTripOptimization={this.shortTripOptimization}
+                                  shorterTripOptimization={this.shorterTripOptimization}/>
+
+            <DownloadDropdown createOutputCSV={this.createOutputCSV}
+                              createOutputJSON={this.createOutputJSON}/>
+
+            <Tooltip title="Reverse Trip" placement="top" arrow>
+              <IconButton color="primary"
+                          onClick={() => this.reverseItinerary()}>
+                <FlipCameraAndroidIcon/>
+              </IconButton>
+            </Tooltip> 
+
+            <Tooltip title="Line Toggle" placement="top" arrow>
+              <IconButton color="primary"
+                          onClick={() => {  let data = this.props.itineraryData;
+                                            data.polyLineEnabled = !data.polyLineEnabled;
+                                            this.props.updateItineraryData(data); }}>
+                  <TimelineIcon/>
+              </IconButton>
+            </Tooltip>   
+
+        </React.Fragment>
+      );
+    }
+
+    else{
+      return(null);
     }
   }
 
   render() {
-    let toggleOptDropdown = () => {
-      let data = this.state.buttonDropdown;
-      data.optimizationDropdownToggle = !data.optimizationDropdownToggle;
-      this.setState({buttonDropdown: data});
-    };
-
-    let toggleDwnDropdown = () => {
-      let data = this.state.buttonDropdown;
-      data.downloadDropdownToggle = !data.downloadDropdownToggle;
-      this.setState({buttonDropdown: data});
-    };
-
-    let toggleSetDropdown = () => {
-      let data = this.state.buttonDropdown;
-      data.settingsDropdownToggle = !data.settingsDropdownToggle;
-      this.setState({buttonDropdown: data});
-    };
-
-    let optimizationDropdownMenu = (
-          <OptimizationDropdown autoOptimization={this.autoOptimization}
-                                noOptimization={this.noOptimization}
-                                shortTripOptimization={this.shortTripOptimization}
-                                shorterTripOptimization={this.shorterTripOptimization}/>
-    );
-
-    let downloadDropdownMenu = (
-          <DownloadDropdown createOutputCSV={this.createOutputCSV}
-                            createOutputJSON={this.createOutputJSON}/>
-    );
-
-    let reverseButton = (
-      <Tooltip title="Reverse Trip" placement="top" arrow>
-        <IconButton color="primary"
-                    onClick={() => this.reverseItinerary()}>
-          <FlipCameraAndroidIcon/>
-        </IconButton>
-      </Tooltip>
-    );
-
-    let lineToggleButton = (
-      <Tooltip title="Line Toggle" placement="top" arrow>
-        <IconButton color="primary"
-                    onClick={() => {
-                              let data = this.props.itineraryData;
-                              data.polyLineEnabled = !data.polyLineEnabled;
-                              this.props.updateItineraryData(data);
-                            }}>
-          <TimelineIcon/>
-        </IconButton>
-      </Tooltip>
-    );
-
+    
     let toggleModal = () => {
       this.setState({addModal: {
           addModalToggle: !this.state.addModal.addModalToggle,
@@ -144,13 +127,10 @@ export default class Itinerary extends Component {
                     </Col>
 
                     <Col/> 
-                    <Col/> 
 
                     <Col sm={{size: "auto"}}>
-                      {optimizationDropdownMenu}
-                      {downloadDropdownMenu}
-                      {reverseButton}
-                      {lineToggleButton}
+
+                      {this.itineraryIcons()}
                       
                       <Tooltip title="Add Location" placement="top" arrow>
                         <IconButton color="primary"
