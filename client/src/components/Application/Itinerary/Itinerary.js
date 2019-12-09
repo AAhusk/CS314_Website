@@ -51,43 +51,6 @@ export default class Itinerary extends Component {
     }
   }
 
-  itineraryIcons() {
-    if (this.state.iconVisibility == true){
-      return(
-        <React.Fragment>
-            <OptimizationDropdown autoOptimization={this.autoOptimization}
-                                  noOptimization={this.noOptimization}
-                                  shortTripOptimization={this.shortTripOptimization}
-                                  shorterTripOptimization={this.shorterTripOptimization}/>
-
-            <DownloadDropdown createOutputCSV={this.createOutputCSV}
-                              createOutputJSON={this.createOutputJSON}/>
-
-            <Tooltip title="Reverse Trip" placement="top" arrow>
-              <IconButton color="primary"
-                          onClick={() => this.reverseItinerary()}>
-                <FlipCameraAndroidIcon/>
-              </IconButton>
-            </Tooltip> 
-
-            <Tooltip title="Line Toggle" placement="top" arrow>
-              <IconButton color="primary"
-                          onClick={() => {  let data = this.props.itineraryData;
-                                            data.polyLineEnabled = !data.polyLineEnabled;
-                                            this.props.updateItineraryData(data); }}>
-                  <TimelineIcon/>
-              </IconButton>
-            </Tooltip>   
-
-        </React.Fragment>
-      );
-    }
-
-    else{
-      return(null);
-    }
-  }
-
   render() {
     
     let toggleModal = () => {
@@ -130,7 +93,7 @@ export default class Itinerary extends Component {
 
                     <Col sm={{size: "auto"}}>
 
-                      {this.itineraryIcons()}
+                      {this.renderItineraryIcons()}
                       
                       <Tooltip title="Add Location" placement="top" arrow>
                         <IconButton color="primary"
@@ -158,6 +121,44 @@ export default class Itinerary extends Component {
           </React.Fragment>
     );
   }
+
+  renderItineraryIcons() {
+    if (this.state.iconVisibility == true){
+      return(
+        <React.Fragment>
+            <OptimizationDropdown autoOptimization={this.autoOptimization}
+                                  noOptimization={this.noOptimization}
+                                  shortTripOptimization={this.shortTripOptimization}
+                                  shorterTripOptimization={this.shorterTripOptimization}/>
+
+            <DownloadDropdown createOutputCSV={this.createOutputCSV}
+                              createOutputJSON={this.createOutputJSON}/>
+
+            <Tooltip title="Reverse Trip" placement="top" arrow>
+              <IconButton color="primary"
+                          onClick={() => this.reverseItinerary()}>
+                <FlipCameraAndroidIcon/>
+              </IconButton>
+            </Tooltip> 
+
+            <Tooltip title="Line Toggle" placement="top" arrow>
+              <IconButton color="primary"
+                          onClick={() => {  let data = this.props.itineraryData;
+                                            data.polyLineEnabled = !data.polyLineEnabled;
+                                            this.props.updateItineraryData(data); }}>
+                  <TimelineIcon/>
+              </IconButton>
+            </Tooltip>   
+
+        </React.Fragment>
+      );
+    }
+
+    else{
+      return(null);
+    }
+  }
+
   renderTable() {
     return(
           <ItineraryTable itineraryData={this.props.itineraryData}
