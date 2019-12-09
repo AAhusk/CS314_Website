@@ -31,7 +31,7 @@ export default class Itinerary extends Component {
     this.noOptimization = this.noOptimization.bind(this);
     this.shortTripOptimization = this.shortTripOptimization.bind(this);
     this.shorterTripOptimization = this.shorterTripOptimization.bind(this);
-    this.itineraryIcons = this.itineraryIcons.bind(this);
+    this.renderItineraryIcons = this.renderItineraryIcons.bind(this);
 
     this.state = {
       trip: null,
@@ -47,7 +47,7 @@ export default class Itinerary extends Component {
         modalNameInput: null,
         submitActive: false
       },
-      iconVisibility: true,
+      iconVisibility: false,
     }
   }
 
@@ -381,7 +381,8 @@ export default class Itinerary extends Component {
     this.setState({
       totalDistance: totalDistance,
       trip: trip,
-      originalTrip: itineraryData
+      originalTrip: itineraryData,
+      iconVisibility: true,
     });
     this.props.updateItineraryData(itineraryData, false);
   }
