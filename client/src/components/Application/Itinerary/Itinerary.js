@@ -137,20 +137,24 @@ export default class Itinerary extends Component {
             <Col>
               <Card>
                 <CardHeader>
-                  <Row>
+                  <Row between="xs">
+                  {/* <Row>   */}
                     <Col sm={{size: "auto"}}>
                       Itinerary
                     </Col>
-                    <Col sm={{size: "auto", offset: 8}}>
-                      {optimizationDropdownMenu}{'  '}
-                      {downloadDropdownMenu}{'  '}
-                      {reverseButton}{'  '}
-                      {lineToggleButton}{'  '}
+
+                    <Col/> 
+                    <Col/> 
+
+                    <Col sm={{size: "auto"}}>
+                      {optimizationDropdownMenu}
+                      {downloadDropdownMenu}
+                      {reverseButton}
+                      {lineToggleButton}
                       
                       <Tooltip title="Add Location" placement="top" arrow>
                         <IconButton color="primary"
-                                    onClick={toggleModal}
-                                    style={{float: "right"}}>
+                                    onClick={toggleModal}>
                           <AddIcon/>
                         </IconButton>
                       </Tooltip>
