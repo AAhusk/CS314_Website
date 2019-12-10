@@ -140,7 +140,8 @@ export default class Itinerary extends Component {
                 <CardHeader>
                   <Row>
                     <Col sm={{size: "auto"}}>
-                      <Input placeholder={"Itinerary Title"}
+                      <Input name={"title field"}
+                             placeholder={"Itinerary Title"}
                              id={'titlefield'}
                              onChange={(e) => (this.setState({itineraryTitle: e.target.value}))}/>
                     </Col>
