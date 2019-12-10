@@ -145,7 +145,7 @@ export default class Calculator extends Component {
 						<h4>Place</h4>
 						<Row>
 							<Col m={6} lg={5}><b>Location</b></Col>
-							<Col m={6} lg={3}>{this.state.DBplace.name}</Col>
+							<Col m={6} lg={3}>{this.state.DBplace.name}, {this.state.DBplace.municipality}, {this.state.DBplace.country}</Col>
 						</Row>
 						<Row>
 							<Col m={6} lg={5}><b>Coordinates</b></Col>
