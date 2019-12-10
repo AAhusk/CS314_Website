@@ -28,10 +28,10 @@ export default class Calculator extends Component {
 			useLocation: false,
 			suggestedPlaces: [],
 			filters: filters,
-			selectedFilters: {
-				type: [],
-				country: []
-			},
+			selectedFilters: [
+					{"name": "type", "values": []},
+				{"name": "country", "values": []}
+			],
 			currentMatch: '',
 			numFoundPlaces: null,
 			totalToggle: false,
@@ -199,11 +199,12 @@ export default class Calculator extends Component {
 				countries.push(filter.value)
 			}
 		})
+		var filtersArray = [
+				{"name": "type", "values": types},
+				{"name": "country", "values": countries},
+		]
 		this.setState({
-			selectedFilters: {
-				type: types,
-				country: countries
-			}
+			selectedFilters: filtersArray
 		})
 	}
 

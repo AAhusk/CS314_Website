@@ -3,6 +3,7 @@ package com.tripco.t11.TIP;
 
 import com.tripco.t11.misc.Place;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import org.slf4j.Logger;
@@ -11,7 +12,7 @@ import org.slf4j.LoggerFactory;
 // Created by Dave Matthews in TripCo/guides/database/DatabaseGuide.md
 public class TIPLocation extends TIPHeader {
   private String match;     // Client & Server
-  private Map<String, List<String>> narrow;
+  private List<Map<String, Object>> narrow;
   private int limit;        // Optional in client, provided in server iff in client
   private int found;        // Server only
   private List<Place> places; // Server only
@@ -19,7 +20,7 @@ public class TIPLocation extends TIPHeader {
   private final transient Logger log = LoggerFactory.getLogger(TIPLocation.class);
 
 
-  TIPLocation(int version, String match, Map<String, List<String>> narrow, int limit, int found, List<Place> places) {
+  TIPLocation(int version, String match, List<Map<String, Object>> narrow, int limit, int found, List<Place> places) {
     this.requestVersion = version;
     this.match = match;
     this.narrow = narrow;
@@ -84,44 +85,28 @@ public class TIPLocation extends TIPHeader {
                      " OR world.municipality LIKE " + m +
                      " OR continent.name LIKE " + m +
                      " OR world.id LIKE " + m + ")";
-        for (Map.Entry<String, List<String>> entry : narrow.entrySet()) {
-          String key = entry.getKey();
-          List<String> values = entry.getValue();
-
-          switch (key) {
+        /*for (Map.Entry<String, List<String>> entry : narrow.entrySet()) {*/
+        for(Map<String, Object> entry: narrow) {
+          Object type = entry.get("name");
+          String filterType = type.toString();
+          Object values = entry.get("values");
+          ArrayList<String> filterValues;
+          if (values instanceof ArrayList<?>) {
+            filterValues = (ArrayList<String>) values;
+          }
+          else {
+            log.error("Narrow attribute is not in the right format");
+            break;
+          }
+          switch (filterType) {
             case "type":
-              for (String val : values) {
+              for (String val : filterValues) {
                 query += " AND world.type LIKE '%" + val + "%'";
               }
               break;
             case "country":
-              for (String val : values) {
+              for (String val : filterValues) {
                 query += " AND country.name LIKE '%" + val + "%'";
-              }
-              break;
-            case "region":
-              for (String val : values) {
-                query += " AND region.name LIKE '%" + val + "%'";
-              }
-              break;
-            case "municipality":
-              for (String val : values) {
-                query += " AND world.municipality LIKE '%" + val + "%'";
-              }
-              break;
-            case "name":
-              for (String val : values) {
-                query += " AND world.name LIKE '%" + val + "%'";
-              }
-              break;
-            case "continent":
-              for (String val : values) {
-                query += " AND continent.name LIKE '%" + val + "%'";
-              }
-              break;
-            case "id":
-              for (String val : values) {
-                query += " AND world.id LIKE '%" + val + "%'";
               }
               break;
             default:
@@ -133,6 +118,7 @@ public class TIPLocation extends TIPHeader {
       if(limit == 27) {
         query += " LIMIT 27";
       }
+      log.info("This is the query" + query);
       try (Connection conn = DriverManager.getConnection(myUrl, user, pass);
            Statement stCount = conn.createStatement();
            Statement stQuery = conn.createStatement();
