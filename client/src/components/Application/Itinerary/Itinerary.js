@@ -40,6 +40,7 @@ export default class Itinerary extends Component {
       places: [],
       errorMessage: this.props.errorMessage,
       forceUpdate: false,
+      itineraryTitle: "TIPTrip",
       addModal: {
         addModalToggle: false,
         modalPlaceInput: null,
@@ -139,13 +140,13 @@ export default class Itinerary extends Component {
                 <CardHeader>
                   <Row>
                     <Col sm={{size: "auto"}}>
-                      Itinerary
+                      <Input placeholder={"Itinerary Title"}
+                             id={'titlefield'}
+                             onChange={(e) => (this.setState({itineraryTitle: e.target.value}))}/>
                     </Col>
-                    <Col sm={{size: "auto", offset: 8}}>
-                      {optimizationDropdownMenu}{'  '}
-                      {downloadDropdownMenu}{'  '}
-                      {reverseButton}{'  '}
-                      {lineToggleButton}{'  '}
+                  </Row>
+                  <Row>
+                    <Col sm={{size: "auto"}}>
                       
                       <Tooltip title="Add Location" placement="top" arrow>
                         <IconButton color="primary"
@@ -154,6 +155,11 @@ export default class Itinerary extends Component {
                           <AddIcon/>
                         </IconButton>
                       </Tooltip>
+                      
+                      {optimizationDropdownMenu}{'  '}
+                      {downloadDropdownMenu}{'  '}
+                      {reverseButton}{'  '}
+                      {lineToggleButton}{'  '}
                     </Col>
 
                   </Row>
@@ -340,7 +346,8 @@ export default class Itinerary extends Component {
       let file = new Blob([JSON.stringify(TIPTrip, null, 2)],
             {type: 'application/json'});
       let FileSaver = require('file-saver');
-      FileSaver.saveAs(file, "TIPTrip.json");
+      let title = this.state.itineraryTitle + ".json";
+      FileSaver.saveAs(file, title);
     }
   }
 
@@ -367,7 +374,8 @@ export default class Itinerary extends Component {
             {type: 'application/json'});
 
       let FileSaver = require('file-saver');
-      FileSaver.saveAs(file, "TIPTrip.csv");
+      let title = this.state.itineraryTitle + ".csv";
+      FileSaver.saveAs(file, title);
     }
   }
   createCSVArray(TripArray) {
