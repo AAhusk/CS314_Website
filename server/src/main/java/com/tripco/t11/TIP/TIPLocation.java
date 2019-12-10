@@ -71,8 +71,11 @@ public class TIPLocation extends TIPHeader {
     try {
       log.trace("---------------Attempting to Reach Database---------------");
       Class.forName("com.mysql.jdbc.Driver");
+      
+      String matchNew = this.match.replaceAll("'", "_");
+      matchNew = matchNew.replaceAll("-", "_");
 
-      String m = "'%" + this.match + "%'";
+      String m = "'%" + matchNew + "%'";
 
       String query = "SELECT world.name, world.municipality, region.name, country.name, continent.name, world.latitude, world.longitude, world.altitude, world.id FROM continent " +
                      "INNER JOIN country on continent.id = country.continent " +
