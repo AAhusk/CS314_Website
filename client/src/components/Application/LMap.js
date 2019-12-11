@@ -42,14 +42,18 @@ export default class LMap extends Component {
 		
 		let pointArr = this.props.itineraryData.places;
 		if (pointArr.length !== 0) {
+			var hasName = false; var name = ""
+			if(pointArr[0].hasOwnProperty('name')) {hasName = true}
 			for (let i = 0; i < pointArr.length; i++) {
 				if (this.props.itineraryData.places[i].checked === true) {
+					if(hasName) {name = pointArr[i].name}
 					MarkerArr.push(
 						<Marker key={"Marker" + i}
 						        position={latLngs[i]}
 						        icon={this.markerIcon(iconred)}>
 							<Popup className="font-weight-extrabold">
 								Destination:<br/>
+								{name}<br/>
 								{pointArr[i].latitude} Latitude<br/>
 								{pointArr[i].longitude} Longitude
 							</Popup>
