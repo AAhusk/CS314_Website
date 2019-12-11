@@ -61,9 +61,9 @@ This sprint will complete the following Epics.
 
 | Statistic | # Planned | # Completed |
 | --- | ---: | ---: |
-| Epics | *8* | *count* |
-| Tasks |  *18*   | *count* | 
-| Story Points |  *40*  | *count* | 
+| Epics | *8* | *8* |
+| Tasks |  *18*   | *17* | 
+| Story Points |  *40*  | *37* | 
 
 
 ## Scrums
@@ -75,30 +75,29 @@ This sprint will complete the following Epics.
 
 ## Review (focus on solution and technology)
 
-In this sprint, ...
+In this sprint, we fleshed out the rest of the database items that needed to be completed, including the filters and making sure we could access both region and worldwide. The rest of the sprint was spent ironing out bugs and making things more accessable with MaterialUI.
 
 #### Completed epics in Sprint Backlog 
 
 These Epics were completed.
 
-* *## epic title: comments*
-* 
-
-#### Incomplete epics in Sprint Backlog 
-
-These Epics were not completed.
-
-* *## epic title: explanation*
-*
+* *#1 Worldwide: Access worldwide database*
+* *#2 Map Clutter: Continuation of map clutter epics from previous sprints*
+* *#3 Distance Units: Users should be able to select and modify their own units*
+* *#4 TIP v5: Update TIPMD spec*
+* *#5 Ease of Use: Redid the UI for the itinerary so it's easier to navigate*
+* *#6 Auto Optimize: Simple setting in a dropdown menu*
+* *#7 Distance Display: Leg + Cum distances*
+* *#8 Trip Title: Modify trip title*
 
 #### What went well
 
-The ...
+The team really pushed through to get a lot done this sprint. Even over break, several team members were working to make sure things from the last sprint were completed properly, a lot more testing was created, and discussion about how to move forward with different obstacles was had. We finished the database portion, which we've been struggling with in the past, and have moved to making sure everything runs smoothly and looks good for mobile release.
 
 
 #### Problems encountered and resolutions
 
-The ...
+The sight for Sprint 5 was lost because we spent a lot of necessary time working on things that we needed to catch up on. So for isntance, we weren't able to look at concurrency at all, which was fine for our needs because we were still able to make a lot of progress on the project.
 
 
 ## Retrospective (focus on people, process, tools)
