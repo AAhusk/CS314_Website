@@ -244,7 +244,7 @@ export default class Calculator extends Component {
 								 placeholder={stateVar.charAt(0).toUpperCase() + stateVar.slice(1)}
 								 value={this.props.locationOrigin.latitude + ", " + this.props.locationOrigin.longitude}
 								 id={`${stateVar}field`}
-								 onChange={(e) => (callback == null ? this.updateCoordState(stateVar, e) : callback)}/>
+								 onChange={(e) => (callback == null ? this.updateCoordState(stateVar, e, true) : callback)}/>
 			);
 		} else{
 			return (
@@ -266,7 +266,7 @@ export default class Calculator extends Component {
 		this.props.updateItineraryData(data)
 	}
 
-	updateCoordState(stateVar, event) {
+	updateCoordState(stateVar, event, useLocation = false) {
 		let rawString = event.target.value
 		let rawStateName = "rawStringD";
 		if (stateVar === "origin") {
@@ -275,6 +275,9 @@ export default class Calculator extends Component {
 		if (!rawString) {rawString = "0N, 0W"}
 		this.props.formatCoordinates(rawString, rawStateName);
 		this.setState({[rawStateName]: rawString})
+		if (useLocation) {
+			this.setState({useLocation: false})
+		}
 	}
 
 	findTotal() {
