@@ -148,6 +148,14 @@ export default class Calculator extends Component {
 							<Col m={6} lg={3}>{this.state.DBplace.name}</Col>
 						</Row>
 						<Row>
+							<Col m={6} lg={5}><b>Country</b></Col>
+							<Col m={6} lg={3}>{this.state.DBplace.country}</Col>
+						</Row>
+						<Row>
+							<Col m={6} lg={5}><b>Municipality</b></Col>
+							<Col m={6} lg={3}>{this.state.DBplace.municipality}</Col>
+						</Row>
+						<Row>
 							<Col m={6} lg={5}><b>Coordinates</b></Col>
 							<Col m={6} lg={4}>{Number.parseFloat(this.state.DBplace.latitude).toPrecision(8)}
 								 , {Number.parseFloat(this.state.DBplace.longitude).toPrecision(8)}</Col>
