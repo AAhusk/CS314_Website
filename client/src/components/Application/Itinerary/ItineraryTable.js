@@ -103,8 +103,32 @@ export default class ItineraryTable extends React.Component {
   }
 
   renderTripItinerary(entry, index) {
-
-    return (
+    // console.log('Length', this.props.itineraryData.places.length);
+    // console.log('Start', this.props.startIndex);
+    // console.log('End', this.props.endIndex);
+    if (this.props.itineraryData.places.length < this.props.endIndex){
+      return (
+            <React.Fragment key={"cont" + index}>
+              {entry.origin != null &&
+              <tr key={index}>
+                <td style={{width: 0.1 + "em"}} key={"checkbox" + index}><Input addon type="checkbox" id={"Input" + this.state.forceUpdate} checked={entry.checked} onChange={() => this.checkBoxCallback(entry, index)}/></td>
+                <td key={"name" + index}>{entry.origin != null && entry.origin.name}</td>
+                <td key={"dist" + index}>{this.props.itineraryData != null && this.props.itineraryData.cumulativeDistances[index]} (+{this.props.itineraryData != null && this.props.itineraryData.distances[index]})</td>
+                <td style={{width: 0.1 + "em"}} key={"buttons" + index}>
+                  <ButtonGroup>
+                    <Button outline color="secondary" className={"float-right"} onClick={() => this.movePlace("UP", entry, index)}>↑</Button>
+                    <Button outline color="secondary" className={"float-right"} onClick={() => this.movePlace("DN", entry, index)}>↓</Button>
+                    <Button color="danger" className={"float-right"} onClick={() => this.removePlaceFromItineraryData(index)}>-</Button>
+                  </ButtonGroup>
+                </td>
+              </tr>}
+            </React.Fragment>
+      );
+    }
+    
+    else{
+      if(this.props.startIndex <= index && index < this.props.endIndex){
+        return (
 
           <React.Fragment key={"cont" + index}>
             {entry.origin != null &&
@@ -121,7 +145,9 @@ export default class ItineraryTable extends React.Component {
               </td>
             </tr>}
           </React.Fragment>
-    );
+        );
+      }
+    }
   }
 
   checkBoxCallback(entry, index) {

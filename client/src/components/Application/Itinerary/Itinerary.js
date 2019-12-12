@@ -88,7 +88,7 @@ export default class Itinerary extends Component {
             </ModalFooter>
           </Modal>
     );
-
+      console.log('state', this.state.table);
     return (
           <React.Fragment>
             {addPlaceModal}
@@ -179,7 +179,9 @@ export default class Itinerary extends Component {
                           settings={this.props.settings}
                           options={this.props.options}
                           sumTotalDistance={this.sumTotalDistance}
-                          forceUpdate={this.state.forceUpdate}/>
+                          forceUpdate={this.state.forceUpdate}
+                          startIndex={this.state.table.startIndex}
+                          endIndex={this.state.table.endIndex}/>
     );
   }
 
@@ -232,7 +234,10 @@ export default class Itinerary extends Component {
       
       let startIndex = this.state.table.startIndex + this.state.table.displaySize;
       let displayed = (remaining > this.state.table.displaySize)? this.state.table.displaySize : remaining;
-      let endIndex = this.state.table.startIndex + displayed;
+      let endIndex = startIndex + displayed;
+
+      console.log('displayed', displayed);
+      console.log('endindex', endIndex);
 
       this.setState({
         table: {
