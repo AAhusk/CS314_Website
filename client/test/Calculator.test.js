@@ -39,7 +39,8 @@ function testCreateInputFields() {
   calculator.find(Input).map((input) => actualInputs.push(input.prop('name')))
   let expectedInputs = [
       "originfield",
-      "destinationfield"
+      "destinationfield",
+      "title field"
   ];
   expect(actualSearches).toEqual(expectedSearches);
   expect(actualInputs).toEqual(expectedInputs);

@@ -43,7 +43,7 @@ public class TIPConfig extends TIPHeader {
     this.serverName = "t11 Team America";
     this.placeAttributes = Arrays.asList("name", "latitude","longitude","id","altitude","municipality", 
                                          "region", "country","continent", "type");
-    this.optimizations = Arrays.asList("none", "short", "shorter");
+    this.optimizations = Arrays.asList("none", "short", "shorter", "automatic");
 
     this.filters = new ArrayList<>();
     Map<String, Object> typeFilter = new HashMap<String, Object>() {{
