@@ -62,8 +62,8 @@ This sprint will complete the following Epics.
 | Statistic | # Planned | # Completed |
 | --- | ---: | ---: |
 | Epics | *8* | *8* |
-| Tasks |  *18*   | *17* | 
-| Story Points |  *40*  | *37* | 
+| Tasks |  *18*   | *25* | 
+| Story Points |  *40*  | *39* | 
 
 
 ## Scrums
@@ -71,6 +71,13 @@ This sprint will complete the following Epics.
 | Date | Tasks closed  | Tasks in progress | Impediments |
 | :--- | :--- | :--- | :--- |
 | *11/18* | *none* | *#237, #242* | *none* | 
+| *11/20* | *#237, #242* | *#249, #258, #259* | *none* | 
+| *11/22* | *#249, #258, #259* | *#256, #257, #250* | *none* | 
+| *12/2* | *#256, #257, #250* | *#248, #268, #176, #265, #275, #269* | *none* |
+| *12/4* | *#248, #268, #176, #265, #275* | *#261, #278, #255, #283* | *none* |
+| *12/6* | *#261, #278, #255, #283, #269* | *#281, #280, #241, #253* | *none* |
+| *12/9* | *#281, #280, #241* | *#285, #245, #260* | *none* |
+| *12/11* | *#285, #245, #260, #253* | *none* | *none* |
 
 
 ## Review (focus on solution and technology)
