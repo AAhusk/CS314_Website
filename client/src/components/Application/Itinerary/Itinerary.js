@@ -31,6 +31,7 @@ export default class Itinerary extends Component {
     this.noOptimization = this.noOptimization.bind(this);
     this.shortTripOptimization = this.shortTripOptimization.bind(this);
     this.shorterTripOptimization = this.shorterTripOptimization.bind(this);
+    this.renderItineraryIcons = this.renderItineraryIcons.bind(this);
 
     this.state = {
       trip: null,
@@ -47,67 +48,12 @@ export default class Itinerary extends Component {
         modalNameInput: null,
         submitActive: false
       },
-      buttonDropdown: {
-        optimizationDropdownToggle: false,
-        downloadDropdownToggle: false,
-        settingsDropdownToggle: false
-      }
+      iconVisibility: false,
     }
   }
 
   render() {
-    let toggleOptDropdown = () => {
-      let data = this.state.buttonDropdown;
-      data.optimizationDropdownToggle = !data.optimizationDropdownToggle;
-      this.setState({buttonDropdown: data});
-    };
-
-    let toggleDwnDropdown = () => {
-      let data = this.state.buttonDropdown;
-      data.downloadDropdownToggle = !data.downloadDropdownToggle;
-      this.setState({buttonDropdown: data});
-    };
-
-    let toggleSetDropdown = () => {
-      let data = this.state.buttonDropdown;
-      data.settingsDropdownToggle = !data.settingsDropdownToggle;
-      this.setState({buttonDropdown: data});
-    };
-
-    let optimizationDropdownMenu = (
-          <OptimizationDropdown autoOptimization={this.autoOptimization}
-                                noOptimization={this.noOptimization}
-                                shortTripOptimization={this.shortTripOptimization}
-                                shorterTripOptimization={this.shorterTripOptimization}/>
-    );
-
-    let downloadDropdownMenu = (
-          <DownloadDropdown createOutputCSV={this.createOutputCSV}
-                            createOutputJSON={this.createOutputJSON}/>
-    );
-
-    let reverseButton = (
-      <Tooltip title="Reverse Trip" placement="top" arrow>
-        <IconButton color="primary"
-                    onClick={() => this.reverseItinerary()}>
-          <FlipCameraAndroidIcon/>
-        </IconButton>
-      </Tooltip>
-    );
-
-    let lineToggleButton = (
-      <Tooltip title="Line Toggle" placement="top" arrow>
-        <IconButton color="primary"
-                    onClick={() => {
-                              let data = this.props.itineraryData;
-                              data.polyLineEnabled = !data.polyLineEnabled;
-                              this.props.updateItineraryData(data);
-                            }}>
-          <TimelineIcon/>
-        </IconButton>
-      </Tooltip>
-    );
-
+    
     let toggleModal = () => {
       this.setState({addModal: {
           addModalToggle: !this.state.addModal.addModalToggle,
@@ -138,33 +84,26 @@ export default class Itinerary extends Component {
             <Col>
               <Card>
                 <CardHeader>
-                  <Row>
+                  <Row between="xs">
                     <Col sm={{size: "auto"}}>
                       <Input name={"title field"}
                              placeholder={"Itinerary Title"}
                              id={'titlefield'}
                              onChange={(e) => (this.setState({itineraryTitle: e.target.value}))}/>
-                    </Col>
-                  </Row>
-                  <Row>
+                    </Col>         
+                    <Col/> 
                     <Col sm={{size: "auto"}}>
-                      
+                      {this.renderItineraryIcons()}    
                       <Tooltip title="Add Location" placement="top" arrow>
                         <IconButton color="primary"
-                                    onClick={toggleModal}
-                                    style={{float: "right"}}>
-                          <AddIcon/>
+                                    onClick={toggleModal}>
+                            <AddIcon/>
                         </IconButton>
                       </Tooltip>
-                      
-                      {optimizationDropdownMenu}{'  '}
-                      {downloadDropdownMenu}{'  '}
-                      {reverseButton}{'  '}
-                      {lineToggleButton}{'  '}
                     </Col>
-
                   </Row>
                 </CardHeader>
+
                 <FileInput onFileSelect={this.onFileSelect}
                            formatCoordinates={this.props.formatCoordinates}
                            itineraryData={this.props.itineraryData}
@@ -181,6 +120,44 @@ export default class Itinerary extends Component {
           </React.Fragment>
     );
   }
+
+  renderItineraryIcons() {
+    if (this.props.itineraryData.places.length !== 0){
+      return(
+        <React.Fragment>
+            <OptimizationDropdown autoOptimization={this.autoOptimization}
+                                  noOptimization={this.noOptimization}
+                                  shortTripOptimization={this.shortTripOptimization}
+                                  shorterTripOptimization={this.shorterTripOptimization}/>
+
+            <DownloadDropdown createOutputCSV={this.createOutputCSV}
+                              createOutputJSON={this.createOutputJSON}/>
+
+            <Tooltip title="Reverse Trip" placement="top" arrow>
+              <IconButton color="primary"
+                          onClick={() => this.reverseItinerary()}>
+                <FlipCameraAndroidIcon/>
+              </IconButton>
+            </Tooltip> 
+
+            <Tooltip title="Line Toggle" placement="top" arrow>
+              <IconButton color="primary"
+                          onClick={() => {  let data = this.props.itineraryData;
+                                            data.polyLineEnabled = !data.polyLineEnabled;
+                                            this.props.updateItineraryData(data); }}>
+                  <TimelineIcon/>
+              </IconButton>
+            </Tooltip>   
+
+        </React.Fragment>
+      );
+    }
+
+    else{
+      return(null);
+    }
+  }
+
   renderTable() {
     return(
           <ItineraryTable itineraryData={this.props.itineraryData}
@@ -405,7 +382,8 @@ export default class Itinerary extends Component {
     this.setState({
       totalDistance: totalDistance,
       trip: trip,
-      originalTrip: itineraryData
+      originalTrip: itineraryData,
+      iconVisibility: true,
     });
     this.props.updateItineraryData(itineraryData, false);
   }
