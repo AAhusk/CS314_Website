@@ -53,11 +53,18 @@ export default class Itinerary extends Component {
         submitActive: false
       },
       iconVisibility: true,
+      table: {
+        startIndex: 0, 
+        endIndex: 10,
+        displaySize: 10,
+        displayed: 0
+      }
     }
   }
 
   render() {
-    
+    console.log('Table:', this.state.table);
+    console.log('Places.length', this.props.itineraryData.places.length);
     let toggleModal = () => {
       this.setState({addModal: {
           addModalToggle: !this.state.addModal.addModalToggle,
@@ -177,14 +184,14 @@ export default class Itinerary extends Component {
   }
 
   renderPageIcons() {
-    if (this.state.iconVisibility == true){
+    if (this.state.iconVisibility == true){ //(this.props.itineraryData.places.length !== 0){
       return(
         <Card>
           <Row style={{justifyContent: "center"}}>
             
               <Tooltip title="Previous Page" placement="bottom" arrow>
                 <IconButton color="primary"
-                            onClick={() => console.log('Previous Page')}>
+                            onClick={() => this.previousPage()}>
                     <ArrowBackIosIcon/>
                 </IconButton>
               </Tooltip> 
@@ -194,7 +201,7 @@ export default class Itinerary extends Component {
 
               <Tooltip title="Next Page" placement="bottom" arrow>
                 <IconButton color="primary"
-                            onClick={() => console.log('Next Page')}>
+                            onClick={() => this.nextPage()}>
                     <ArrowForwardIosIcon/>
                 </IconButton>
               </Tooltip> 
@@ -205,6 +212,49 @@ export default class Itinerary extends Component {
     }
     else{
       return(null);
+    }
+  }
+
+  nextPage(){
+    // if (this.props.itineraryData.places.length < this.state.table.displaySize){
+    //   this.setState({
+    //     table: {
+    //       startIndex: 0,
+    //       endIndex: this.props.itineraryData.places.length,
+    //       displaySize: this.state.table.displaySize,
+    //       displayed: this.props.itineraryData.places.length
+    //     }
+    //   });
+    // }
+
+    if (this.state.table.endIndex < this.props.itineraryData.places.length){
+      let remaining = this.props.itineraryData.places.length - this.state.table.endIndex;
+      
+      let startIndex = this.state.table.startIndex + this.state.table.displaySize;
+      let displayed = (remaining > this.state.table.displaySize)? this.state.table.displaySize : remaining;
+      let endIndex = this.state.table.startIndex + displayed;
+
+      this.setState({
+        table: {
+          startIndex: startIndex,
+          endIndex: endIndex,
+          displaySize: this.state.table.displaySize,
+          displayed: displayed
+        }
+      });
+    }
+  }
+
+  previousPage(){
+    if (this.state.table.startIndex > 0){
+      this.setState({
+        table: {
+          startIndex: this.state.table.startIndex - this.state.table.displaySize,
+          endIndex: this.state.table.endIndex - this.state.table.displayed,
+          displaySize: this.state.table.displaySize,
+          displayed: this.state.table.displaySize,
+        }
+      });  
     }
   }
 
