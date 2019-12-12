@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {Card, CardHeader, Modal, ModalFooter, ModalBody, ModalHeader, Col, Input} from 'reactstrap'
+import {Card, CardHeader, CardText, Modal, ModalFooter, ModalBody, ModalHeader, Col, Input, Text} from 'reactstrap'
 import {Dropdown, DropdownToggle, DropdownMenu, DropdownItem} from 'reactstrap'
 import {Row, Button} from 'reactstrap'
 import FileInput from './FileInput'
@@ -15,6 +15,9 @@ import IconButton from '@material-ui/core/IconButton';
 import FlipCameraAndroidIcon from '@material-ui/icons/FlipCameraAndroid';
 import TimelineIcon from '@material-ui/icons/Timeline';
 import AddIcon from '@material-ui/icons/Add';
+
+import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
+import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 
 export default class Itinerary extends Component {
 
@@ -32,6 +35,7 @@ export default class Itinerary extends Component {
     this.shortTripOptimization = this.shortTripOptimization.bind(this);
     this.shorterTripOptimization = this.shorterTripOptimization.bind(this);
     this.renderItineraryIcons = this.renderItineraryIcons.bind(this);
+    this.renderPageIcons = this.renderPageIcons.bind(this);
 
     this.state = {
       trip: null,
@@ -48,7 +52,7 @@ export default class Itinerary extends Component {
         modalNameInput: null,
         submitActive: false
       },
-      iconVisibility: false,
+      iconVisibility: true,
     }
   }
 
@@ -116,6 +120,7 @@ export default class Itinerary extends Component {
               <Card>
                 {this.renderTable()}
               </Card>
+              {this.renderPageIcons()}
             </Col>
           </React.Fragment>
     );
@@ -169,6 +174,38 @@ export default class Itinerary extends Component {
                           sumTotalDistance={this.sumTotalDistance}
                           forceUpdate={this.state.forceUpdate}/>
     );
+  }
+
+  renderPageIcons() {
+    if (this.state.iconVisibility == true){
+      return(
+        <Card>
+          <Row style={{justifyContent: "center"}}>
+            
+              <Tooltip title="Previous Page" placement="bottom" arrow>
+                <IconButton color="primary"
+                            onClick={() => console.log('Previous Page')}>
+                    <ArrowBackIosIcon/>
+                </IconButton>
+              </Tooltip> 
+
+
+              <CardText>Text</CardText>
+
+              <Tooltip title="Next Page" placement="bottom" arrow>
+                <IconButton color="primary"
+                            onClick={() => console.log('Next Page')}>
+                    <ArrowForwardIosIcon/>
+                </IconButton>
+              </Tooltip> 
+ 
+          </Row>
+        </Card>
+      )
+    }
+    else{
+      return(null);
+    }
   }
 
   modalNameInputCallback(event) {
