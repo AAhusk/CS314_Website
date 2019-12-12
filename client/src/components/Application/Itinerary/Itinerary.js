@@ -52,7 +52,6 @@ export default class Itinerary extends Component {
         modalNameInput: null,
         submitActive: false
       },
-      iconVisibility: true,
       table: {
         startIndex: 0, 
         endIndex: 10,
@@ -186,7 +185,7 @@ export default class Itinerary extends Component {
   }
 
   renderPageIcons() {
-    if (this.state.iconVisibility == true){ //(this.props.itineraryData.places.length !== 0){
+    if ((this.props.itineraryData.places.length !== 0)){ //(this.props.itineraryData.places.length !== 0){
       return(
         <Card>
           <Row style={{justifyContent: "center"}}>
@@ -197,9 +196,6 @@ export default class Itinerary extends Component {
                     <ArrowBackIosIcon/>
                 </IconButton>
               </Tooltip> 
-
-
-              <CardText>Text</CardText>
 
               <Tooltip title="Next Page" placement="bottom" arrow>
                 <IconButton color="primary"
@@ -218,17 +214,6 @@ export default class Itinerary extends Component {
   }
 
   nextPage(){
-    // if (this.props.itineraryData.places.length < this.state.table.displaySize){
-    //   this.setState({
-    //     table: {
-    //       startIndex: 0,
-    //       endIndex: this.props.itineraryData.places.length,
-    //       displaySize: this.state.table.displaySize,
-    //       displayed: this.props.itineraryData.places.length
-    //     }
-    //   });
-    // }
-
     if (this.state.table.endIndex < this.props.itineraryData.places.length){
       let remaining = this.props.itineraryData.places.length - this.state.table.endIndex;
       
@@ -475,7 +460,6 @@ export default class Itinerary extends Component {
       totalDistance: totalDistance,
       trip: trip,
       originalTrip: itineraryData,
-      iconVisibility: true,
     });
     this.props.updateItineraryData(itineraryData, false);
   }
