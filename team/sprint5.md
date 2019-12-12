@@ -62,8 +62,8 @@ This sprint will complete the following Epics.
 | Statistic | # Planned | # Completed |
 | --- | ---: | ---: |
 | Epics | *8* | *8* |
-| Tasks |  *18*   | *17* | 
-| Story Points |  *40*  | *37* | 
+| Tasks |  *18*   | *25* | 
+| Story Points |  *40*  | *39* | 
 
 
 ## Scrums
@@ -71,6 +71,13 @@ This sprint will complete the following Epics.
 | Date | Tasks closed  | Tasks in progress | Impediments |
 | :--- | :--- | :--- | :--- |
 | *11/18* | *none* | *#237, #242* | *none* | 
+| *11/20* | *#237, #242* | *#249, #258, #259* | *none* | 
+| *11/22* | *#249, #258, #259* | *#256, #257, #250* | *none* | 
+| *12/2* | *#256, #257, #250* | *#248, #268, #176, #265, #275, #269* | *none* |
+| *12/4* | *#248, #268, #176, #265, #275* | *#261, #278, #255, #283* | *none* |
+| *12/6* | *#261, #278, #255, #283, #269* | *#281, #280, #241, #253* | *none* |
+| *12/9* | *#281, #280, #241* | *#285, #245, #260* | *none* |
+| *12/11* | *#285, #245, #260, #253* | *none* | *none* |
 
 
 ## Review (focus on solution and technology)
@@ -102,20 +109,20 @@ The sight for Sprint 5 was lost because we spent a lot of necessary time working
 
 ## Retrospective (focus on people, process, tools)
 
-In this sprint, ...
+In this sprint we focus on having more communication and working more consistently on the project. In the past we have had to wait due to projects in other classes. However, this time we broke up the tasks more and focused on what we could do daily while working on other classes. This allowed us to stay on schedule and be more focused.
 
 #### What we changed this sprint
 
-Our changes for this sprint included ...
+Our changes for this sprint included more communication through slack and the daily scrums. We have reached the norming phase in our group and are more comfortable with asking for help and working together on tasks. We were able to more easily tell if others were stuck and offered them our help if need be.
 
 #### What we did well
 
-We ...
+We worked more as a group rather than lone wolves that came together here and there. More communication helped us come together and work more as a team. We had a clear idea of what we wanted the project to look like and were able to work together to get that.
 
 #### What we need to work on
 
-We could improve ...
+We could improve on having a clear timeline of what and when things should be completed in order to have a better idea of how well things are going.
 
 #### What we will change next sprint 
 
-We will change ...
+We will change the order in which we focus on some of the epics and tackle the more important ones first. We also need to be better about realisticly estimating the amount of time things will take and potential issues.
