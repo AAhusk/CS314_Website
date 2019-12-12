@@ -103,9 +103,6 @@ export default class ItineraryTable extends React.Component {
   }
 
   renderTripItinerary(entry, index) {
-    // console.log('Length', this.props.itineraryData.places.length);
-    // console.log('Start', this.props.startIndex);
-    // console.log('End', this.props.endIndex);
     if (this.props.itineraryData.places.length < this.props.endIndex){
       return (
             <React.Fragment key={"cont" + index}>

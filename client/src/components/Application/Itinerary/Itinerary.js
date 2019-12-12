@@ -221,9 +221,6 @@ export default class Itinerary extends Component {
       let displayed = (remaining > this.state.table.displaySize)? this.state.table.displaySize : remaining;
       let endIndex = startIndex + displayed;
 
-      console.log('displayed', displayed);
-      console.log('endindex', endIndex);
-
       this.setState({
         table: {
           startIndex: startIndex,
