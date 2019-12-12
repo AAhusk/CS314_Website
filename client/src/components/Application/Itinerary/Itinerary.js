@@ -122,7 +122,7 @@ export default class Itinerary extends Component {
   }
 
   renderItineraryIcons() {
-    if (this.state.iconVisibility == true){
+    if (this.props.itineraryData.places.length !== 0){
       return(
         <React.Fragment>
             <OptimizationDropdown autoOptimization={this.autoOptimization}
