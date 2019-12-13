@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {Card, CardHeader, Modal, ModalFooter, ModalBody, ModalHeader, Col, Input} from 'reactstrap'
+import {Card, CardHeader, CardText, Modal, ModalFooter, ModalBody, ModalHeader, Col, Input, Text} from 'reactstrap'
 import {Dropdown, DropdownToggle, DropdownMenu, DropdownItem} from 'reactstrap'
 import {Row, Button} from 'reactstrap'
 import FileInput from './FileInput'
@@ -15,6 +15,9 @@ import IconButton from '@material-ui/core/IconButton';
 import FlipCameraAndroidIcon from '@material-ui/icons/FlipCameraAndroid';
 import TimelineIcon from '@material-ui/icons/Timeline';
 import AddIcon from '@material-ui/icons/Add';
+
+import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
+import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 
 export default class Itinerary extends Component {
 
@@ -32,6 +35,7 @@ export default class Itinerary extends Component {
     this.shortTripOptimization = this.shortTripOptimization.bind(this);
     this.shorterTripOptimization = this.shorterTripOptimization.bind(this);
     this.renderItineraryIcons = this.renderItineraryIcons.bind(this);
+    this.renderPageIcons = this.renderPageIcons.bind(this);
 
     this.state = {
       trip: null,
@@ -48,12 +52,18 @@ export default class Itinerary extends Component {
         modalNameInput: null,
         submitActive: false
       },
-      iconVisibility: false,
+      table: {
+        startIndex: 0, 
+        endIndex: 10,
+        displaySize: 10,
+        displayed: 0
+      }
     }
   }
 
   render() {
-    
+    console.log('Table:', this.state.table);
+    console.log('Places.length', this.props.itineraryData.places.length);
     let toggleModal = () => {
       this.setState({addModal: {
           addModalToggle: !this.state.addModal.addModalToggle,
@@ -77,7 +87,7 @@ export default class Itinerary extends Component {
             </ModalFooter>
           </Modal>
     );
-
+      console.log('state', this.state.table);
     return (
           <React.Fragment>
             {addPlaceModal}
@@ -116,6 +126,7 @@ export default class Itinerary extends Component {
               <Card>
                 {this.renderTable()}
               </Card>
+              {this.renderPageIcons()}
             </Col>
           </React.Fragment>
     );
@@ -167,8 +178,71 @@ export default class Itinerary extends Component {
                           settings={this.props.settings}
                           options={this.props.options}
                           sumTotalDistance={this.sumTotalDistance}
-                          forceUpdate={this.state.forceUpdate}/>
+                          forceUpdate={this.state.forceUpdate}
+                          startIndex={this.state.table.startIndex}
+                          endIndex={this.state.table.endIndex}/>
     );
+  }
+
+  renderPageIcons() {
+    if ((this.props.itineraryData.places.length !== 0)){ //(this.props.itineraryData.places.length !== 0){
+      return(
+        <Card>
+          <Row style={{justifyContent: "center"}}>
+            
+              <Tooltip title="Previous Page" placement="bottom" arrow>
+                <IconButton color="primary"
+                            onClick={() => this.previousPage()}>
+                    <ArrowBackIosIcon/>
+                </IconButton>
+              </Tooltip> 
+
+              <Tooltip title="Next Page" placement="bottom" arrow>
+                <IconButton color="primary"
+                            onClick={() => this.nextPage()}>
+                    <ArrowForwardIosIcon/>
+                </IconButton>
+              </Tooltip> 
+ 
+          </Row>
+        </Card>
+      )
+    }
+    else{
+      return(null);
+    }
+  }
+
+  nextPage(){
+    if (this.state.table.endIndex < this.props.itineraryData.places.length){
+      let remaining = this.props.itineraryData.places.length - this.state.table.endIndex;
+      
+      let startIndex = this.state.table.startIndex + this.state.table.displaySize;
+      let displayed = (remaining > this.state.table.displaySize)? this.state.table.displaySize : remaining;
+      let endIndex = startIndex + displayed;
+
+      this.setState({
+        table: {
+          startIndex: startIndex,
+          endIndex: endIndex,
+          displaySize: this.state.table.displaySize,
+          displayed: displayed
+        }
+      });
+    }
+  }
+
+  previousPage(){
+    if (this.state.table.startIndex > 0){
+      this.setState({
+        table: {
+          startIndex: this.state.table.startIndex - this.state.table.displaySize,
+          endIndex: this.state.table.endIndex - this.state.table.displayed,
+          displaySize: this.state.table.displaySize,
+          displayed: this.state.table.displaySize,
+        }
+      });  
+    }
   }
 
   modalNameInputCallback(event) {
@@ -383,7 +457,6 @@ export default class Itinerary extends Component {
       totalDistance: totalDistance,
       trip: trip,
       originalTrip: itineraryData,
-      iconVisibility: true,
     });
     this.props.updateItineraryData(itineraryData, false);
   }
